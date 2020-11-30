@@ -1,33 +1,18 @@
 - [road to orleans](#road-to-orleans)
-  - [1](#1)
-    - [solution](#solution)
-    - [silo host](#silo-host)
+  - [build & run](#build--run)
+  - [code](#code)
 
 # road to orleans
 
-The code is written using .NET 5.
+This repository illustrates the road to orleans in production. From most basic, to more advanced techniques. The code is written using .NET 5 and was tested on MacOS (Catalina 10.15.7) and Linux (Alpine 3.12).
 
-## 1
+## build & run
 
-This is the most basic setup: only one silo, local clustering, no clients.
+* IDE: build + run
+* docker: `run.sh`
 
-| clustering | clustered silos | grains | clients |
-| --- | --- | --- | --- |
-| local | 1 | 0 | 0 |
+## code
 
-### solution
-
-* `dotnet new sln -n RoadToOrleans`
-
-### silo host
-
-This project is going to host our grains.
-
-* `dotnet new console --language C# --name SiloHost`
-* `dotnet sln add SiloHost/SiloHost.csproj`
-* In the `SiloHost` project directory:
-    * `dotnet add package Microsoft.Orleans.OrleansRuntime --version 3.3.0`
-    * `dotnet add package Microsoft.Extensions.Hosting --version 5.0.0`
-    * `dotnet add package OrleansDashboard --version 3.1.0`
-    * `dotnet add package Microsoft.Orleans.OrleansTelemetryConsumers.Linux --version 3.3.0`
-    * `dotnet add package Microsoft.Orleans.CodeGenerator.MSBuild --version 3.3.0`
+| solution | clustering | clustered silos | grains | clients |
+| --- | --- | --- | --- | --- |
+| [1](1/readme.md) | local | 1 | 0 | 0 |
