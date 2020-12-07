@@ -1,5 +1,7 @@
 using System;
 using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -23,16 +25,17 @@ namespace Client
             _logger = logger;
             _logger.LogInformation("creating cluster client...");
 
-            var siloAdvertisedIpAddress = IPAddress.Loopback;
-            var primarySiloPort = 3000;
-            
+            var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
+            var siloAdvertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
+            var siloGatewayPort = int.Parse(Environment.GetEnvironmentVariable("GATEWAYPORT") ?? "3000");
+
             Client = new ClientBuilder()
                 .Configure<ClusterOptions>(clusterOptions =>
                 {
                     clusterOptions.ClusterId = "this-is-not-relevant-yet";
                     clusterOptions.ServiceId = "this-is-not-relevant-yet";
                 })
-                .UseStaticClustering(new IPEndPoint(siloAdvertisedIpAddress, primarySiloPort))
+                .UseStaticClustering(new IPEndPoint(siloAdvertisedIpAddress, siloGatewayPort))
                 .ConfigureLogging(loggingBuilder =>
                     loggingBuilder.SetMinimumLevel(LogLevel.Information).AddProvider(loggerProvider))
                 .Build();
@@ -99,6 +102,31 @@ namespace Client
                     error,
                     "Error while gracefully disconnecting from Orleans cluster. Will ignore and continue to shutdown.");
             }
+        }
+
+        private static IPAddress GetLocalIpAddress()
+        {
+            var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (var network in networkInterfaces)
+            {
+                if (network.OperationalStatus != OperationalStatus.Up)
+                    continue;
+
+                var properties = network.GetIPProperties();
+                if (properties.GatewayAddresses.Count == 0)
+                    continue;
+
+                foreach (var address in properties.UnicastAddresses)
+                {
+                    if (address.Address.AddressFamily == AddressFamily.InterNetwork &&
+                        !IPAddress.IsLoopback(address.Address))
+                    {
+                        return address.Address;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

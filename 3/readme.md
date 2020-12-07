@@ -1,6 +1,26 @@
 # readme
 
-In this basic setup we still only have one silo and localhost clustering, but now we have one grain and one client.
+In this basic setup we still only have one silo and localhost clustering with one grain and one client. This time, though, both the client and the silo host are dockerized and multiple modes of communications are supported for developer's convenience.
+
+* local client - local silo host:
+    * `./run-silo-host.sh`
+    * `./run-client.sh`
+* local client - dockerized silo host:
+    * `./run-silo-host-docker.sh`
+    * `./run-client.sh`
+* dockerized client - dockerized silo host:
+    * `./run-silo-host-docker.sh`
+    * `./run-client-docker.sh`
+* dockerized client - local silo host:
+    * `./run-silo-host.sh`
+    * `./run-client-docker.sh`
+
+The way it is all set up is:
+
+* for local runs (local, meaning on the physical machine, non-dockerized), both the client and the silo host get the local ip address of the machine they are running on. They use that IP to communicate with each other.
+* for dockerized runs, both the client and the silo host get the local ip address from environment variable `ADVERTISEDIP` which is in turn provided by the convenience run scripts:
+    * `./run-client-docker.sh`
+    * `./run-silo-host-docker.sh`
 
 The single grain we have is responsible for greeting its clients when called:
 
@@ -14,14 +34,3 @@ We have several projects in this solution:
 * `Client` - this project demonstrates how to connect to the silo and its grains. Two important things to be pointed out here:
     * `ClusterClientHostedService` - this is a reusable client class common for most orleans clients.
     * `HelloWorldClientHostedService` - to avoid basic, yet annoying problems with e.g. keeping the console alive while waiting for the cluster (of one silo) to become operational, instantiating the `ClusterClientHostedService` at the right time, etc. this illustration is made a hosted service where the orleans client is provided through DI. Simple and elegant.
-    
-## todo
-
-At the moment the code only works locally (not in docker). Docker support should be added.
-
-* Containerize the client.
-* Make sure that clients and clusters can communicate in all 4 combinations:
-    * :white_check_mark: - local client - local cluster
-    * dockerized client - local cluster
-    * dockerized client - dockerized cluster
-    * :white_check_mark: - dockerized cluster
