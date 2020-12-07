@@ -13,7 +13,7 @@ COPY ./ops/SiloHost/entrypoint.sh /SiloHost/
 
 RUN dotnet publish --verbosity normal "/src/SiloHost/SiloHost.csproj" --configuration Release --output /SiloHost
 
-EXPOSE 8080
+EXPOSE 3000 8080
 
 CMD ["dotnet", "/SiloHost/SiloHost.dll"]
 ENTRYPOINT ["/SiloHost/entrypoint.sh"]

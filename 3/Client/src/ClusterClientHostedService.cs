@@ -1,9 +1,11 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans;
+using Orleans.Configuration;
 using Orleans.Runtime;
 
 namespace Client
@@ -21,8 +23,16 @@ namespace Client
             _logger = logger;
             _logger.LogInformation("creating cluster client...");
 
+            var siloAdvertisedIpAddress = IPAddress.Loopback;
+            var primarySiloPort = 3000;
+            
             Client = new ClientBuilder()
-                .UseLocalhostClustering()
+                .Configure<ClusterOptions>(clusterOptions =>
+                {
+                    clusterOptions.ClusterId = "this-is-not-relevant-yet";
+                    clusterOptions.ServiceId = "this-is-not-relevant-yet";
+                })
+                .UseStaticClustering(new IPEndPoint(siloAdvertisedIpAddress, primarySiloPort))
                 .ConfigureLogging(loggingBuilder =>
                     loggingBuilder.SetMinimumLevel(LogLevel.Information).AddProvider(loggerProvider))
                 .Build();

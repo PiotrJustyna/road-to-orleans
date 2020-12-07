@@ -21,7 +21,7 @@ At the moment the code only works locally (not in docker). Docker support should
 
 * Containerize the client.
 * Make sure that clients and clusters can communicate in all 4 combinations:
-    * local client - local cluster
+    * :white_check_mark: - local client - local cluster
     * dockerized client - local cluster
     * dockerized client - dockerized cluster
-    * local client - dockerized cluster
+    * :white_check_mark: - dockerized cluster
