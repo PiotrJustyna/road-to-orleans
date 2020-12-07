@@ -22,4 +22,4 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 | --- | --- | --- | --- | --- | --- |
 | [1](1/readme.md) | silo | localhost | 1 | 0 | 0 |
 | [2](2/readme.md) | - | localhost | 1 | 1 | console |
-| [3](3/readme.md) | silo | localhost | 1 | 1 | console |
+| [3](3/readme.md) | silo, client | localhost | 1 | 1 | console |
