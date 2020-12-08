@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  primarysilo:
+    build:  
+      context: .
+      dockerfile: ./ops/SiloHost/Dockerfile
+    environment:
+    - GATEWAYPORT=3000
+    - SILOPORT=2000
+    ports:
+      - "3000:8080"
+  secondarysilo:
+    build:  
+      context: .
+      dockerfile: ./ops/SiloHost/Dockerfile
+    environment:
+    - GATEWAYPORT=3000
+    - SILOPORT=2001
+    - PRIMARYSILOPORT=2000
+    - PRIMARYSILOADDRESS=primarysilo
+  siloclient:
+    build:  
+      context: .
+      dockerfile: ./ops/Client/Dockerfile
+    environment:
+    - GATEWAYPORT=3000
+    - ADVERTISEDDOMAIN=primarysilo
+  siloclient2:
+    build:  
+      context: .
+      dockerfile: ./ops/Client/Dockerfile
+    environment:
+    - GATEWAYPORT=3000
+    - ADVERTISEDDOMAIN=secondarysilo
