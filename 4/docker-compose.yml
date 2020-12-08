@@ -24,11 +24,11 @@ services:
       dockerfile: ./ops/Client/Dockerfile
     environment:
     - GATEWAYPORT=3000
-    - ADVERTISEDDOMAIN=primarysilo
+    - SILODOMAIN=primarysilo
   siloclient2:
     build:  
       context: .
       dockerfile: ./ops/Client/Dockerfile
     environment:
     - GATEWAYPORT=3000
-    - ADVERTISEDDOMAIN=secondarysilo
+    - SILODOMAIN=secondarysilo

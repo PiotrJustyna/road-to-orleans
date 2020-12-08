@@ -25,7 +25,7 @@ namespace Client
         {
             _logger = logger;
             _logger.LogInformation("creating cluster client...");
-            var advertisedDomain = Environment.GetEnvironmentVariable("ADVERTISEDDOMAIN");
+            var advertisedDomain = Environment.GetEnvironmentVariable("SILODOMAIN");
             IPAddress siloAdvertisedIpAddress = null;
             siloAdvertisedIpAddress = advertisedDomain != null ? Dns.GetHostAddresses(advertisedDomain).First() : GetLocalIpAddress();
 
