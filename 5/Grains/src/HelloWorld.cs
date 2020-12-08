@@ -8,8 +8,7 @@ namespace Grains
     {
         public async Task<string> SayHello(string name)
         {
-            Say.hello("dupa");
-            return await Task.FromResult($@"Hello {name}!");
+            return await Task.FromResult(Say.hello(name));
         }
     }
 }
