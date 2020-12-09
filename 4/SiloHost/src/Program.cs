@@ -28,7 +28,7 @@ namespace SiloHost
             if (primarySiloPort != null)
             {
                 var primaryPath = Environment.GetEnvironmentVariable("PRIMARYSILOADDRESS");
-                var ip = Dns.GetHostAddresses(primaryPath).First();
+                var ip = IPAddress.Parse(primaryPath);
                 primary = new IPEndPoint(ip, (int)primarySiloPort);
             }
 
