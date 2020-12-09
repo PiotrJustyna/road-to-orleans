@@ -10,7 +10,7 @@ services:
       network: host
     environment:
     - GATEWAYPORT=3001
-    - SILOPORT=2000
+    - SILOPORT=2001
     ports:
       - "3005:8080"
       - "3001:3001"
@@ -21,31 +21,14 @@ services:
     build:  
       context: .
       dockerfile: ./ops/SiloHost/Dockerfile
+      network: host
     environment:
     - GATEWAYPORT=3002
     - SILOPORT=2001
     - PRIMARYSILOPORT=2000
     - PRIMARYSILOADDRESS=172.28.1.1
-  siloclient:
-    networks:
-      testing_net:
-        ipv4_address: 172.28.1.3
-    build:  
-      context: .
-      dockerfile: ./ops/Client/Dockerfile
-    environment:
-    - GATEWAYPORT=3001
-    - ADVERTISEDIP=172.28.1.1
-  siloclient2:
-    networks:
-      testing_net:
-        ipv4_address: 172.28.1.4
-    build:  
-      context: .
-      dockerfile: ./ops/Client/Dockerfile
-    environment:
-    - GATEWAYPORT=3002
-    - ADVERTISEDIP=172.28.1.2
+    ports: 
+        - "3002:3002"
 networks:
   testing_net:
       ipam:
