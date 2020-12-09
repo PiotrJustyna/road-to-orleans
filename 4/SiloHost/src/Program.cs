@@ -22,14 +22,14 @@ namespace SiloHost
             var advertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
             var gatewayPort = int.Parse(Environment.GetEnvironmentVariable("GATEWAYPORT") ?? "3000");
             var siloPort = int.Parse(Environment.GetEnvironmentVariable("SILOPORT") ?? "2000");
-            var primarySiloPort = int.TryParse(Environment.GetEnvironmentVariable("PRIMARYSILOPORT"), out var f) ? f : default(int?);
-            IPEndPoint primary = null;
+            var developmentPeerPort = int.TryParse(Environment.GetEnvironmentVariable("PEERPORT"), out var f) ? f : default(int?);
+            IPEndPoint siloNode = null;
             
-            if (primarySiloPort != null)
+            if (developmentPeerPort != null)
             {
-                var primaryPath = Environment.GetEnvironmentVariable("PRIMARYSILOADDRESS");
-                var ip = IPAddress.Parse(primaryPath);
-                primary = new IPEndPoint(ip, (int)primarySiloPort);
+                var primaryPath = Environment.GetEnvironmentVariable("PEERADDRESS");
+                var peerIp = IPAddress.Parse(primaryPath);
+                siloNode = new IPEndPoint(peerIp, (int)developmentPeerPort);
             }
 
             var siloEndpointConfiguration = GetSiloEndpointConfiguration(advertisedIpAddress, gatewayPort);
@@ -44,11 +44,11 @@ namespace SiloHost
                         dashboardOptions.Password = "orleans";
                     });
                        
-                    siloBuilder.UseDevelopmentClustering(primary);
+                    siloBuilder.UseDevelopmentClustering(siloNode);
                     siloBuilder.Configure<ClusterOptions>(clusterOptions =>
                     {
-                        clusterOptions.ClusterId = "this-is-not-relevant-yet";
-                        clusterOptions.ServiceId = "this-is-not-relevant-yet";
+                        clusterOptions.ClusterId = "cluster-of-silos";
+                        clusterOptions.ServiceId = "hello-world-service";
                     });
                     siloBuilder.Configure<EndpointOptions>(endpointOptions =>
                     {

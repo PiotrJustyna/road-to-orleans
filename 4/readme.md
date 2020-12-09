@@ -7,10 +7,15 @@ In this clustered setup, we have moved it to an entirely dockerised setup to all
 
 The way it is all set up is:
 
+# Fully Dockerised 
 * Two silos are created:
-    * The first is a primary silo
-    * The second is a secondary one that connects to the primary
+    * Each basically act as a node of the cluster
+    * To simulate the cluster, the second silo attaches itself to the first silo.
 * Two clients are created
-    * The first connects directly to the primary
-    * The second goes to the secondary
-    * This simulates a distribution of requests across two silos that are interconnected.
+    * Both gateways are visible to the clients, an intermittent health check is run against to confirm they are alive.
+
+# Dockerised Silos with local connection
+* Two silos are created in docker
+    * They're fully visible to non docker silos however local clients can only utilise the local silos.
+
+

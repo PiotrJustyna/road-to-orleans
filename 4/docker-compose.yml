@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  primarysilo:
+  firstsilo:
     networks:
       testing_net:
         ipv4_address: 172.28.1.1
@@ -10,11 +10,13 @@ services:
       network: host
     environment:
     - GATEWAYPORT=3001
-    - SILOPORT=2000
+    - SILOPORT=2001
+    - ADVERTISEDIP=172.28.1.1
     ports:
       - "3005:8080"
+      - "2001:2001"
       - "3001:3001"
-  secondarysilo:
+  secondsilo:
     networks:
       testing_net:
         ipv4_address: 172.28.1.2
@@ -23,9 +25,10 @@ services:
       dockerfile: ./ops/SiloHost/Dockerfile
     environment:
     - GATEWAYPORT=3002
-    - SILOPORT=2001
-    - PRIMARYSILOPORT=2000
-    - PRIMARYSILOADDRESS=172.28.1.1
+    - ADVERTISEDIP=172.28.1.2
+    - SILOPORT=2002
+    - PEERPORT=2001
+    - PEERADDRESS=172.28.1.1
   siloclient:
     networks:
       testing_net:
@@ -34,8 +37,7 @@ services:
       context: .
       dockerfile: ./ops/Client/Dockerfile
     environment:
-    - GATEWAYPORT=3001
-    - ADVERTISEDIP=172.28.1.1
+    - SILOGATEWAYS=172.28.1.1:3001,172.28.1.2:3002
   siloclient2:
     networks:
       testing_net:
@@ -44,8 +46,7 @@ services:
       context: .
       dockerfile: ./ops/Client/Dockerfile
     environment:
-    - GATEWAYPORT=3002
-    - ADVERTISEDIP=172.28.1.2
+    - SILOGATEWAYS=172.28.1.1:3001,172.28.1.2:3002
 networks:
   testing_net:
       ipam:
