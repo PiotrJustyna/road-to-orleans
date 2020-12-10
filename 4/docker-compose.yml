@@ -14,8 +14,7 @@ services:
     - ADVERTISEDIP=172.28.1.1
     ports:
       - "3005:8080"
-      - "2001:2001"
-      - "3001:3001"
+      
   secondsilo:
     networks:
       testing_net:

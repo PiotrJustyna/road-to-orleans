@@ -20,12 +20,17 @@ namespace SiloHost
         {
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var advertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
-            var gatewayPort = int.Parse(Environment.GetEnvironmentVariable("GATEWAYPORT") ?? "3000");
-            var siloPort = int.Parse(Environment.GetEnvironmentVariable("SILOPORT") ?? "2000");
+            var parsedGatewayPort = GetAvailablePort(Environment.GetEnvironmentVariable("GATEWAYPORT"));
+            var gatewayPort = parsedGatewayPort != 0 ? parsedGatewayPort : 3000;
+            var parsedSiloPort = GetAvailablePort(Environment.GetEnvironmentVariable("SILOPORT"));
+            var siloPort = parsedSiloPort != 0 ? parsedSiloPort : 2000;
+            Console.WriteLine($"Gateway port:{gatewayPort}");
+            Console.WriteLine($"Silo port:{siloPort}");
+
             var developmentPeerPort = int.TryParse(Environment.GetEnvironmentVariable("PEERPORT"), out var f) ? f : default(int?);
             IPEndPoint siloNode = null;
             
-            if (developmentPeerPort != null)
+            if (developmentPeerPort != null && developmentPeerPort != siloPort)
             {
                 var primaryPath = Environment.GetEnvironmentVariable("PEERADDRESS");
                 var peerIp = IPAddress.Parse(primaryPath);
@@ -76,6 +81,26 @@ namespace SiloHost
                 gatewayPort);
         }
 
+        private static int GetAvailablePort(string ports)
+        {
+            IPGlobalProperties ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
+            TcpConnectionInformation[] tcpConnInfoArray = ipGlobalProperties.GetActiveTcpConnections();
+
+            var parsedPorts = Array.ConvertAll(ports.Split(','), s=> int.Parse(s));
+            if (!tcpConnInfoArray.Any())
+            {
+                return parsedPorts.First();
+            }
+            foreach (var port in parsedPorts)
+            {
+                var foundPort = tcpConnInfoArray.Any(x => x.LocalEndPoint.Port != port);
+                Console.WriteLine($"Port available:{foundPort}");
+                if(foundPort){
+                    return port;
+                }
+            }
+            return 0;
+        }
         private static IPAddress GetLocalIpAddress()
         {
             var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
