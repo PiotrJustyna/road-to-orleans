@@ -22,17 +22,16 @@ namespace SiloHost
             var advertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
             
             var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT")?? throw new Exception("Gateway port cannot be null");
-            var gatewayPort = int.Parse(extractedGatewayPort);
-            
             var extractedSiloPort = Environment.GetEnvironmentVariable("SILOPORT")
                                     ?? throw new Exception("Silo port cannot be null");
-            var siloPort = int.Parse(extractedSiloPort);
-
             var extractedPrimaryPort = Environment.GetEnvironmentVariable("PRIMARYPORT") ?? throw new Exception("Primary port cannot be null");
-            var developmentPeerPort = int.Parse(extractedPrimaryPort);
-            
             var primaryPath = Environment.GetEnvironmentVariable("PRIMARYADDRESS") ?? throw new Exception("Primary address cannot be null");
+            
+            var siloPort = int.Parse(extractedSiloPort);
+            var developmentPeerPort = int.Parse(extractedPrimaryPort);
+            var gatewayPort = int.Parse(extractedGatewayPort);
             var primaryIp = IPAddress.Parse(primaryPath);
+            
             var primarySiloEndpoint = new IPEndPoint(primaryIp, developmentPeerPort);
 
             var siloEndpointConfiguration = GetSiloEndpointConfiguration(advertisedIpAddress, siloPort, gatewayPort);
