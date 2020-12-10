@@ -27,7 +27,9 @@ namespace Client
             _logger = logger;
             _logger.LogInformation("creating cluster client...");
 
-            var gateways = ExtractGateways();
+            var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
+            var siloAdvertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
+            var siloGatewayPort = int.Parse(Environment.GetEnvironmentVariable("GATEWAYPORT") ?? throw new Exception("Gateway port cannot be null"));            
 
             Client = new ClientBuilder()
                 .Configure<ClusterOptions>(clusterOptions =>
@@ -35,42 +37,14 @@ namespace Client
                     clusterOptions.ClusterId = "cluster-of-silos";
                     clusterOptions.ServiceId = "hello-world-service";
                 })
-                .UseStaticClustering(gateways.ToArray())
+                .UseStaticClustering(new IPEndPoint(siloAdvertisedIpAddress, siloGatewayPort))
                 .ConfigureLogging(loggingBuilder =>
                     loggingBuilder.SetMinimumLevel(LogLevel.Information).AddProvider(loggerProvider))
                 .Build();
 
             _logger.LogInformation("cluster client created");
         }
-
-        private static List<IPEndPoint> ExtractGateways()
-        {
-            var endpoints = new List<IPEndPoint>();
-            string[] gateways = new string[] { };
-            if(Environment.GetEnvironmentVariable("SILOGATEWAYS") != null)
-            {
-                gateways = Environment.GetEnvironmentVariable("SILOGATEWAYS")?.Split(',');
-            }
-            foreach (var gateway in gateways)
-            {
-                var split = gateway.Split(':');
-                if (split.Length == 2)
-                {
-                    var ip = IPAddress.Parse(split[0]);
-                    var port = int.Parse(split[1]);
-                    var endPoint = new IPEndPoint(ip, port);
-                    endpoints.Add(endPoint);
-                }
-            }
-
-            if (!endpoints.Any())
-            {
-                var endpoint = new IPEndPoint(GetLocalIpAddress(), 3000);
-                endpoints.Add(endpoint);
-            }
-            return endpoints;
-        }
-
+        
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("connecting cluster client...");

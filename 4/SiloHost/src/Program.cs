@@ -20,24 +20,22 @@ namespace SiloHost
         {
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var advertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
-            var parsedGatewayPort = GetAvailablePort(Environment.GetEnvironmentVariable("GATEWAYPORT"));
-            var gatewayPort = parsedGatewayPort != 0 ? parsedGatewayPort : 3000;
-            var parsedSiloPort = GetAvailablePort(Environment.GetEnvironmentVariable("SILOPORT"));
-            var siloPort = parsedSiloPort != 0 ? parsedSiloPort : 2000;
-            Console.WriteLine($"Gateway port:{gatewayPort}");
-            Console.WriteLine($"Silo port:{siloPort}");
-
-            var developmentPeerPort = int.TryParse(Environment.GetEnvironmentVariable("PEERPORT"), out var f) ? f : default(int?);
-            IPEndPoint siloNode = null;
             
-            if (developmentPeerPort != null && developmentPeerPort != siloPort)
-            {
-                var primaryPath = Environment.GetEnvironmentVariable("PEERADDRESS");
-                var peerIp = IPAddress.Parse(primaryPath);
-                siloNode = new IPEndPoint(peerIp, (int)developmentPeerPort);
-            }
+            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT")?? throw new Exception("Gateway port cannot be null");
+            var gatewayPort = int.Parse(extractedGatewayPort);
+            
+            var extractedSiloPort = Environment.GetEnvironmentVariable("SILOPORT")
+                                    ?? throw new Exception("Silo port cannot be null");
+            var siloPort = int.Parse(extractedSiloPort);
 
-            var siloEndpointConfiguration = GetSiloEndpointConfiguration(advertisedIpAddress, gatewayPort);
+            var extractedPrimaryPort = Environment.GetEnvironmentVariable("PRIMARYPORT") ?? throw new Exception("Primary port cannot be null");
+            var developmentPeerPort = int.Parse(extractedPrimaryPort);
+            
+            var primaryPath = Environment.GetEnvironmentVariable("PRIMARYADDRESS") ?? throw new Exception("Primary address cannot be null");
+            var primaryIp = IPAddress.Parse(primaryPath);
+            var primarySiloEndpoint = new IPEndPoint(primaryIp, developmentPeerPort);
+
+            var siloEndpointConfiguration = GetSiloEndpointConfiguration(advertisedIpAddress, siloPort, gatewayPort);
 
             return new HostBuilder()
                 .UseOrleans(siloBuilder =>
@@ -48,8 +46,8 @@ namespace SiloHost
                         dashboardOptions.Username = "piotr";
                         dashboardOptions.Password = "orleans";
                     });
-                       
-                    siloBuilder.UseDevelopmentClustering(siloNode);
+
+                    siloBuilder.UseDevelopmentClustering(primarySiloEndpoint);
                     siloBuilder.Configure<ClusterOptions>(clusterOptions =>
                     {
                         clusterOptions.ClusterId = "cluster-of-silos";
@@ -58,10 +56,10 @@ namespace SiloHost
                     siloBuilder.Configure<EndpointOptions>(endpointOptions =>
                     {
                         endpointOptions.AdvertisedIPAddress = siloEndpointConfiguration.Ip;
-                        endpointOptions.SiloPort = siloPort;
+                        endpointOptions.SiloPort = siloEndpointConfiguration.SiloPort;
                         endpointOptions.GatewayPort = siloEndpointConfiguration.GatewayPort;
-                        endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, siloPort);
-                        endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, gatewayPort);
+                        endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, 2000);
+                        endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, 3000);
                     });
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
@@ -72,35 +70,16 @@ namespace SiloHost
 
         private static SiloEndpointConfiguration GetSiloEndpointConfiguration(
             IPAddress advertisedAddress,
+            int siloPort,
             int gatewayPort)
         {
 
             return new SiloEndpointConfiguration(
                 advertisedAddress,
-                2000,
+                siloPort,
                 gatewayPort);
         }
-
-        private static int GetAvailablePort(string ports)
-        {
-            IPGlobalProperties ipGlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
-            TcpConnectionInformation[] tcpConnInfoArray = ipGlobalProperties.GetActiveTcpConnections();
-
-            var parsedPorts = Array.ConvertAll(ports.Split(','), s=> int.Parse(s));
-            if (!tcpConnInfoArray.Any())
-            {
-                return parsedPorts.First();
-            }
-            foreach (var port in parsedPorts)
-            {
-                var foundPort = tcpConnInfoArray.Any(x => x.LocalEndPoint.Port != port);
-                Console.WriteLine($"Port available:{foundPort}");
-                if(foundPort){
-                    return port;
-                }
-            }
-            return 0;
-        }
+        
         private static IPAddress GetLocalIpAddress()
         {
             var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
