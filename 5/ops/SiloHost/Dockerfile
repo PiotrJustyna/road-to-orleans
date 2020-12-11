@@ -6,8 +6,11 @@ COPY ./SiloHost/src/* /src/SiloHost/
 COPY ./Interfaces/Interfaces.csproj /src/Interfaces/Interfaces.csproj
 COPY ./Interfaces/src/* /src/Interfaces/
 
+COPY ./Library/* /src/Library/
+
 COPY ./Grains/Grains.csproj /src/Grains/Grains.csproj
 COPY ./Grains/src/* /src/Grains/
+
 
 COPY ./ops/SiloHost/entrypoint.sh /SiloHost/
 
