@@ -2,7 +2,6 @@ module UnitTests.Tests
 
 open Xunit
 open Library
-let func y = fun () -> Say.hello y
 
 [<Fact>]
 let ``Library Valid String Input Test`` () =
@@ -16,7 +15,6 @@ let ``Library Empty String Input Throws Exception`` () =
 [<Fact>]
 let ``Library Whitespace String Input Throws Exception`` () =
     Assert.Throws<System.ArgumentException>((fun () -> Say.hello "\t" |> ignore))
-
 
 [<Fact>]
 let ``Library Exception Messgage Test`` () = 
