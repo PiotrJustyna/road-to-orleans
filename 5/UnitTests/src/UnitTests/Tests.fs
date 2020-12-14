@@ -8,25 +8,25 @@ open Foq
 open Client
 
 [<Fact>]
-let ``Library test`` () =
+let ``Library Valid String Input Test`` () =
     let result = Say.hello("Mereta")
     Assert.Equal("Hello, \"Mereta\"! Your name is 6 characters long.", result)
 
 [<Fact>]
-let ``Library test input string empty`` () =
+let ``Library Empty String Input Throws Exception`` () =
     let methodCall = (fun () -> Say.hello "" |> ignore)
     Assert.Throws<System.ArgumentException>(methodCall)
 
 
 [<Fact>]
-let ``Library test exception messgage`` () = 
+let ``Library Exception Messgage Test`` () = 
     let methodCall = (fun () -> Say.hello "" |> ignore)
     let ex = Assert.Throws<System.ArgumentException>(methodCall);
     Assert.Equal("string cannot be null or whitespace (Parameter 'name')" , ex.Message);
 
 
 [<Fact>]
-let ``Grains test`` () =
+let ``Grains Service Test Returns Correct Output`` () =
     let _grainService = {
         new IHelloWorld with 
             member _this.SayHello(input) = 
