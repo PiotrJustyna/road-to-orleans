@@ -2,10 +2,7 @@ module UnitTests.Tests
 
 open Xunit
 open Library
-open Interfaces
-open System.Threading.Tasks
-open Foq
-open Client
+let func y = fun () -> Say.hello y
 
 [<Fact>]
 let ``Library Valid String Input Test`` () =
@@ -14,33 +11,17 @@ let ``Library Valid String Input Test`` () =
 
 [<Fact>]
 let ``Library Empty String Input Throws Exception`` () =
-    let methodCall = (fun () -> Say.hello "" |> ignore)
-    Assert.Throws<System.ArgumentException>(methodCall)
+    Assert.Throws<System.ArgumentException>((fun () -> Say.hello "" |> ignore))
+
+[<Fact>]
+let ``Library Whitespace String Input Throws Exception`` () =
+    Assert.Throws<System.ArgumentException>((fun () -> Say.hello "\t" |> ignore))
 
 
 [<Fact>]
 let ``Library Exception Messgage Test`` () = 
-    let methodCall = (fun () -> Say.hello "" |> ignore)
-    let ex = Assert.Throws<System.ArgumentException>(methodCall);
+    let ex = Assert.Throws<System.ArgumentException>((fun () -> Say.hello "" |> ignore));
     Assert.Equal("string cannot be null or whitespace (Parameter 'name')" , ex.Message);
-
-
-[<Fact>]
-let ``Grains Service Test Returns Correct Output`` () =
-    let _grainService = {
-        new IHelloWorld with 
-            member _this.SayHello(input) = 
-                match input with 
-                    "Mereta" -> Task.FromResult("Hello, \"Mereta\"! Your name is 6 characters long.") }
-    let input, output = "Mereta",  Task.FromResult("Hello, \"Mereta\"! Your name is 6 characters long.")
-    let result = _grainService.SayHello(input)
-    Assert.Equal(output.Result, result.Result)
-
-
-[<Fact>]
-let ``Hello World Client Returns Task`` () =
-    let _clientService = Mock<HelloWorldClientHostedService>().Setup(fun me -> <@ me.StartAsync(any()) @> ).Returns(Task.CompletedTask).Create()
-    let output = _clientService.StartAsync(any())
-    Assert.Equal(typeof<Task>, output.GetType().BaseType)
+    Assert.Same(typeof<System.ArgumentException>, ex.GetType())
 
 
