@@ -9,10 +9,4 @@ metrics.json
 plot.html
 results.bin
 .vscode/
-/.vs/road-to-orleans/v16
-/.vs
-/1/.vs/RoadToOrleans/DesignTimeBuild
-/1/.vs/RoadToOrleans/v16
-/5/.vs/RoadToOrleans/DesignTimeBuild
-/5/.vs/RoadToOrleans/v16/.suo
-/5/.vs/RoadToOrleans/v16/TestStore/0
+**/.vs

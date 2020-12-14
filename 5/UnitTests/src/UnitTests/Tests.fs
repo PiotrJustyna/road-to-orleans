@@ -39,9 +39,8 @@ let ``Grains Service Test Returns Correct Output`` () =
 
 [<Fact>]
 let ``Hello World Client Returns Task`` () =
-    let output = "Hello, \"Mereta\"! Your name is 6 characters long."
     let _clientService = Mock<HelloWorldClientHostedService>().Setup(fun me -> <@ me.StartAsync(any()) @> ).Returns(Task.CompletedTask).Create()
-    let xx = _clientService.StartAsync(any())
-    Assert.Equal(typeof<Task>, xx.GetType().BaseType)
+    let output = _clientService.StartAsync(any())
+    Assert.Equal(typeof<Task>, output.GetType().BaseType)
 
 
