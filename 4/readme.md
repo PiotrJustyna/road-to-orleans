@@ -10,5 +10,5 @@
 * To monitor the containers, you can check the ui view.
 
 ## Architecture
-* Each client points at a gateway and redistributes the requests to individual silos. 
+* Each client points at a gateway which in turn redistributes the requests to individual silos if needed.
 ![Cluster of silos](imgs/cluster.png)
