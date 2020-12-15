@@ -20,7 +20,7 @@ namespace Client
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            //A random integer is generated to allow for a new hello world to be created per client creation.
+            // A random integer is generated to allow for a new hello world grain to be created per client creation.
             var helloWorldGrain = _clusterClient.GetGrain<IHelloWorld>(_generator.Next(int.MaxValue));
             Console.WriteLine($"{await helloWorldGrain.SayHello("Piotr")}");
         }

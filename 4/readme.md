@@ -1,6 +1,7 @@
 # readme
 # Demo startup
-* `./run-demo.sh` will start both
+* `./run-docker-silo.sh` and * `./run-local-silo.sh` to create silos, make sure to increment ports.
+* `./run-demo.sh` will start both a local and docker client which demonstrates how a single gateway can be used to attach to a cluster of silos.
 * To kill ctrl+z and `kill -term [pid]`, containers will have to be manually stopped.
 # Individual Startup steps
 * `./run-docker-silo.sh`

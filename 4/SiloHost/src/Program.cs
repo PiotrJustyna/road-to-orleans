@@ -25,7 +25,7 @@ namespace SiloHost
             var extractedSiloPort = Environment.GetEnvironmentVariable("SILOPORT")
                                     ?? throw new Exception("Silo port cannot be null");
             var extractedPrimaryPort = Environment.GetEnvironmentVariable("PRIMARYPORT") ?? throw new Exception("Primary port cannot be null");
-            //For the sake of simplicity, a primary in memory silo was utilised. In a real world scenario, membership tables would be utilised.
+            // For the sake of simplicity, a primary silo is used here (even though all silos are peers in the cluster) as in-memory cluster membership emulation was utilised in this example.
             var primaryAddress = Environment.GetEnvironmentVariable("PRIMARYADDRESS") ?? throw new Exception("Primary address cannot be null");
             
             var siloPort = int.Parse(extractedSiloPort);
@@ -35,7 +35,7 @@ namespace SiloHost
             
             var primarySiloEndpoint = new IPEndPoint(primaryIp, developmentPeerPort);
 
-            var siloEndpointConfiguration = GetSiloEndpointConfiguration(advertisedIpAddress, siloPort, gatewayPort);
+            var siloEndpointConfiguration = new SiloEndpointConfiguration(advertisedIpAddress, siloPort, gatewayPort);
 
             return new HostBuilder()
                 .UseOrleans(siloBuilder =>
@@ -68,18 +68,6 @@ namespace SiloHost
                 .RunConsoleAsync();
         }
 
-        private static SiloEndpointConfiguration GetSiloEndpointConfiguration(
-            IPAddress advertisedAddress,
-            int siloPort,
-            int gatewayPort)
-        {
-
-            return new SiloEndpointConfiguration(
-                advertisedAddress,
-                siloPort,
-                gatewayPort);
-        }
-        
         private static IPAddress GetLocalIpAddress()
         {
             var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
