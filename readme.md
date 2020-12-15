@@ -20,7 +20,8 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 
 | solution | docker support | clustering | clustered silos | grains | clients |
 | --- | --- | --- | --- | --- | --- |
-| [1](1/readme.md) | silo | localhost | 1 | 0 | 0 |
-| [2](2/readme.md) | - | localhost | 1 | 1 C# grain | console |
-| [3](3/readme.md) | silo, client | localhost | 1 | 1 C# grain | console |
-| [5](5/readme.md) | silo, client | localhost | 1 | 1 C# grain interfacing F# library code | console |
+| [1](1/readme.md) | silo | - | 1 | 0 | 0 |
+| [2](2/readme.md) | - | - | 1 | 1 C# grain | console |
+| [3](3/readme.md) | silo, client | - | 1 | 1 C# grain | console |
+| [4](4/readme.md) | silo, client | in-memory | n | 1 C# grain | (n) console |
+| [5](5/readme.md) | silo, client | - | 1 | 1 C# grain interfacing F# library code | console |
