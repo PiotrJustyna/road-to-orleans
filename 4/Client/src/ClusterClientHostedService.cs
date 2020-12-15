@@ -29,7 +29,9 @@ namespace Client
 
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var siloAdvertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
-            var siloGatewayPort = int.Parse(Environment.GetEnvironmentVariable("GATEWAYPORT") ?? throw new Exception("Gateway port cannot be null"));            
+            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT") ??
+                                       throw new Exception("Gateway port cannot be null");
+            var siloGatewayPort = int.Parse(extractedGatewayPort);            
 
             Client = new ClientBuilder()
                 .Configure<ClusterOptions>(clusterOptions =>
@@ -37,6 +39,8 @@ namespace Client
                     clusterOptions.ClusterId = "cluster-of-silos";
                     clusterOptions.ServiceId = "hello-world-service";
                 })
+                // This serves as an example of a single silo, redistributing its load to other silos in the cluster even when the client is only 
+                // aware of a single silo.
                 .UseStaticClustering(new IPEndPoint(siloAdvertisedIpAddress, siloGatewayPort))
                 .ConfigureLogging(loggingBuilder =>
                     loggingBuilder.SetMinimumLevel(LogLevel.Information).AddProvider(loggerProvider))

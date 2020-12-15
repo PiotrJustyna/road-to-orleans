@@ -25,12 +25,13 @@ namespace SiloHost
             var extractedSiloPort = Environment.GetEnvironmentVariable("SILOPORT")
                                     ?? throw new Exception("Silo port cannot be null");
             var extractedPrimaryPort = Environment.GetEnvironmentVariable("PRIMARYPORT") ?? throw new Exception("Primary port cannot be null");
-            var primaryPath = Environment.GetEnvironmentVariable("PRIMARYADDRESS") ?? throw new Exception("Primary address cannot be null");
+            //For the sake of simplicity, a primary in memory silo was utilised. In a real world scenario, membership tables would be utilised.
+            var primaryAddress = Environment.GetEnvironmentVariable("PRIMARYADDRESS") ?? throw new Exception("Primary address cannot be null");
             
             var siloPort = int.Parse(extractedSiloPort);
             var developmentPeerPort = int.Parse(extractedPrimaryPort);
             var gatewayPort = int.Parse(extractedGatewayPort);
-            var primaryIp = IPAddress.Parse(primaryPath);
+            var primaryIp = IPAddress.Parse(primaryAddress);
             
             var primarySiloEndpoint = new IPEndPoint(primaryIp, developmentPeerPort);
 
