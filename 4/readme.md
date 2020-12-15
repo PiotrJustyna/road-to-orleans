@@ -1,5 +1,8 @@
 # readme
-# Startup steps
+# Demo startup
+* `./run-demo.sh` will start both
+* To kill ctrl+z and `kill -term [pid]`, containers will have to be manually stopped.
+# Individual Startup steps
 * `./run-docker-silo.sh`
 * Increment the port numbers with the exception of PRIMARYSILOPORT and rerun scripts, any number of silos can be introduced
 * `./run-docker-client.sh` or `./run-local-client.sh` to run against one of the silo gateway. 
