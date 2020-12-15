@@ -24,6 +24,8 @@ namespace SiloHost
             var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT")?? throw new Exception("Gateway port cannot be null");
             var extractedSiloPort = Environment.GetEnvironmentVariable("SILOPORT")
                                     ?? throw new Exception("Silo port cannot be null");
+            var extractDashboardPort = Environment.GetEnvironmentVariable("DASHBOARDPORT") ??
+                                       throw new Exception("Dashboard port cannot be null");
             var extractedPrimaryPort = Environment.GetEnvironmentVariable("PRIMARYPORT") ?? throw new Exception("Primary port cannot be null");
             // For the sake of simplicity, a primary silo is used here (even though all silos are peers in the cluster) as in-memory cluster membership emulation was utilised in this example.
             var primaryAddress = Environment.GetEnvironmentVariable("PRIMARYADDRESS") ?? throw new Exception("Primary address cannot be null");
@@ -45,6 +47,7 @@ namespace SiloHost
                     {
                         dashboardOptions.Username = "piotr";
                         dashboardOptions.Password = "orleans";
+                        dashboardOptions.Port = int.Parse(extractDashboardPort);
                     });
 
                     siloBuilder.UseDevelopmentClustering(primarySiloEndpoint);
