@@ -6,8 +6,8 @@ RetrieveIp(){
 export ADVERTISEDIP=`RetrieveIp`
 export PRIMARYADDRESS=`RetrieveIp`
 export GATEWAYPORT=3002
+export DASHBOARDPORT=8082
 export SILOPORT=2002
 export PRIMARYPORT=2001
-export DASHBOARDPORT=8082
 
 dotnet run --project ./SiloHost/SiloHost.csproj
