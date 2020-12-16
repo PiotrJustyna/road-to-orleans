@@ -8,8 +8,8 @@ Each client (hosted locally or in docker) points at a gateway which in turn redi
 ## running the code
 ### silos
 As in example 4, following scripts can be used to run silos:
-* `./run-docker-silo.sh`
-* `./run-local-silo.sh`
+* `./run-silo-docker.sh`
+* `./run-silo-local.sh`
   Important thing to note is that if one wants to run multiple silos which form a cluster, following variables need to be made unique for every silo:
 * `GATEWAYPORT` (e.g. `3001`, `3002`, etc.)
 * `SILOPORT` (e.g. `2001`, `2002`, etc.)
