@@ -32,8 +32,8 @@ namespace Client
             Client = new ClientBuilder()
                 .Configure<ClusterOptions>(clusterOptions =>
                 {
-                    clusterOptions.ClusterId = "this-is-not-relevant-yet";
-                    clusterOptions.ServiceId = "this-is-not-relevant-yet";
+                    clusterOptions.ClusterId = "cluster-of-silos";
+                    clusterOptions.ServiceId = "hello-world-service";
                 })
                 .UseStaticClustering(new IPEndPoint(siloAdvertisedIpAddress, siloGatewayPort))
                 .ConfigureLogging(loggingBuilder =>

@@ -19,9 +19,25 @@ namespace SiloHost
         {
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var advertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
-            var gatewayPort = int.Parse(Environment.GetEnvironmentVariable("GATEWAYPORT") ?? "3000");
             
-            var siloEndpointConfiguration = GetSiloEndpointConfiguration(advertisedIpAddress, gatewayPort);
+            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT")?? throw new Exception("Gateway port cannot be null");
+            var extractedSiloPort = Environment.GetEnvironmentVariable("SILOPORT")
+                                    ?? throw new Exception("Silo port cannot be null");
+            var extractDashboardPort = Environment.GetEnvironmentVariable("DASHBOARDPORT") ??
+                                       throw new Exception("Dashboard port cannot be null");
+            var extractedPrimaryPort = Environment.GetEnvironmentVariable("PRIMARYPORT") ?? throw new Exception("Primary port cannot be null");
+
+            var primaryAddress = Environment.GetEnvironmentVariable("PRIMARYADDRESS") ?? throw new Exception("Primary address cannot be null");
+            
+            var siloPort = int.Parse(extractedSiloPort);
+            var developmentPeerPort = int.Parse(extractedPrimaryPort);
+            var gatewayPort = int.Parse(extractedGatewayPort);
+            var primaryIp = IPAddress.Parse(primaryAddress);
+            
+            var primarySiloEndpoint = new IPEndPoint(primaryIp, developmentPeerPort);
+
+            var siloEndpointConfiguration = new SiloEndpointConfiguration(advertisedIpAddress, siloPort, gatewayPort);
+
 
             return new HostBuilder()
                 .UseOrleans(siloBuilder =>
@@ -31,8 +47,14 @@ namespace SiloHost
                     {
                         dashboardOptions.Username = "piotr";
                         dashboardOptions.Password = "orleans";
+                        dashboardOptions.Port = int.Parse(extractDashboardPort);
                     });
-                    siloBuilder.UseLocalhostClustering();
+                    siloBuilder.UseDevelopmentClustering(primarySiloEndpoint);
+                    siloBuilder.Configure<ClusterOptions>(clusterOptions =>
+                    {
+                        clusterOptions.ClusterId = "cluster-of-silos";
+                        clusterOptions.ServiceId = "hello-world-service";
+                    });
                     siloBuilder.Configure<EndpointOptions>(endpointOptions =>
                     {
                         endpointOptions.AdvertisedIPAddress = siloEndpointConfiguration.Ip;
@@ -46,17 +68,6 @@ namespace SiloHost
                 })
                 .ConfigureLogging(logging => logging.AddConsole())
                 .RunConsoleAsync();
-        }
-
-        private static SiloEndpointConfiguration GetSiloEndpointConfiguration(
-            IPAddress advertisedAddress,
-            int gatewayPort)
-        {
-
-            return new SiloEndpointConfiguration(
-                advertisedAddress,
-                2000,
-                gatewayPort);
         }
 
         private static IPAddress GetLocalIpAddress()
