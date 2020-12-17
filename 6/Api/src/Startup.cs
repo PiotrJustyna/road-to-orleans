@@ -17,9 +17,9 @@ namespace Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<ClusterClientHostedService>();
-            services.AddSingleton<IHostedService>(_ => _.GetService<ClusterClientHostedService>());
-            services.AddSingleton(_ => _.GetService<ClusterClientHostedService>().Client);
+            services.AddHostedService<ClusterClientHostedService>();
+            services.AddTransient<IHostedService>(_ => _.GetService<ClusterClientHostedService>());
+            services.AddTransient(_ => _.GetService<ClusterClientHostedService>().Client);
             services.AddControllers();
         }
         

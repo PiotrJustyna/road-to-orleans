@@ -4,7 +4,7 @@ using Orleans;
 
 namespace Grains
 {
-    public class HelloWorld : Grain, IHelloWorld
+    public class HelloWorld : Orleans.Grain, IHelloWorld
     {
         public async Task<string> SayHello(string name, GrainCancellationToken grainCancellationToken)
         {
