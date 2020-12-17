@@ -1,11 +1,13 @@
 {
-  "Api": {
-    "commandName": "Project",
-    "launchBrowser": true,
-    "launchUrl": "helloworld?name=NotMyName",
-    "environmentVariables": {
-      "ASPNETCORE_ENVIRONMENT": "Development"
-    },
-    "applicationUrl": "http://localhost:5000"
+  "profiles": {
+    "Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "helloworld?name=NotMyName",
+      "applicationUrl": "http://localhost:5432",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
   }
 }
