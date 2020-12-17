@@ -3,8 +3,8 @@ RetrieveIp(){
   ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -m1 '127.0.0.1'
 }
 
-ADVERTISEDIP=10.0.0.9
-PRIMARYADDRESS=10.0.0.9
+ADVERTISEDIP=`RetrieveIp`
+PRIMARYADDRESS=`RetrieveIp`
 GATEWAYPORT=3001
 DASHBOARDPORT=8081
 SILOPORT=2001
