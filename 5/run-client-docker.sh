@@ -6,4 +6,4 @@ ADVERTISEDIP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo 
 GATEWAYPORT=3001
 
 docker build -t client-cluster -f ./ops/Client/Dockerfile ./ &&
-  docker run -d -e ADVERTISEDIP=$ADVERTISEDIP -e GATEWAYPORT=$GATEWAYPORT --rm client-cluster
+  docker run -it -e ADVERTISEDIP=$ADVERTISEDIP -e GATEWAYPORT=$GATEWAYPORT --rm client-cluster
