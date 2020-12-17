@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
+    <ProjectReference Include="..\Library\Library.fsproj" />
   </ItemGroup>
 
   <ItemGroup>
