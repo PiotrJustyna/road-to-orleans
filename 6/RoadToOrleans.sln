@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiloHost", "SiloHost\SiloHo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{3FE033B4-96DA-4A4B-8610-FDF7A5310154}"
 EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Library", "Library\Library.fsproj", "{D4DBA653-DC93-4DD0-A894-92681DB2745F}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "UnitTests", "UnitTests\src\UnitTests\UnitTests.fsproj", "{7C5F158F-937E-40BB-9E99-232B93BC5472}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{3FE033B4-96DA-4A4B-8610-FDF7A5310154}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FE033B4-96DA-4A4B-8610-FDF7A5310154}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FE033B4-96DA-4A4B-8610-FDF7A5310154}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4DBA653-DC93-4DD0-A894-92681DB2745F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4DBA653-DC93-4DD0-A894-92681DB2745F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4DBA653-DC93-4DD0-A894-92681DB2745F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4DBA653-DC93-4DD0-A894-92681DB2745F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C5F158F-937E-40BB-9E99-232B93BC5472}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C5F158F-937E-40BB-9E99-232B93BC5472}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C5F158F-937E-40BB-9E99-232B93BC5472}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C5F158F-937E-40BB-9E99-232B93BC5472}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

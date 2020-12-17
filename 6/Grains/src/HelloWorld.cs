@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Interfaces;
 using Orleans;
+using Library;
 
 namespace Grains
 {
@@ -12,14 +13,10 @@ namespace Grains
 
             if (!grainCancellationToken.CancellationToken.IsCancellationRequested)
             {
-                result = $"Hello, {name} from {IdentityString}!";
-            }
-            else
-            {
-                result = $"Cancelled  from {IdentityString}.";
+                return await Task.FromResult(Say.hello(name));
             }
 
-            return await Task.FromResult(result);
+            return result;
         }
     }
 }

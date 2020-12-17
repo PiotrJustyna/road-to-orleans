@@ -9,6 +9,8 @@ COPY ./Interfaces/src/* /src/Interfaces/
 COPY ./Grains/Grains.csproj /src/Grains/Grains.csproj
 COPY ./Grains/src/* /src/Grains/
 
+COPY ./Library/* /src/Library/
+
 COPY ./ops/SiloHost/entrypoint.sh /SiloHost/
 
 RUN dotnet publish --verbosity normal "/src/SiloHost/SiloHost.csproj" --configuration Release --output /SiloHost
