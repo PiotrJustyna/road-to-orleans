@@ -32,12 +32,12 @@ namespace SiloHost
             var siloPort = int.Parse(extractedSiloPort);
             var developmentPeerPort = int.Parse(extractedPrimaryPort);
             var gatewayPort = int.Parse(extractedGatewayPort);
+            var dashboardPort = int.Parse(extractDashboardPort);
             var primaryIp = IPAddress.Parse(primaryAddress);
-            
+
             var primarySiloEndpoint = new IPEndPoint(primaryIp, developmentPeerPort);
 
             var siloEndpointConfiguration = new SiloEndpointConfiguration(advertisedIpAddress, siloPort, gatewayPort);
-
 
             return new HostBuilder()
                 .UseOrleans(siloBuilder =>
@@ -47,7 +47,7 @@ namespace SiloHost
                     {
                         dashboardOptions.Username = "piotr";
                         dashboardOptions.Password = "orleans";
-                        dashboardOptions.Port = int.Parse(extractDashboardPort);
+                        dashboardOptions.Port = dashboardPort;
                     });
                     siloBuilder.UseDevelopmentClustering(primarySiloEndpoint);
                     siloBuilder.Configure<ClusterOptions>(clusterOptions =>
@@ -61,7 +61,7 @@ namespace SiloHost
                         endpointOptions.SiloPort = siloEndpointConfiguration.SiloPort;
                         endpointOptions.GatewayPort = siloEndpointConfiguration.GatewayPort;
                         endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, 2000);
-                        endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, siloEndpointConfiguration.GatewayPort);
+                        endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, 3000);
                     });
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
