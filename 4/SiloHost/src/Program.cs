@@ -20,7 +20,7 @@ namespace SiloHost
         {
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var advertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
-            
+
             var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT")?? throw new Exception("Gateway port cannot be null");
             var extractedSiloPort = Environment.GetEnvironmentVariable("SILOPORT")
                                     ?? throw new Exception("Silo port cannot be null");
@@ -29,12 +29,13 @@ namespace SiloHost
             var extractedPrimaryPort = Environment.GetEnvironmentVariable("PRIMARYPORT") ?? throw new Exception("Primary port cannot be null");
             // For the sake of simplicity, a primary silo is used here (even though all silos are peers in the cluster) as in-memory cluster membership emulation was utilised in this example.
             var primaryAddress = Environment.GetEnvironmentVariable("PRIMARYADDRESS") ?? throw new Exception("Primary address cannot be null");
-            
+
             var siloPort = int.Parse(extractedSiloPort);
             var developmentPeerPort = int.Parse(extractedPrimaryPort);
             var gatewayPort = int.Parse(extractedGatewayPort);
+            var dashboardPort = int.Parse(extractDashboardPort);
             var primaryIp = IPAddress.Parse(primaryAddress);
-            
+
             var primarySiloEndpoint = new IPEndPoint(primaryIp, developmentPeerPort);
 
             var siloEndpointConfiguration = new SiloEndpointConfiguration(advertisedIpAddress, siloPort, gatewayPort);
@@ -47,7 +48,7 @@ namespace SiloHost
                     {
                         dashboardOptions.Username = "piotr";
                         dashboardOptions.Password = "orleans";
-                        dashboardOptions.Port = int.Parse(extractDashboardPort);
+                        dashboardOptions.Port = dashboardPort;
                     });
 
                     siloBuilder.UseDevelopmentClustering(primarySiloEndpoint);
@@ -78,11 +79,11 @@ namespace SiloHost
             {
                 if (network.OperationalStatus != OperationalStatus.Up)
                     continue;
-            
+
                 var properties = network.GetIPProperties();
                 if (properties.GatewayAddresses.Count == 0)
                     continue;
-            
+
                 foreach (var address in properties.UnicastAddresses)
                 {
                     if (address.Address.AddressFamily == AddressFamily.InterNetwork &&
@@ -92,7 +93,7 @@ namespace SiloHost
                     }
                 }
             }
-            
+
             return null;
         }
     }

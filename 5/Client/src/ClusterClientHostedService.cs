@@ -27,7 +27,8 @@ namespace Client
 
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var siloAdvertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
-            var siloGatewayPort = int.Parse(Environment.GetEnvironmentVariable("GATEWAYPORT") ?? "3001");
+            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT") ?? throw new Exception("Gateway port cannot be null"); 
+            var siloGatewayPort = int.Parse(extractedGatewayPort);
 
             Client = new ClientBuilder()
                 .Configure<ClusterOptions>(clusterOptions =>

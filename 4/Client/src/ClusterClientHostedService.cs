@@ -29,9 +29,8 @@ namespace Client
 
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var siloAdvertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
-            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT") ??
-                                       throw new Exception("Gateway port cannot be null");
-            var siloGatewayPort = int.Parse(extractedGatewayPort);            
+            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT") ?? throw new Exception("Gateway port cannot be null");
+            var siloGatewayPort = int.Parse(extractedGatewayPort);
 
             Client = new ClientBuilder()
                 .Configure<ClusterOptions>(clusterOptions =>
@@ -48,7 +47,7 @@ namespace Client
 
             _logger.LogInformation("cluster client created");
         }
-        
+
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("connecting cluster client...");
@@ -59,8 +58,6 @@ namespace Client
 
             return Client.Connect(async error =>
             {
-                _logger.LogInformation("nope");
-
                 if (cancellationToken.IsCancellationRequested)
                 {
                     return false;
