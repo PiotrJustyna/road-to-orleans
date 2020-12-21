@@ -27,13 +27,13 @@ namespace Client
 
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var siloAdvertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
-            var siloGatewayPort = int.Parse(Environment.GetEnvironmentVariable("GATEWAYPORT") ?? "3000");
+            var siloGatewayPort = int.Parse(Environment.GetEnvironmentVariable("GATEWAYPORT") ?? "3001");
 
             Client = new ClientBuilder()
                 .Configure<ClusterOptions>(clusterOptions =>
                 {
-                    clusterOptions.ClusterId = "this-is-not-relevant-yet";
-                    clusterOptions.ServiceId = "this-is-not-relevant-yet";
+                    clusterOptions.ClusterId = "cluster-of-silos";
+                    clusterOptions.ServiceId = "hello-world-service";
                 })
                 .UseStaticClustering(new IPEndPoint(siloAdvertisedIpAddress, siloGatewayPort))
                 .ConfigureLogging(loggingBuilder =>
@@ -53,8 +53,6 @@ namespace Client
 
             return Client.Connect(async error =>
             {
-                _logger.LogInformation("nope");
-
                 if (cancellationToken.IsCancellationRequested)
                 {
                     return false;
