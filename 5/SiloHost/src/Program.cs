@@ -60,8 +60,8 @@ namespace SiloHost
                         endpointOptions.AdvertisedIPAddress = siloEndpointConfiguration.Ip;
                         endpointOptions.SiloPort = siloEndpointConfiguration.SiloPort;
                         endpointOptions.GatewayPort = siloEndpointConfiguration.GatewayPort;
-                        endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, 2000);
-                        endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, 3000);
+                        endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, siloEndpointConfiguration.SiloPort);
+                        endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, siloEndpointConfiguration.GatewayPort);
                     });
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
