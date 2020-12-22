@@ -12,8 +12,11 @@ Main emphasis of this example is on grain activation sharing across silos formin
 
 It is not recommended to use setup like this in production as it makes the primary/gateway silo the main point of failure. If that silo goes down, the clients are not exposed to any other silos participating in the same cluster. A more mature approach (e.g. persistent membership table) is recommended in non-local environments.
 ## architecture
+
 Each client (hosted locally or in docker) points at a gateway which in turn redistributes the requests to individual silos (hosted locally or in docker) if needed.
+
 ![Cluster of silos](imgs/cluster.png)
+
 ## running the code
 ### silos
 As in example 3, following scripts can be used to run silos:
