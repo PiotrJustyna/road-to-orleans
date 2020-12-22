@@ -3,11 +3,14 @@ This example expands on example 3 and demonstrates how local, in-memory clusteri
 As with previous examples, the configuration provided supports mixed hosting scenarios, so it is possible to have a cluster of silos hosted both:
 * locally (outside docker)
 * and in docker
+
 and also a group of clients hosted the same way (inside and outside docker).
-Main emphasis of this example is on grain activation sharing across silos forming a cluster. As clients generate cluster load, new activations of `HelloWorld` grains are created in individual silos forming the cluster.
-In-memory cluster membership is used by design and has its trade-offs:
+
+Main emphasis of this example is on grain activation sharing across silos forming a cluster. As clients generate cluster load, new activations of `HelloWorld` grains are created in individual silos forming the cluster. In-memory cluster membership is used by design and has its trade-offs:
 * obviously the membership is not persisted anywhere, so a complete cluster failure cannot be recovered from (it is unlikely needed in a localhost scenario, though)
-* gateway silo (aka the primary silo) is used by design to act as the primary point of contact for all clients (clients are not aware that there is more than one silo in the cluster) - that is mainly to illustrate the process of seamless sharing of grain activations between all silos forming the cluster. It is not recommended to use setup like this in production as it makes the primary/gateway silo the main point of failure. If that silo goes down, the clients are not exposed to any other silos participating in the same cluster. A more mature approach (e.g. persistent membership table) is recommended in non-local environments.
+* gateway silo (aka the primary silo) is used by design to act as the primary point of contact for all clients (clients are not aware that there is more than one silo in the cluster) - that is mainly to illustrate the process of seamless sharing of grain activations between all silos forming the cluster.
+
+It is not recommended to use setup like this in production as it makes the primary/gateway silo the main point of failure. If that silo goes down, the clients are not exposed to any other silos participating in the same cluster. A more mature approach (e.g. persistent membership table) is recommended in non-local environments.
 ## architecture
 Each client (hosted locally or in docker) points at a gateway which in turn redistributes the requests to individual silos (hosted locally or in docker) if needed.
 ![Cluster of silos](imgs/cluster.png)
