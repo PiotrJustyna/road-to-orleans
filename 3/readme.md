@@ -3,16 +3,16 @@
 In this basic setup we still only have one silo and localhost clustering with one grain and one client. This time, though, both the client and the silo host are dockerized and multiple modes of communications are supported for developer's convenience.
 
 * local client - local silo host:
-    * `./run-silo-host.sh`
-    * `./run-client.sh`
+    * `./run-silo-local.sh`
+    * `./run-client-local.sh`
 * local client - dockerized silo host:
-    * `./run-silo-host-docker.sh`
-    * `./run-client.sh`
+    * `./run-silo-docker.sh`
+    * `./run-client-local.sh`
 * dockerized client - dockerized silo host:
-    * `./run-silo-host-docker.sh`
+    * `./run-silo-docker.sh`
     * `./run-client-docker.sh`
 * dockerized client - local silo host:
-    * `./run-silo-host.sh`
+    * `./run-silo-local.sh`
     * `./run-client-docker.sh`
 
 The way it is all set up is:
@@ -20,7 +20,7 @@ The way it is all set up is:
 * for local runs (local, meaning on the physical machine, non-dockerized), both the client and the silo host get the local ip address of the machine they are running on. They use that IP to communicate with each other.
 * for dockerized runs, both the client and the silo host get the local ip address from environment variable `ADVERTISEDIP` which is in turn provided by the convenience run scripts:
     * `./run-client-docker.sh`
-    * `./run-silo-host-docker.sh`
+    * `./run-silo-docker.sh`
 
 The single grain we have is responsible for greeting its clients when called:
 
