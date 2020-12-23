@@ -53,8 +53,6 @@ namespace Client
 
             return Client.Connect(async error =>
             {
-                _logger.LogInformation("nope");
-
                 if (cancellationToken.IsCancellationRequested)
                 {
                     return false;
