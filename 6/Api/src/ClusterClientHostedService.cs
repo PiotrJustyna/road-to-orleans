@@ -1,14 +1,14 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Orleans;
-using Orleans.Configuration;
-using Orleans.Runtime;
-using System;
+﻿using System;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Orleans;
+using Orleans.Configuration;
+using Orleans.Runtime;
 
 namespace Api
 {
@@ -27,8 +27,7 @@ namespace Api
 
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var siloAdvertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
-            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT") ??
-                    throw new Exception("Gateway port cannot be null");
+            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT") ?? throw new Exception("Gateway port cannot be null"); 
             var siloGatewayPort = int.Parse(extractedGatewayPort);
 
             Client = new ClientBuilder()
@@ -37,8 +36,6 @@ namespace Api
                     clusterOptions.ClusterId = "cluster-of-silos";
                     clusterOptions.ServiceId = "hello-world-service";
                 })
-                // This serves as an example of a single silo, redistributing its load to other silos in the cluster even when the client is only 
-                // aware of a single silo.
                 .UseStaticClustering(new IPEndPoint(siloAdvertisedIpAddress, siloGatewayPort))
                 .ConfigureLogging(loggingBuilder =>
                     loggingBuilder.SetMinimumLevel(LogLevel.Information).AddProvider(loggerProvider))

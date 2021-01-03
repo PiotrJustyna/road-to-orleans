@@ -33,5 +33,5 @@ As in example 3, following scripts can be used to run clients:
 ### demo
 Alternatively, the following scripts can be ran to illustrate the rich array of various local/docker silo/client scenarios:
 * run the cluster: `./run-demo-cluster.sh` (3 silos: 2 hosted in docker, 1 hosted locally)
-* run the clients: `./run-demo-clients.sh (6 clients: 5 hosted in docker, 1 hosted locally)
+* run the clients: `./run-demo-clients.sh` (6 clients: 5 hosted in docker, 1 hosted locally)
 * stop the demo: `./stop-demo.sh` (stops all docker containers created during the demo)
