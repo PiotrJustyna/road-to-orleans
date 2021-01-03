@@ -29,9 +29,9 @@ namespace Api.Controllers
             if (!cancellationToken.IsCancellationRequested)
             {
                 var grainCancellationTokenSource = new GrainCancellationTokenSource();
-                
+
                 //A random integer is generated to allow for a new hello world grain to be created per client creation.
-                return await _clusterClient.GetGrain<IHelloWorld>(_generator.Next(int.MaxValue))
+                result = await _clusterClient.GetGrain<IHelloWorld>(_generator.Next(int.MaxValue))
                     .SayHello(name, grainCancellationTokenSource.Token);
 
             }
