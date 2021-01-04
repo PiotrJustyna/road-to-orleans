@@ -21,7 +21,7 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 
 | branch | docker support | clustering | clustered silos | grains | clients |
 | --- | --- | --- | --- | --- | --- |
-| [1](../tree/solution1/1/readme.md) | silo | - | 1 | 0 | 0 |
+| [1](../../tree/solution1/1/readme.md) | silo | - | 1 | 0 | 0 |
 | [2](../tree/solution2/readme.md) | - | - | 1 | 1 C# grain | 1 - console |
 | [3](../tree/solution3/readme.md) | silo, client | - | 1 | 1 C# grain | 1 - console |
 | [4](../tree/solution4/readme.md) | silo, client | in-memory | n | 1 C# grain | n - console |
