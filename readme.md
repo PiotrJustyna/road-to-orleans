@@ -21,7 +21,7 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 
 | solution | docker support | clustering | clustered silos | grains | clients |
 | --- | --- | --- | --- | --- | --- |
-| [1](1/readme.md) | silo | - | 1 | 0 | 0 |
+| [solution1](1/readme.md) | silo | - | 1 | 0 | 0 |
 
 ## further reading
 
