@@ -1,7 +1,6 @@
 ﻿using Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Orleans;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,13 +11,11 @@ namespace Api.Controllers
     public class HelloWorldController : ControllerBase
     {
         private readonly IClusterClient _clusterClient;
-        private readonly Random _generator;
 
         public HelloWorldController(
             IClusterClient clusterClient)
         {
             _clusterClient = clusterClient;
-            _generator = new Random();
         }
 
         [HttpGet]
@@ -32,8 +29,8 @@ namespace Api.Controllers
                 {
                     var grainCancellationTokenSource = new GrainCancellationTokenSource();
 
-                    //A random integer is generated to allow for a new hello world grain to be created per client creation.
-                    result = Ok(await _clusterClient.GetGrain<IHelloWorld>(_generator.Next(int.MaxValue))
+                    //A set integer (1-100) is accepted to allow for a new hello world grain to be created or reused per client.
+                    result = Ok(await _clusterClient.GetGrain<IHelloWorld>(clientId)
                         .SayHello(name, grainCancellationTokenSource.Token));
                 }
                 else
