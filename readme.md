@@ -21,7 +21,7 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 
 | solution | docker support | clustering | clustered silos | grains | clients |
 | --- | --- | --- | --- | --- | --- |
-| [2](2/readme.md) | - | - | 1 | 1 C# grain | 1 - console |
+| [solution2](2/readme.md) | - | - | 1 | 1 C# grain | 1 - console |
 ## further reading
 
 * https://github.com/dotnet/orleans - orleans repository
