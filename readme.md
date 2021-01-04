@@ -8,6 +8,7 @@
 
 This repository illustrates the road to orleans with practical, real-life examples. From most basic, to more advanced techniques. The code is written using .NET 5 and was tested on MacOS (Catalina 10.15.7) and, wherever docker is supported, Linux (Alpine 3.12).
 
+This repository introduces feature toggles via MS Feature Management. Here Grains are identified with a unique clientID, which will allow grains to be reused selectively.
 ## build & run
 
 * IDE: build + run (first the cluster, then the client)
@@ -21,12 +22,7 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 
 | solution | docker support | clustering | clustered silos | grains | clients |
 | --- | --- | --- | --- | --- | --- |
-| [1](1/readme.md) | silo | - | 1 | 0 | 0 |
-| [2](2/readme.md) | - | - | 1 | 1 C# grain | 1 - console |
-| [3](3/readme.md) | silo, client | - | 1 | 1 C# grain | 1 - console |
-| [4](4/readme.md) | silo, client | in-memory | n | 1 C# grain | n - console |
-| [5](5/readme.md) | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - console |
-| [6](6/readme.md) | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
+| [solution7](7/readme.md) | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
 
 ## further reading
 
@@ -35,4 +31,4 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 * https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/Orleans20Best20Practices.pdf - orleans best practices
 * https://gitter.im/dotnet/orleans?at=5deaf4829319bb5190f24ffe - gitter
 * https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/Orleans-MSR-TR-2014-41.pdf - virtual actors paper
-* https://github.com/OrleansContrib - orbiting repositories (e.g. orleans dashboard)
+* https://github.com/PiotrJustyna/FeatureManagementSandbox - feature management example
