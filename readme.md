@@ -19,14 +19,14 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 
 ## code
 
-| solution | docker support | clustering | clustered silos | grains | clients |
+| branch | docker support | clustering | clustered silos | grains | clients |
 | --- | --- | --- | --- | --- | --- |
-| [1](1/readme.md) | silo | - | 1 | 0 | 0 |
-| [2](2/readme.md) | - | - | 1 | 1 C# grain | 1 - console |
-| [3](3/readme.md) | silo, client | - | 1 | 1 C# grain | 1 - console |
-| [4](4/readme.md) | silo, client | in-memory | n | 1 C# grain | n - console |
-| [5](5/readme.md) | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - console |
-| [6](6/readme.md) | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
+| [1](../solution1/1/readme.md) | silo | - | 1 | 0 | 0 |
+| [2](../solution2/readme.md) | - | - | 1 | 1 C# grain | 1 - console |
+| [3](../solution3/readme.md) | silo, client | - | 1 | 1 C# grain | 1 - console |
+| [4](../solution4/readme.md) | silo, client | in-memory | n | 1 C# grain | n - console |
+| [5](../solution5/readme.md) | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - console |
+| [6](../solution6/readme.md) | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
 
 ## further reading
 
