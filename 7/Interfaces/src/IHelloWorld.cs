@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Orleans;
+﻿using Orleans;
+using System.Threading.Tasks;
 
 namespace Interfaces
 {

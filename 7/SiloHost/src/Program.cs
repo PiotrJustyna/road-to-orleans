@@ -4,8 +4,12 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Grains;
+using Interfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.FeatureManagement;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
@@ -65,8 +69,17 @@ namespace SiloHost
                     });
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
+                    siloBuilder.ConfigureServices(svc =>
+                    {
+                        svc.AddSingleton<IHelloWorld, HelloWorld>();
+                        svc.AddFeatureManagement();
+                    });
                 })
                 .ConfigureLogging(logging => logging.AddConsole())
+                .ConfigureAppConfiguration( config =>
+                {
+                    config.AddFeatureFlagsConfiguration();
+                })
                 .RunConsoleAsync();
         }
 

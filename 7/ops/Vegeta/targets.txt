@@ -1,0 +1,3 @@
+GET http://host.docker.internal:5432/helloworld?name=NotMyName&clientId=1
+GET http://host.docker.internal:5432/helloworld?name=NotMyName&clientId=33
+GET http://host.docker.internal:5432/helloworld?name=NotMyName&clientId=66
