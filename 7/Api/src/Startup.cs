@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.FeatureManagement;
 
 namespace Api
 {
@@ -22,7 +21,6 @@ namespace Api
             services.AddSingleton<IHostedService>(_ => _.GetService<ClusterClientHostedService>());
             services.AddSingleton(_ => _.GetService<ClusterClientHostedService>().Client);
             services.AddControllers();
-            services.AddFeatureManagement();
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

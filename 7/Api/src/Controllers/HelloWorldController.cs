@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Orleans;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.FeatureManagement;
 
 namespace Api.Controllers
 {
@@ -12,14 +11,11 @@ namespace Api.Controllers
     public class HelloWorldController : ControllerBase
     {
         private readonly IClusterClient _clusterClient;
-        private readonly IFeatureManagerSnapshot _featureManagerSnapshot;
 
         public HelloWorldController(
-            IClusterClient clusterClient,
-            IFeatureManagerSnapshot featureManagerSnapshot)
+            IClusterClient clusterClient)
         {
             _clusterClient = clusterClient;
-            _featureManagerSnapshot = featureManagerSnapshot;
         }
 
         [HttpGet]
