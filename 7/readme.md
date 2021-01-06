@@ -20,7 +20,9 @@ Important thing to note is that if one wants to run multiple silos which form a 
 * `GATEWAYPORT` (e.g. `3001`, `3002`, etc.)
 * `SILOPORT` (e.g. `2001`, `2002`, etc.)
 * `DASHBOARDPORT` (e.g. `8081`, `8082`, etc.)
+
 ### clients
+
 As in example 6, following scripts can be used to run clients:
 
 * `./run-client-docker.sh`
