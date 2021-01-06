@@ -6,7 +6,12 @@
 
 # road to orleans
 
-This repository illustrates the road to orleans with practical, real-life examples. From most basic, to more advanced techniques. The code is written using .NET 5 and was tested on MacOS (Catalina 10.15.7) and, wherever docker is supported, Linux (Alpine 3.12).
+This repository illustrates the road to orleans with practical, real-life examples as .NET solutions. From most basic, to more advanced techniques. The code is written using .NET 5 and was tested on MacOS (Catalina 10.15.7) and, wherever docker is supported, Linux (Alpine 3.12).
+
+As there is a lot of code, and subsequent solutions build on top of what previous solutions defined, all examples are categorized into branches:
+
+* **main** - this branch always contains the latest solution
+* **solution1**, **solution2**, **solution3**, etc. - individual examples categorized as independent solutions
 
 ## build & run
 
@@ -24,10 +29,10 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 | [solution1](../../tree/solution1/1/readme.md) | One basic silo, no grains. | silo | - | 1 | 0 | 0 |
 | [solution2](../../tree/solution2/2/readme.md) | One basic silo, one grain, one console client. | - | - | 1 | 1 C# grain | 1 - console |
 | [solution3](../../tree/solution3/3/readme.md) | One basic silo, one grain, one console client, everything containerized. | silo, client | - | 1 | 1 C# grain | 1 - console |
-| [solution4](../../tree/solution4/4/readme.md) | First clustering example - many silos, many clients. | silo, client | in-memory | n | 1 C# grain | n - console |
-| [solution5](../../tree/solution5/5/readme.md) | Solution4 where the grain interfaces F# library code. | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - console |
-| [solution6](../../tree/solution6/6/readme.md) | Solution5 where the cluster client is a Web API. | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
-| [solution7](../../tree/solution7/7/readme.md) | Solution6 + feature management, dependency injection, unit tests for grains. | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
+| [solution4](../../tree/solution4/4/readme.md) | First in-memory clustering example - many silos, many clients. | silo, client | in-memory | n | 1 C# grain | n - console |
+| [solution5](../../tree/solution5/5/readme.md) | Solution4 where the grain interfaces F# library code. Additionally, F# unit tests covering the F# library code. | silo, client | in-memory | n | 1 C# grain interfacing F# library code. | n - console |
+| [solution6](../../tree/solution6/6/readme.md) | Solution5 where the cluster is being called from a Web API. | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
+| [solution7](../../tree/solution7/7/readme.md) | Solution6 + [FeatureManagement](https://www.nuget.org/packages/Microsoft.FeatureManagement/), dependency injection in grains, unit tests for grains using [OrleansTestKit](https://www.nuget.org/packages/OrleansTestKit/). | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
 
 ## further reading
 
@@ -37,3 +42,4 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 * https://gitter.im/dotnet/orleans?at=5deaf4829319bb5190f24ffe - gitter
 * https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/Orleans-MSR-TR-2014-41.pdf - virtual actors paper
 * https://github.com/OrleansContrib - orbiting repositories (e.g. orleans dashboard)
+* https://github.com/PiotrJustyna/FeatureManagementSandbox - more involved use cases for [FeatureManagement](https://www.nuget.org/packages/Microsoft.FeatureManagement/)
