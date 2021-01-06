@@ -8,7 +8,7 @@
 
 This repository illustrates the road to orleans with practical, real-life examples. From most basic, to more advanced techniques. The code is written using .NET 5 and was tested on MacOS (Catalina 10.15.7) and, wherever docker is supported, Linux (Alpine 3.12).
 
-This repository introduces feature toggles via MS Feature Management. Here Grains are identified with a unique clientID, which will allow grains to be reused selectively.
+Here Grains are identified with a unique clientID, which will allow grains to be reused selectively. This repository also introduces feature toggles via MS Feature Management. 
 ## build & run
 
 * IDE: build + run (first the cluster, then the client)
@@ -17,6 +17,11 @@ This repository introduces feature toggles via MS Feature Management. Here Grain
 ## monitoring
 
 Silo dashboards are available by default on `localhost:8080` unless configured otherwise in the code/`dockerfile`/`run.sh`.
+
+## load test
+
+Load test via Vegeta can be executed by running run-demo-load-test.sh
+Feature Management in action can be observed by receiving status code 204 (feature is disabled) or 200 (feature is enabled)
 
 ## code
 
