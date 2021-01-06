@@ -5,7 +5,7 @@ In this example we substitute the basic console client with a Web Api - the clus
 
 The demo illustrates the usage of a cluster of silos, one client and a load test running against that client (for the sake of the illustration, we activate a grain for each call the api makes to the silo cluster).
 
-The Web Api's GET action can be accessed by default using the following URL: `http://localhost:5432/helloworld?name=Piotr&clientId=1`.
+The Web Api's GET action can be accessed by default using the following URL: `http://localhost:5432/helloworld?name=Piotr`.
 
 ## running the code
 
@@ -33,7 +33,7 @@ As in example 6, following scripts can be used to run clients:
 
 Now we get to a bit more serious testing as it's easier to laod test the setup. Here is what's happening:
 
-Load test results - vegeta. This image demonstartes the resuse of grains (3 grains for HelloWorld)
+Load test results - vegeta. This image demonstartes the resuse of grains (50 max grains for HelloWorld)
 and feature managment in action, feature enabled - status code 200, feature disabled - status code 204:
 
 ![2](./imgs/1.png)

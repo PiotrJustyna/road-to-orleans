@@ -9,7 +9,7 @@
 
 This repository illustrates the road to orleans with practical, real-life examples. From most basic, to more advanced techniques. The code is written using .NET 5 and was tested on MacOS (Catalina 10.15.7) and, wherever docker is supported, Linux (Alpine 3.12).
 
-Here Grains are identified with a unique clientID, which will allow grains to be reused selectively. This solution demonstrates dependency injection in action orleans via injecting feature management.
+Here Grains are identified with a randomly generated int (1-50), which will allow grains to be reused. This solution demonstrates dependency injection in action orleans via injecting feature management.
 
 ## build & run
 

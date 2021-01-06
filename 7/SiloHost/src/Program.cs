@@ -68,11 +68,11 @@ namespace SiloHost
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
 
-                    /*Registering Feature Management, to allow DI of IFeatureManagerSnapshot in HelloWorld class.
+                    /*Registering Feature Management, to allow DI of IFeatureManagerSnapshot in HelloWorld grain.
                      Using built in Percentage filter to demonstrate a feature being on/off.*/
-                    siloBuilder.ConfigureServices(svc =>
+                    siloBuilder.ConfigureServices(serviceCollection =>
                     {
-                        svc.AddFeatureManagement()
+                        serviceCollection.AddFeatureManagement()
                             .AddFeatureFilter<PercentageFilter>();
                     });
                 })

@@ -17,16 +17,10 @@ namespace Grains
         {
             string result = null;
 
-            if (!grainCancellationToken.CancellationToken.IsCancellationRequested)
+            if (!grainCancellationToken.CancellationToken.IsCancellationRequested &&
+                await _featureManagerSnapshot.IsEnabledAsync("FeatureA"))
             {
-                if (await _featureManagerSnapshot.IsEnabledAsync("FeatureA"))
-                {
-                    result = await Task.FromResult(Say.hello(name) + $" Grain reference - {IdentityString}");
-                }
-                else
-                {
-                    result = "Disabled";
-                }
+                result = Say.hello(name) + $" Grain reference - {IdentityString}";
             }
 
             return result;
