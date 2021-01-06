@@ -1,15 +1,12 @@
 - [road to orleans](#road-to-orleans)
   - [build & run](#build--run)
   - [monitoring](#monitoring)
-  - [load test](#load-test)
   - [code](#code)
   - [further reading](#further-reading)
 
 # road to orleans
 
 This repository illustrates the road to orleans with practical, real-life examples. From most basic, to more advanced techniques. The code is written using .NET 5 and was tested on MacOS (Catalina 10.15.7) and, wherever docker is supported, Linux (Alpine 3.12).
-
-Here Grains are identified with a randomly generated int (1-50), which will allow grains to be reused. This solution demonstrates dependency injection in action orleans via injecting feature management.
 
 ## build & run
 
@@ -20,16 +17,16 @@ Here Grains are identified with a randomly generated int (1-50), which will allo
 
 Silo dashboards are available by default on `localhost:8080` unless configured otherwise in the code/`dockerfile`/`run.sh`.
 
-## load test
-
-Load test via Vegeta can be executed by running run-demo-load-test.sh
-Feature Management in action can be observed by receiving status code 204 (feature is disabled) or 200 (feature is enabled)
-
 ## code
 
-| solution | docker support | clustering | clustered silos | grains | clients |
+| branch | docker support | clustering | clustered silos | grains | clients |
 | --- | --- | --- | --- | --- | --- |
-| [solution7](7/readme.md) | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
+| [solution1](../../tree/solution1/1/readme.md) | silo | - | 1 | 0 | 0 |
+| [solution2](../../tree/solution2/2/readme.md) | - | - | 1 | 1 C# grain | 1 - console |
+| [solution3](../../tree/solution3/3/readme.md) | silo, client | - | 1 | 1 C# grain | 1 - console |
+| [solution4](../../tree/solution4/4/readme.md) | silo, client | in-memory | n | 1 C# grain | n - console |
+| [solution5](../../tree/solution5/5/readme.md) | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - console |
+| [solution6](../../tree/solution6/6/readme.md) | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
 
 ## further reading
 
@@ -38,4 +35,4 @@ Feature Management in action can be observed by receiving status code 204 (featu
 * https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/Orleans20Best20Practices.pdf - orleans best practices
 * https://gitter.im/dotnet/orleans?at=5deaf4829319bb5190f24ffe - gitter
 * https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/Orleans-MSR-TR-2014-41.pdf - virtual actors paper
-* https://github.com/PiotrJustyna/FeatureManagementSandbox - feature management example
+* https://github.com/OrleansContrib - orbiting repositories (e.g. orleans dashboard)
