@@ -1,11 +1,10 @@
 # readme
 
-This example builds on top of solution 6.
-In this example we substitute the basic console client with a Web Api - the cluster is called from a very simple Web Api containing only one GET action. The example also demonstrates the usage of `CancellationToken`s and the Orleans wrapper `GrainCancellationToken`s.
+This example builds on top of solution 6 and demonstrates how to:
 
-The demo illustrates the usage of a cluster of silos, one client and a load test running against that client (for the sake of the illustration, we activate a grain for each call the api makes to the silo cluster).
-
-The Web Api's GET action can be accessed by default using the following URL: `http://localhost:5432/helloworld?name=Piotr`.
+* control grains features using the [Feature Management Library](https://www.nuget.org/packages/Microsoft.FeatureManagement/)
+* unit test grains using [OrleansTestKit](https://www.nuget.org/packages/OrleansTestKit/)
+* do dependency injection in grains
 
 ## running the code
 
@@ -21,9 +20,7 @@ Important thing to note is that if one wants to run multiple silos which form a 
 * `GATEWAYPORT` (e.g. `3001`, `3002`, etc.)
 * `SILOPORT` (e.g. `2001`, `2002`, etc.)
 * `DASHBOARDPORT` (e.g. `8081`, `8082`, etc.)
-
 ### clients
-
 As in example 6, following scripts can be used to run clients:
 
 * `./run-client-docker.sh`
