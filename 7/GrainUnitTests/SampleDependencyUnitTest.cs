@@ -16,6 +16,7 @@ namespace GrainUnitTests
         public async Task InjectedDependencyReturnsExpectedResponse()
         {
             var expectedResponse = "Hello, \"Mike\"! Your name is 4 characters long. Grain reference - 1";
+            //This creates a mock and injects it into the tested grain.
             var featureManagementService = Silo.AddServiceProbe<IFeatureManagerSnapshot>();
             featureManagementService.Setup(x => x.IsEnabledAsync("DummyFeatureA"))
                 .ReturnsAsync(true);
