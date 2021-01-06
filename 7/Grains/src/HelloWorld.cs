@@ -19,13 +19,13 @@ namespace Grains
 
             if (!grainCancellationToken.CancellationToken.IsCancellationRequested)
             {
-                if (await _featureManagerSnapshot.IsEnabledAsync("DummyFeatureA"))
+                if (await _featureManagerSnapshot.IsEnabledAsync("FeatureA"))
                 {
                     result = await Task.FromResult(Say.hello(name) + $" Grain reference - {IdentityString}");
                 }
                 else
                 {
-                    result = "Feature is disabled";
+                    result = "Disabled";
                 }
             }
 

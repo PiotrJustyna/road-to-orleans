@@ -1,8 +1,0 @@
-version: '3'
-services:
-    vegeta:
-        network_mode: bridge
-        build: .
-        ports:
-            - "8001:8001"
-        

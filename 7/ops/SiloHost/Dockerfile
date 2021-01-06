@@ -2,6 +2,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine as build
 
 COPY ./SiloHost/SiloHost.csproj /src/SiloHost/SiloHost.csproj
 COPY ./SiloHost/src/* /src/SiloHost/
+COPY ./SiloHost/appsettings.json /src/SiloHost/
 
 COPY ./Interfaces/Interfaces.csproj /src/Interfaces/Interfaces.csproj
 COPY ./Interfaces/src/* /src/Interfaces/

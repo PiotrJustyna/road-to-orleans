@@ -1,19 +1,19 @@
-﻿using System;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using Grains;
-using Interfaces;
+﻿using Grains;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
+using Microsoft.FeatureManagement.FeatureFilters;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Statistics;
+using System;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace SiloHost
 {
@@ -25,10 +25,8 @@ namespace SiloHost
             var advertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
 
             var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT")?? throw new Exception("Gateway port cannot be null");
-            var extractedSiloPort = Environment.GetEnvironmentVariable("SILOPORT")
-                                    ?? throw new Exception("Silo port cannot be null");
-            var extractDashboardPort = Environment.GetEnvironmentVariable("DASHBOARDPORT") ??
-                                       throw new Exception("Dashboard port cannot be null");
+            var extractedSiloPort = Environment.GetEnvironmentVariable("SILOPORT")?? throw new Exception("Silo port cannot be null");
+            var extractDashboardPort = Environment.GetEnvironmentVariable("DASHBOARDPORT") ?? throw new Exception("Dashboard port cannot be null");
             var extractedPrimaryPort = Environment.GetEnvironmentVariable("PRIMARYPORT") ?? throw new Exception("Primary port cannot be null");
 
             var primaryAddress = Environment.GetEnvironmentVariable("PRIMARYADDRESS") ?? throw new Exception("Primary address cannot be null");
@@ -69,16 +67,21 @@ namespace SiloHost
                     });
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
+
+                    /*Registering Feature Management, to allow DI of IFeatureManagerSnapshot in HelloWorld class.
+                     Using built in Percentage filter to demonstrate a feature being on/off.*/
                     siloBuilder.ConfigureServices(svc =>
                     {
-                        svc.AddSingleton<IHelloWorld, HelloWorld>();
-                        svc.AddFeatureManagement();
+                        svc.AddFeatureManagement()
+                            .AddFeatureFilter<PercentageFilter>();
                     });
                 })
                 .ConfigureLogging(logging => logging.AddConsole())
-                .ConfigureAppConfiguration( config =>
+                
+                //Registering a Configuration source for Feature Management.
+                .ConfigureAppConfiguration(config =>
                 {
-                    config.AddFeatureFlagsConfiguration();
+                    config.AddJsonFile("appsettings.json");
                 })
                 .RunConsoleAsync();
         }
