@@ -13,31 +13,16 @@ namespace GrainUnitTests
     public class SampleDependencyUnitTest:TestKitBase
     {
         [Fact]
-        public async Task InjectedDependencyReturnsExpectedResponse()
+        public async Task InjectedDependencyCanBeVerified()
         {
-            var expectedResponse = "Hello, \"Mike\"! Your name is 4 characters long. Grain reference - 1";
             //This creates a mock and injects it into the tested grain.
             var featureManagementService = Silo.AddServiceProbe<IFeatureManagerSnapshot>();
             featureManagementService.Setup(x => x.IsEnabledAsync("DummyFeatureA"))
                 .ReturnsAsync(true);
             var token = new GrainCancellationTokenSource().Token;
-            
-            var sut = await Silo.CreateGrainAsync<HelloWorld>(1);
-            var result = await sut.SayHello("Mike", token);
-            
-            Assert.Equal(expectedResponse, result);
-        }
-        
-        [Fact]
-        public async Task InjectedDependencyCanBeVerified()
-        {
-            var featureManagementService = Silo.AddServiceProbe<IFeatureManagerSnapshot>();
-            featureManagementService.Setup(x => x.IsEnabledAsync("DummyFeatureA"))
-                .ReturnsAsync(true);
-            var token = new GrainCancellationTokenSource().Token;
             var sut = await Silo.CreateGrainAsync<HelloWorld>(1);
             
-            await sut.SayHello("Mike", token);
+            sut.SayHello("Mike", token);
             
             featureManagementService.Verify(x => x.IsEnabledAsync("DummyFeatureA"), Times.Once);
         }
