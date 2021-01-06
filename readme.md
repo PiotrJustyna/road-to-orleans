@@ -1,6 +1,7 @@
 - [road to orleans](#road-to-orleans)
   - [build & run](#build--run)
   - [monitoring](#monitoring)
+  - [load test](#load-test)
   - [code](#code)
   - [further reading](#further-reading)
 
