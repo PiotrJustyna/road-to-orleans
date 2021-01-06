@@ -6,7 +6,7 @@ using Orleans;
 using Orleans.TestKit;
 using Xunit;
 
-namespace GrainUnitTests
+namespace Grains.UnitTests
 {
     //Unlike the standard orleans testing libraries, this allows you to run a simple unit test with dependencies.
     // This means full silos don't have to be created which results in faster and easier to implement tests
@@ -17,14 +17,14 @@ namespace GrainUnitTests
         {
             //This creates a mock and injects it into the tested grain.
             var featureManagementService = Silo.AddServiceProbe<IFeatureManagerSnapshot>();
-            featureManagementService.Setup(x => x.IsEnabledAsync("DummyFeatureA"))
+            featureManagementService.Setup(x => x.IsEnabledAsync("FeatureA"))
                 .ReturnsAsync(true);
             var token = new GrainCancellationTokenSource().Token;
             var sut = await Silo.CreateGrainAsync<HelloWorld>(1);
             
             await sut.SayHello("Mike", token);
             
-            featureManagementService.Verify(x => x.IsEnabledAsync("DummyFeatureA"), Times.Once);
+            featureManagementService.Verify(x => x.IsEnabledAsync("FeatureA"), Times.Once);
         }
     }
 }

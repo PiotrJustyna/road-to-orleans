@@ -6,8 +6,6 @@
     <IsPackable>false</IsPackable>
 
     <AssemblyName>Grains.UnitTests</AssemblyName>
-
-    <RootNamespace>Grain.UnitTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
