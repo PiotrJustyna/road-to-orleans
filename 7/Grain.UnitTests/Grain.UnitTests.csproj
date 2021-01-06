@@ -4,6 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>Grains.UnitTests</AssemblyName>
+
+    <RootNamespace>Grain.UnitTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

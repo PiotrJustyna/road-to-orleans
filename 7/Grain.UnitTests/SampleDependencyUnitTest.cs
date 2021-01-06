@@ -22,7 +22,7 @@ namespace GrainUnitTests
             var token = new GrainCancellationTokenSource().Token;
             var sut = await Silo.CreateGrainAsync<HelloWorld>(1);
             
-            sut.SayHello("Mike", token);
+            await sut.SayHello("Mike", token);
             
             featureManagementService.Verify(x => x.IsEnabledAsync("DummyFeatureA"), Times.Once);
         }

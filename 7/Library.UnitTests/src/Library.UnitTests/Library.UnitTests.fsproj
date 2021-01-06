@@ -5,6 +5,8 @@
 
     <IsPackable>false</IsPackable>
     <GenerateProgramFile>false</GenerateProgramFile>
+    <AssemblyName>Library.UnitTests</AssemblyName>
+    <RootNamespace>Library.UnitTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
