@@ -8,13 +8,13 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./2
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
     - name: Restore dependencies
