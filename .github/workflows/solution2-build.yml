@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./1
+        working-directory: ./2
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -21,3 +21,5 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore 
+    - name: Test
+      run: dotnet test --no-build --verbosity normal 
