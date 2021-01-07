@@ -2,9 +2,9 @@ name: Solution3 Build
 
 on:
   push:
-    branches: [ solution3 ]
   pull_request:
-    branches: [ solution3 ]
+    branches:
+          - solution3
 
 jobs:
   build:
