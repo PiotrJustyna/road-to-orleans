@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./1
+        working-directory: ./3
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
