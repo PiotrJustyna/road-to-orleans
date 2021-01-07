@@ -5,9 +5,9 @@ namespace Grains
 {
     public class HelloWorld : Orleans.Grain, IHelloWorld
     {
-        public async Task<string> SayHello(string name)
+        public Task<string> SayHello(string name)
         {
-            return await Task.FromResult($@"Hello {name}!");
+            return Task.FromResult($@"Hello {name}!");
         }
     }
 }
