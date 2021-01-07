@@ -4,6 +4,7 @@ version: 2
 updates:
   - package-ecosystem: "nuget"
     directory: "/1/SiloHost" #SiloHost.csproj
+    target_branch: solution1
     schedule:
       interval: "live"
     open-pull-requests-limit: 5
