@@ -5,7 +5,7 @@
 
 version: 2
 updates:
-  - package-ecosystem: "nuget" # See documentation for possible values
-    directory: "/1/SiloHost" # Location of package manifests
+  - package-ecosystem: "dotnet:nuget" # See documentation for possible values
+    directory: "/1" # Location of package manifests
     schedule:
       interval: "live"
