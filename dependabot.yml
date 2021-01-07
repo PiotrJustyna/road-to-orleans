@@ -8,4 +8,4 @@ updates:
   - package-ecosystem: "nuget" # See documentation for possible values
     directory: "/1" # Location of package manifests
     schedule:
-      interval: "daily"
+      interval: "live"
