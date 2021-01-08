@@ -8,11 +8,6 @@
 
 This repository illustrates the road to orleans with practical, real-life examples as .NET solutions. From most basic, to more advanced techniques. The code is written using .NET 5 and was tested on MacOS (Catalina 10.15.7) and, wherever docker is supported, Linux (Alpine 3.12).
 
-As there is a lot of code, and subsequent solutions build on top of what previous solutions defined, all examples are categorized into branches:
-
-* **main** - this branch always contains the latest solution
-* **solution1**, **solution2**, **solution3**, etc. - individual examples categorized as independent solutions
-
 ## build & run
 
 * IDE: build + run (first the cluster, then the client)
@@ -24,7 +19,7 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 
 ## code
 
-| branch | description | docker support | clustering | clustered silos | grains | clients |
+| solution | description | docker support | clustering | clustered silos | grains | clients |
 | --- | --- | --- | --- | --- | --- | --- |
 | [solution1](1/readme.md) | One basic silo, no grains. | silo | - | 1 | 0 | 0 |
 | [solution2](2/readme.md) | One basic silo, one grain, one console client. | - | - | 1 | 1 C# grain | 1 - console |
