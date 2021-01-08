@@ -9,14 +9,12 @@ namespace Grains
     {
         public Task<string> SayHello(string name, GrainCancellationToken grainCancellationToken)
         {
-            string result = null;
-
             if (!grainCancellationToken.CancellationToken.IsCancellationRequested)
             {
                 return Task.FromResult(Say.hello(name));
             }
 
-            return result;
+            return null;
         }
     }
 }
