@@ -46,9 +46,3 @@ updates:
       interval: "monthly"
       day: "monday"
     open-pull-requests-limit: 5
-  - package-ecosystem: "nuget"
-    directory: "/7"
-    schedule:
-      interval: "monthly"
-      day: "monday"
-    open-pull-requests-limit: 5
