@@ -26,13 +26,13 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 
 | branch | description | docker support | clustering | clustered silos | grains | clients |
 | --- | --- | --- | --- | --- | --- | --- |
-| [solution1](../../tree/solution1/1/readme.md) | One basic silo, no grains. | silo | - | 1 | 0 | 0 |
-| [solution2](../../tree/solution2/2/readme.md) | One basic silo, one grain, one console client. | - | - | 1 | 1 C# grain | 1 - console |
-| [solution3](../../tree/solution3/3/readme.md) | One basic silo, one grain, one console client, everything containerized. | silo, client | - | 1 | 1 C# grain | 1 - console |
-| [solution4](../../tree/solution4/4/readme.md) | First in-memory clustering example - many silos, many clients. | silo, client | in-memory | n | 1 C# grain | n - console |
-| [solution5](../../tree/solution5/5/readme.md) | Solution4 where the grain interfaces F# library code. Additionally, F# unit tests covering the F# library code. | silo, client | in-memory | n | 1 C# grain interfacing F# library code. | n - console |
-| [solution6](../../tree/solution6/6/readme.md) | Solution5 where the cluster is being called from a Web API. | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
-| [solution7](../../tree/solution7/7/readme.md) | Solution6 + [FeatureManagement](https://www.nuget.org/packages/Microsoft.FeatureManagement/), dependency injection in grains, unit tests for grains using [OrleansTestKit](https://www.nuget.org/packages/OrleansTestKit/). | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
+| [solution1](1/readme.md) | One basic silo, no grains. | silo | - | 1 | 0 | 0 |
+| [solution2](2/readme.md) | One basic silo, one grain, one console client. | - | - | 1 | 1 C# grain | 1 - console |
+| [solution3](3/readme.md) | One basic silo, one grain, one console client, everything containerized. | silo, client | - | 1 | 1 C# grain | 1 - console |
+| [solution4](4/readme.md) | First in-memory clustering example - many silos, many clients. | silo, client | in-memory | n | 1 C# grain | n - console |
+| [solution5](5/readme.md) | Solution4 where the grain interfaces F# library code. Additionally, F# unit tests covering the F# library code. | silo, client | in-memory | n | 1 C# grain interfacing F# library code. | n - console |
+| [solution6](6/readme.md) | Solution5 where the cluster is being called from a Web API. | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
+| [solution7](7/readme.md) | Solution6 + [FeatureManagement](https://www.nuget.org/packages/Microsoft.FeatureManagement/), dependency injection in grains, unit tests for grains using [OrleansTestKit](https://www.nuget.org/packages/OrleansTestKit/). | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
 
 ## further reading
 
