@@ -10,11 +10,14 @@ This example builds on top of solution 6 and demonstrates how to:
 
 ### silos
 
-As in example 6, following scripts can be used to run silos:
+As in example 7, following scripts can be used to run silos:
 
 * `./run-docker-silo.sh`
 * `./run-local-silo.sh`
 
+The following variables need to be set to allow for a connection to the dynamo db.
+* `MEMBERSHIPTABLE` set to name of membership table eg "OrleansMembership"
+* `AWSREGION` set to ecs region eg "us-west"
 Important thing to note is that if one wants to run multiple silos which form a cluster, following variables need to be made unique for every silo:
 
 * `GATEWAYPORT` (e.g. `3001`, `3002`, etc.)
@@ -28,19 +31,9 @@ As in example 6, following scripts can be used to run clients:
 * `./run-client-docker.sh`
 * `./run-client-local.sh`
 
-### demo
-
-Now we get to a bit more serious testing as it's easier to laod test the setup. Here is what's happening:
-
-Load test results - vegeta. This image demonstartes the resuse of grains (50 max grains for HelloWorld)
-and feature managment in action, feature enabled - status code 200, feature disabled - status code 204:
-
-![2](./imgs/1.png)
-
-Load test results - orleans dashboard:
-
-![3](./imgs/2.png)
-
+The following variables need to be set to allow for a connection to the dynamo db.
+* `MEMBERSHIPTABLE` set to name of membership table eg "OrleansMembership"
+* `AWSREGION` set to ecs region eg "us-west"
 #### running the demo
 
 * run the cluster: `./run-demo-cluster.sh` (3 silos: 2 hosted in docker, 1 hosted locally)
