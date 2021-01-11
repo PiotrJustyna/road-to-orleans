@@ -9,5 +9,7 @@ export GATEWAYPORT=3002
 export DASHBOARDPORT=8082
 export SILOPORT=2002
 export PRIMARYPORT=2001
+export MEMBERSHIPTABLE="OrleansMembership"
+export AWSREGION="us-west-2"
 
 dotnet run --project ./SiloHost/SiloHost.csproj
