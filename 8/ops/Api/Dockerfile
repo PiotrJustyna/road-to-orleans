@@ -4,9 +4,8 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["./8/Api/", "Api/"]
-COPY ["./8/Interfaces/", "Interfaces/"]
-RUN echo `ls Api`
+COPY ["./Api/", "Api/"]
+COPY ["./Interfaces/", "Interfaces/"]
 RUN dotnet restore "./Api/Api.csproj"
 COPY . .
 WORKDIR "/src/Api"
