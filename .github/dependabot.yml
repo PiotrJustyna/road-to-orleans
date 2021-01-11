@@ -2,7 +2,12 @@
 # https://github.com/dotnet/core/tree/master/samples/dependadotnet
 version: 2
 updates:
-# Update current main project when changed so main remains consistent
+  - package-ecosystem: "nuget"
+    directory: "/8"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+    open-pull-requests-limit: 5
   - package-ecosystem: "nuget"
     directory: "/7"
     schedule:
