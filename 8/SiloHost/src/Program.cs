@@ -1,6 +1,5 @@
 ﻿using Grains;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
@@ -10,10 +9,12 @@ using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Statistics;
 using System;
+using System.Linq;
 using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Amazon.Util;
 
 namespace SiloHost
 {
@@ -22,26 +23,17 @@ namespace SiloHost
         public static Task Main()
         {
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
-            var advertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
+            var siloEndpointConfiguration =  GetSiloEndpointConfiguration(advertisedIp);
+            
+            var extractDashboardPort = Environment.GetEnvironmentVariable("DASHBOARDPORT") ??
+                                       throw new Exception("Dashboard port cannot be null");
+            var awsRegion = Environment.GetEnvironmentVariable("AWSREGION") ??
+                            throw new Exception("Aws region cannot be null");
+            var membershipTable = Environment.GetEnvironmentVariable("MEMBERSHIPTABLE") ??
+                                  throw new Exception("Membership table cannot be null");
 
-            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT")?? throw new Exception("Gateway port cannot be null");
-            var extractedSiloPort = Environment.GetEnvironmentVariable("SILOPORT")?? throw new Exception("Silo port cannot be null");
-            var extractDashboardPort = Environment.GetEnvironmentVariable("DASHBOARDPORT") ?? throw new Exception("Dashboard port cannot be null");
-            var extractedPrimaryPort = Environment.GetEnvironmentVariable("PRIMARYPORT") ?? throw new Exception("Primary port cannot be null");
-            var awsRegion = Environment.GetEnvironmentVariable("AWSREGION") ?? throw new Exception("Aws region cannot be null");
-            var membershipTable =  Environment.GetEnvironmentVariable("MEMBERSHIPTABLE") ?? throw new Exception("Membership table cannot be null");
-            var primaryAddress = Environment.GetEnvironmentVariable("PRIMARYADDRESS") ?? throw new Exception("Primary address cannot be null");
-
-            var siloPort = int.Parse(extractedSiloPort);
-            var developmentPeerPort = int.Parse(extractedPrimaryPort);
-            var gatewayPort = int.Parse(extractedGatewayPort);
             var dashboardPort = int.Parse(extractDashboardPort);
-            var primaryIp = IPAddress.Parse(primaryAddress);
-
-            var primarySiloEndpoint = new IPEndPoint(primaryIp, developmentPeerPort);
-
-            var siloEndpointConfiguration = new SiloEndpointConfiguration(advertisedIpAddress, siloPort, gatewayPort);
-
+            
             return new HostBuilder()
                 .UseOrleans(siloBuilder =>
                 {
@@ -70,8 +62,10 @@ namespace SiloHost
                         endpointOptions.AdvertisedIPAddress = siloEndpointConfiguration.Ip;
                         endpointOptions.SiloPort = siloEndpointConfiguration.SiloPort;
                         endpointOptions.GatewayPort = siloEndpointConfiguration.GatewayPort;
-                        endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, siloEndpointConfiguration.SiloPort);
-                        endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, siloEndpointConfiguration.GatewayPort);
+                        endpointOptions.SiloListeningEndpoint =
+                            new IPEndPoint(IPAddress.Any, siloEndpointConfiguration.SiloPort);
+                        endpointOptions.GatewayListeningEndpoint =
+                            new IPEndPoint(IPAddress.Any, siloEndpointConfiguration.GatewayPort);
                     });
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
@@ -85,38 +79,54 @@ namespace SiloHost
                     });
                 })
                 .ConfigureLogging(logging => logging.AddConsole())
-                
+
                 //Registering a Configuration source for Feature Management.
-                .ConfigureAppConfiguration(config =>
-                {
-                    config.AddJsonFile("appsettings.json");
-                })
+                .ConfigureAppConfiguration(config => { config.AddJsonFile("appsettings.json"); })
                 .RunConsoleAsync();
         }
-
-        private static IPAddress GetLocalIpAddress()
+        
+        private static SiloEndpointConfiguration GetSiloEndpointConfiguration(string? idAddr)
         {
-            var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var network in networkInterfaces)
+            SiloEndpointConfiguration result = null;
+            if (idAddr == null)
             {
-                if (network.OperationalStatus != OperationalStatus.Up)
-                    continue;
-
-                var properties = network.GetIPProperties();
-                if (properties.GatewayAddresses.Count == 0)
-                    continue;
-
-                foreach (var address in properties.UnicastAddresses)
+                return new SiloEndpointConfiguration(
+                    IPAddress.Loopback,
+                    2000,
+                    3000);
+            }
+            var metadataUri = Environment.GetEnvironmentVariable("ECS_CONTAINER_METADATA_URI");
+                var httpClient = new HttpClient();
+                var responseBody = string.Empty;
+                if (!string.IsNullOrEmpty(metadataUri))
                 {
-                    if (address.Address.AddressFamily == AddressFamily.InterNetwork &&
-                        !IPAddress.IsLoopback(address.Address))
+                    var response = httpClient.GetAsync(metadataUri).Result;
+
+                    if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        return address.Address;
+                        responseBody = response.Content.ReadAsStringAsync().Result;
                     }
                 }
-            }
 
-            return null;
+                var ecsMetadata = JsonSerializer.Deserialize<EcsMetadata>(responseBody);
+                var ip = EC2InstanceMetadata.PrivateIpAddress;
+                var siloPort = ecsMetadata?.Ports?.FirstOrDefault(x => x.ContainerPort == 2000)?.HostPort ?? 0;
+                var gatewayPort = ecsMetadata?.Ports?.FirstOrDefault(x => x.ContainerPort == 3000)?.HostPort ?? 0;
+
+                result = new SiloEndpointConfiguration(
+                    ip,
+                    siloPort,
+                    gatewayPort);
+
+                if (result.Ip.Equals(default)
+                    || siloPort == default
+                    || gatewayPort == default)
+                {
+                    throw new Exception(
+                        $"ECS metadata retrieval failed. Values received: Ip='{result.Ip}', SiloPort='{result.SiloPort}', GatewayPort='{result.GatewayPort}'.");
+                }
+
+                return result;
         }
     }
 }
