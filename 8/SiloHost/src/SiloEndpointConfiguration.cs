@@ -8,7 +8,9 @@ namespace SiloHost
         public int SiloPort { get; }
         public int GatewayPort { get; }
         public int DashboardPort { get; }
-
+        public int SiloListeningPort { get; }
+        public int GatewayListeningPort { get; }
+        
         public SiloEndpointConfiguration(
             IPAddress ip,
             int siloPort,
@@ -28,5 +30,15 @@ namespace SiloHost
             SiloPort = siloPort;
             GatewayPort = gatewayPort;
         }
+        
+        public SiloEndpointConfiguration(
+            IPAddress ip,
+            int siloPort,
+            int gatewayPort,
+            int dashboardPort,
+            int siloListeningPort,
+            int gatewayListeningPort) =>
+            (Ip, SiloPort, GatewayPort, DashboardPort, SiloListeningPort, GatewayListeningPort) = (ip, siloPort,
+                gatewayPort, dashboardPort, siloListeningPort, gatewayListeningPort);
     }
 }

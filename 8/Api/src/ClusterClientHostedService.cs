@@ -28,7 +28,6 @@ namespace Api
             var awsRegion = Environment.GetEnvironmentVariable("AWSREGION") ?? throw new Exception("Aws region cannot be null");
             var membershipTable =  Environment.GetEnvironmentVariable("MEMBERSHIPTABLE") ?? throw new Exception("Membership table cannot be null");
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
-            var siloAdvertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
             var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT") ?? throw new Exception("Gateway port cannot be null"); 
             var siloGatewayPort = int.Parse(extractedGatewayPort);
 
@@ -43,7 +42,6 @@ namespace Api
                     builder.TableName = membershipTable;
                     builder.Service = awsRegion;
                 })
-                .UseStaticClustering(new IPEndPoint(siloAdvertisedIpAddress, siloGatewayPort))
                 .ConfigureLogging(loggingBuilder =>
                     loggingBuilder.SetMinimumLevel(LogLevel.Information).AddProvider(loggerProvider))
                 .Build();
