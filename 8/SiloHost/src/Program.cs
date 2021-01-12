@@ -88,10 +88,10 @@ namespace SiloHost
         private static SiloEndpointConfiguration GetSiloEndpointConfiguration(string? idAddr)
         {
             SiloEndpointConfiguration result = null;
-            if (idAddr == null)
+            if (idAddr != null)
             {
                 return new SiloEndpointConfiguration(
-                    IPAddress.Loopback,
+                    idAddr,
                     2000,
                     3000);
             }
