@@ -7,11 +7,13 @@ namespace SiloHost
         public IPAddress Ip { get; }
         public int SiloPort { get; }
         public int GatewayPort { get; }
-    
+        public int DashboardPort { get; }
+
         public SiloEndpointConfiguration(
             IPAddress ip,
             int siloPort,
-            int gatewayPort) => (Ip, SiloPort, GatewayPort) = (ip, siloPort, gatewayPort);
+            int gatewayPort,
+            int dashboardPort) => (Ip, SiloPort, GatewayPort, DashboardPort) = (ip, siloPort, gatewayPort, dashboardPort);
         
         public SiloEndpointConfiguration(
             string ip,
