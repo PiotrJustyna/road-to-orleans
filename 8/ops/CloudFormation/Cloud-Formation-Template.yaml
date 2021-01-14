@@ -222,7 +222,7 @@ Resources:
               Value: 2000
         -
           Name: orleans-api-test
-          Image: docker.pkg.github.com/mrblonde91/road-to-orleans/silo-api-test:updatetoecs
+          Image: docker.pkg.github.com/PiotrJustyna/road-to-orleans/silo-api-test:main
           Memory: !Ref SiloClusterNodeMemory
           # need to add secret with username and github token for github to authenticate
           RepositoryCredentials: 
