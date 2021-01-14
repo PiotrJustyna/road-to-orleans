@@ -178,7 +178,7 @@ Resources:
             - Name: REGION
               Value: !Ref AWS::Region
             - Name: AWSREGION
-              Value: us-west-2
+              Value: !Ref AWS::Region
             - Name: MEMBERSHIPTABLE
               Value: test-orleans-table
             - Name: DASHBOARDPORT
@@ -211,7 +211,7 @@ Resources:
             - Name: REGION
               Value: !Ref AWS::Region
             - Name: AWSREGION
-              Value: us-west-2
+              Value: !Ref AWS::Region
             - Name: MEMBERSHIPTABLE
               Value: test-orleans-table
             - Name: DASHBOARDPORT
@@ -240,7 +240,7 @@ Resources:
             - Name: REGION
               Value: !Ref AWS::Region
             - Name: AWSREGION
-              Value: us-west-2
+              Value: !Ref AWS::Region
             - Name: MEMBERSHIPTABLE
               Value: !Ref OrleansClusterMembersTable
 

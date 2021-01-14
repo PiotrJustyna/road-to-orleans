@@ -2,15 +2,15 @@ using System.Collections.Generic;
 
 namespace SiloHost
 {
-    public class EcsMetadata
+    public record EcsMetadata
     {
-        public List<Port> Ports { get; set; }
+        public List<Port> Ports { get; init; }
     }
 
-    public class Port
+    public record Port
     {
-        public int HostPort { get; set; }
+        public int HostPort { get; init; }
 
-        public int ContainerPort { get; set; }
+        public int ContainerPort { get; init; }
     }
 }

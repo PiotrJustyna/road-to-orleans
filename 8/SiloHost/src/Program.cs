@@ -9,39 +9,28 @@ using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Statistics;
 using System.Threading.Tasks;
+using Amazon.Util.Internal;
 
 namespace SiloHost
 {
     class Program
-    {        
-        private static readonly string EcsContainerMetadataUri = EnvironmentVariables.EcsContainerMetadataUri();
+    {
+        private static readonly EnvironmentVariables environmentVariable = new EnvironmentVariables();
+        private readonly string EcsContainerMetadataUri = environmentVariable.EcsContainerMetadataUri();
 
         public static Task Main()
         {
+            ISiloConfigurationHelper siloConfigurationHelper = new SiloConfigurationHelper(environmentVariable);
+
             return new HostBuilder()
                 .UseOrleans(siloBuilder =>
                 {
                     siloBuilder.UseLinuxEnvironmentStatistics();
-                    siloBuilder.UseDashboard(dashboardOptions =>
-                    {
-                        dashboardOptions.Username = "piotr";
-                        dashboardOptions.Password = "orleans";
-                        dashboardOptions.Port = int.Parse(EnvironmentVariables.DashboardPort);
-                    });
-                    
+                    siloBuilder.UseDashboard(dashboardOptions => siloConfigurationHelper.ConfigureDashboardOptions(dashboardOptions));
                     //Register silo with dynamo cluster
-                    siloBuilder.UseDynamoDBClustering(builder =>
-                    {
-                        //Connect to membership table in dynamo
-                        builder.TableName = EnvironmentVariables.MembershipTable;
-                        builder.Service = EnvironmentVariables.AwsRegion;
-                    });
-                    siloBuilder.Configure<ClusterOptions>(clusterOptions =>
-                    {
-                        clusterOptions.ClusterId = "cluster-of-silos";
-                        clusterOptions.ServiceId = "hello-world-service";
-                    });
-                    siloBuilder.Configure<EndpointOptions>(options => EndpointConfigurationHelper.Configure(options, EcsContainerMetadataUri));
+                    siloBuilder.UseDynamoDBClustering(builder => siloConfigurationHelper.ConfigureDynamoClusterOptions(builder));
+                    siloBuilder.Configure<ClusterOptions>(clusterOptions => siloConfigurationHelper.ConfigureClusterOptions(clusterOptions));
+                    siloBuilder.Configure<EndpointOptions>(options => siloConfigurationHelper.ConfigureEndpointOptions(options));
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
 

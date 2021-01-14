@@ -4,13 +4,12 @@ RetrieveIp(){
 }
 
 ADVERTISEDIP=`RetrieveIp`
-PRIMARYADDRESS=`RetrieveIp`
 GATEWAYPORT=3001
 SILOPORT=2001
-PRIMARYPORT=2001
 DASHBOARDPORT=8081
-MEMBERSHIPTABLE=OrleansMembership
-AWSREGION=http://$ADVERTISEDIP:8042
+MEMBERSHIPTABLE="test-orleans-table"
+#Can also optionally setup a local dynamo db and point at it like so http://$ADVERTISEDIP:8042
+AWSREGION="us-west-2"
 
 docker build -t silo-host-cluster -f ./ops/SiloHost/Dockerfile ./ &&
   docker run -it -e ADVERTISEDIP=$ADVERTISEDIP  -e GATEWAYPORT=$GATEWAYPORT -e SILOPORT=$SILOPORT -e PRIMARYPORT=$PRIMARYPORT -e DASHBOARDPORT=$DASHBOARDPORT\
