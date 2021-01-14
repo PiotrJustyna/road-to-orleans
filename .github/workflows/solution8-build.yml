@@ -1,4 +1,4 @@
-name: Solution7 Build
+name: Solution8 Build
 
 on:  
   pull_request:
