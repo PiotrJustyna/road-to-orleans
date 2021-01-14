@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Text.Json;
 using Amazon.Util;
 using Orleans.Configuration;
@@ -18,7 +20,7 @@ namespace SiloHost
         }
          public void ConfigureEndpointOptions(EndpointOptions endpointOptions)
         {
-            if (!string.IsNullOrEmpty(_environmentVariables.AdvertisedIp()))
+            if (_environmentVariables.IsLocal())
                 LocalEndpointSettings(endpointOptions);
             else
                 ElasticContainerServiceEndpointSettings(endpointOptions, _environmentVariables.EcsContainerMetadataUri());
@@ -43,7 +45,7 @@ namespace SiloHost
          {
              dashboardOptions.Username = "piotr";
              dashboardOptions.Password = "orleans";
-             dashboardOptions.Port = int.Parse(_environmentVariables.DashboardPort());
+             dashboardOptions.Port = _environmentVariables.DashboardPort();
          }
          
         private void ElasticContainerServiceEndpointSettings(EndpointOptions endpointOptions, string ecsContainerMetadataUri)
@@ -78,14 +80,40 @@ namespace SiloHost
             endpointOptions.GatewayPort = gatewayPort;
         }
 
+        private IPAddress GetLocalIpAddress()
+        {
+            var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (var network in networkInterfaces)
+            {
+                if (network.OperationalStatus != OperationalStatus.Up)
+                    continue;
+
+                var properties = network.GetIPProperties();
+                if (properties.GatewayAddresses.Count == 0)
+                    continue;
+
+                foreach (var address in properties.UnicastAddresses)
+                {
+                    if (address.Address.AddressFamily == AddressFamily.InterNetwork &&
+                        !IPAddress.IsLoopback(address.Address))
+                    {
+                        return address.Address;
+                    }
+                }
+            }
+
+            return null;
+        }
+        
         private void LocalEndpointSettings(EndpointOptions endpointOptions)
         {
             var siloPort = _environmentVariables.SiloPort();
             var gatewayPort = _environmentVariables.GatewayPort();
 
-            endpointOptions.AdvertisedIPAddress = IPAddress.Parse(_environmentVariables.AdvertisedIp());
-            endpointOptions.SiloPort = int.Parse(siloPort);
-            endpointOptions.GatewayPort = int.Parse(gatewayPort);
+            endpointOptions.AdvertisedIPAddress = string.IsNullOrEmpty(_environmentVariables.AdvertisedIp())?
+                GetLocalIpAddress() : IPAddress.Parse(_environmentVariables.AdvertisedIp());
+            endpointOptions.SiloPort = siloPort;
+            endpointOptions.GatewayPort = gatewayPort;
         }
     }
 
