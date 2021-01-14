@@ -14,7 +14,10 @@ namespace SiloHost
 {
     public static class SiloConfigurationHelper
     {
-         public static void ConfigureEndpointOptions(this ISiloBuilder siloBuilder, IEnvironmentVariables environmentVariableService)
+        private const int DefaultSiloPort = 2000;
+        private const int DefaultGatewayPort = 2000;
+
+        public static void ConfigureEndpointOptions(this ISiloBuilder siloBuilder, IEnvironmentVariables environmentVariableService)
         {
             siloBuilder.Configure<EndpointOptions>(endpointOptions =>
             {
@@ -24,8 +27,8 @@ namespace SiloHost
                 else
                     ElasticContainerServiceEndpointSettings(endpointOptions, environmentVariableService.EcsContainerMetadataUri());
 
-                endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, 2000);
-                endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, 3000);
+                endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultSiloPort);
+                endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultGatewayPort);
             });
         }
 
@@ -74,8 +77,8 @@ namespace SiloHost
             }
             var ecsMetadata = JsonSerializer.Deserialize<EcsMetadata>(responseBody);
             var ip = EC2InstanceMetadata.PrivateIpAddress;
-            var siloPort = ecsMetadata?.Ports?.FirstOrDefault(x => x.ContainerPort == 2000)?.HostPort ?? 0;
-            var gatewayPort = ecsMetadata?.Ports?.FirstOrDefault(x => x.ContainerPort == 3000)?.HostPort ?? 0;
+            var siloPort = ecsMetadata?.Ports?.FirstOrDefault(x => x.ContainerPort == DefaultSiloPort)?.HostPort ?? 0;
+            var gatewayPort = ecsMetadata?.Ports?.FirstOrDefault(x => x.ContainerPort == DefaultGatewayPort)?.HostPort ?? 0;
 
             if (ip == default || siloPort == default || gatewayPort == default)
             {
