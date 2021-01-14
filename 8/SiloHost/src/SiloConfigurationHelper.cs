@@ -6,49 +6,58 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.Json;
 using Amazon.Util;
+using Orleans;
 using Orleans.Configuration;
-using OrleansDashboard;
+using Orleans.Hosting;
 
 namespace SiloHost
 {
-    public class SiloConfigurationHelper:ISiloConfigurationHelper
+    public static class SiloConfigurationHelper
     {
-        private IEnvironmentVariables _environmentVariables;
-        public SiloConfigurationHelper(IEnvironmentVariables environmentVariables)
+         public static void ConfigureEndpointOptions(this ISiloBuilder siloBuilder, IEnvironmentVariables environmentVariableService)
         {
-            _environmentVariables = environmentVariables;
-        }
-         public void ConfigureEndpointOptions(EndpointOptions endpointOptions)
-        {
-            if (_environmentVariables.IsLocal())
-                LocalEndpointSettings(endpointOptions);
-            else
-                ElasticContainerServiceEndpointSettings(endpointOptions, _environmentVariables.EcsContainerMetadataUri());
-            
-            endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, 2000);
-            endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, 3000);
+            siloBuilder.Configure<EndpointOptions>(endpointOptions =>
+            {
+                if (environmentVariableService.IsLocal())
+                    LocalEndpointSettings(endpointOptions, environmentVariableService.SiloPort(), environmentVariableService.GatewayPort(), 
+                        environmentVariableService.AdvertisedIp());
+                else
+                    ElasticContainerServiceEndpointSettings(endpointOptions, environmentVariableService.EcsContainerMetadataUri());
+
+                endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, 2000);
+                endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, 3000);
+            });
         }
 
-         public void ConfigureDynamoClusterOptions(DynamoDBClusteringOptions clusteringOptions)
+         public static void ConfigureDynamoClusterOptions(this ISiloBuilder siloBuilder, IEnvironmentVariables environmentVariableService)
          {
-             clusteringOptions.TableName = _environmentVariables.MembershipTable();
-             clusteringOptions.Service = _environmentVariables.AwsRegion();
+            siloBuilder.Configure<DynamoDBClusteringOptions>(clusteringOptions =>
+            {
+                clusteringOptions.TableName = environmentVariableService.MembershipTable();
+                clusteringOptions.Service = environmentVariableService.AwsRegion();
+            });
          }
          
-         public void ConfigureClusterOptions(ClusterOptions clusterOptions)
+         public static void ConfigureClusterOptions(this ISiloBuilder siloBuilder)
          {
-             clusterOptions.ClusterId = "cluster-of-silos";
-             clusterOptions.ServiceId = "hello-world-service";
+            siloBuilder.Configure<ClusterOptions>(clusterOptions =>
+            {
+                clusterOptions.ClusterId = "cluster-of-silos";
+                clusterOptions.ServiceId = "hello-world-service";
+            });
          }
          
-         public void ConfigureDashboardOptions(DashboardOptions dashboardOptions)
+         public static void ConfigureDashboardOptions(this ISiloBuilder siloBuilder, IEnvironmentVariables environmentVariables)
          {
-             dashboardOptions.Username = "piotr";
-             dashboardOptions.Password = "orleans";
-             dashboardOptions.Port = _environmentVariables.DashboardPort();
+            siloBuilder.UseDashboard(dashboardOptions =>
+            {
+                dashboardOptions.Username = "piotr";
+                dashboardOptions.Password = "orleans";
+                dashboardOptions.Port = environmentVariables.DashboardPort();
+            });
          }
          
-        private void ElasticContainerServiceEndpointSettings(EndpointOptions endpointOptions, string ecsContainerMetadataUri)
+        private static void ElasticContainerServiceEndpointSettings(EndpointOptions endpointOptions, string ecsContainerMetadataUri)
         {
             var responseBody = string.Empty;
 
@@ -72,15 +81,13 @@ namespace SiloHost
             {
                 throw new Exception($"ECS metadata retrieval failed. Values received: Ip='{ip}', SiloPort='{siloPort}', GatewayPort='{gatewayPort}'.");
             }
-
-            if (IPAddress.TryParse(ip, out var parsedIp))
-                endpointOptions.AdvertisedIPAddress = parsedIp;
-
+                
+            endpointOptions.AdvertisedIPAddress = IPAddress.Parse(ip);
             endpointOptions.SiloPort = siloPort;
             endpointOptions.GatewayPort = gatewayPort;
         }
 
-        private IPAddress GetLocalIpAddress()
+        private static IPAddress GetLocalIpAddress()
         {
             var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
             foreach (var network in networkInterfaces)
@@ -105,23 +112,12 @@ namespace SiloHost
             return null;
         }
         
-        private void LocalEndpointSettings(EndpointOptions endpointOptions)
+        private static void LocalEndpointSettings(EndpointOptions endpointOptions, int siloPort, int gatewayPort, string advertisedIp)
         {
-            var siloPort = _environmentVariables.SiloPort();
-            var gatewayPort = _environmentVariables.GatewayPort();
-
-            endpointOptions.AdvertisedIPAddress = string.IsNullOrEmpty(_environmentVariables.AdvertisedIp())?
-                GetLocalIpAddress() : IPAddress.Parse(_environmentVariables.AdvertisedIp());
+            endpointOptions.AdvertisedIPAddress = string.IsNullOrEmpty(advertisedIp)?
+                GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
             endpointOptions.SiloPort = siloPort;
             endpointOptions.GatewayPort = gatewayPort;
         }
-    }
-
-    public interface ISiloConfigurationHelper
-    { 
-        void ConfigureEndpointOptions(EndpointOptions endpointOptions);
-        void ConfigureDynamoClusterOptions(DynamoDBClusteringOptions clusteringOptions);
-        void ConfigureClusterOptions(ClusterOptions clusteringOptions);
-        void ConfigureDashboardOptions(DashboardOptions dashboardOptions);
     }
 }

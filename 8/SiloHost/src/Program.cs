@@ -10,27 +10,25 @@ using Orleans.Hosting;
 using Orleans.Statistics;
 using System.Threading.Tasks;
 using Amazon.Util.Internal;
+using OrleansDashboard;
 
 namespace SiloHost
 {
     class Program
     {
-        private static readonly EnvironmentVariables environmentVariable = new EnvironmentVariables();
-        private readonly string EcsContainerMetadataUri = environmentVariable.EcsContainerMetadataUri();
-
         public static Task Main()
         {
-            ISiloConfigurationHelper siloConfigurationHelper = new SiloConfigurationHelper(environmentVariable);
 
             return new HostBuilder()
                 .UseOrleans(siloBuilder =>
                 {
+                    IEnvironmentVariables environmentVariablesService = new EnvironmentVariables();
                     siloBuilder.UseLinuxEnvironmentStatistics();
-                    siloBuilder.UseDashboard(dashboardOptions => siloConfigurationHelper.ConfigureDashboardOptions(dashboardOptions));
+                    siloBuilder.ConfigureDashboardOptions(environmentVariablesService);
                     //Register silo with dynamo cluster
-                    siloBuilder.UseDynamoDBClustering(builder => siloConfigurationHelper.ConfigureDynamoClusterOptions(builder));
-                    siloBuilder.Configure<ClusterOptions>(clusterOptions => siloConfigurationHelper.ConfigureClusterOptions(clusterOptions));
-                    siloBuilder.Configure<EndpointOptions>(options => siloConfigurationHelper.ConfigureEndpointOptions(options));
+                    siloBuilder.ConfigureDynamoClusterOptions(environmentVariablesService);
+                    siloBuilder.ConfigureClusterOptions();
+                    siloBuilder.ConfigureEndpointOptions(environmentVariablesService);
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
 
