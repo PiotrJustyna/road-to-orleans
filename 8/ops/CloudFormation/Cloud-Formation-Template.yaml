@@ -10,10 +10,6 @@ Parameters:
     Type: String
     Description: "ECS Cluster name"
     Default: "ECS-Silo-Cluster"
-  BuildId:
-    Type: String
-    Description: "Build Id from Azure DevOps to pull ECR tag"
-    Default: 'n/a'
   SiloClusterNodeMemory:
     Type: String
     Description: "ECS task memory constraints"
@@ -30,25 +26,12 @@ Parameters:
   DesiredCount:
     Type: String
     Default: 1
-  MaxCount:
+  ApiImage:
     Type: String
-    Default: 1
-  MinCount:
+    Default: docker.pkg.github.com/mrblonde91/road-to-orleans/silo-api-test:updatetoecs
+  SiloImage:
     Type: String
-    Default: 1
-  ScalingMemory:
-    Type: String
-    Default: 90
-  ScalingCPU:
-    Type: String
-    Default: 90
-  MemoryScaleOutCooldown:
-    Type: String
-    Default: 60
-  CPUScaleOutCooldown:
-    Type: String
-    Default: 60
-
+    Default: docker.pkg.github.com/mrblonde91/road-to-orleans/silo-host-test:updatetoecs
 Resources:
   OrleansClusterMembersTable:
     Type: AWS::DynamoDB::Table
@@ -156,17 +139,12 @@ Resources:
       ContainerDefinitions:
         -
           Name: orleans-silo-test
-          Image: docker.pkg.github.com/PiotrJustyna/road-to-orleans/silo-host-test:main
+          Image: !Ref SiloImage
           Memory: !Ref SiloClusterNodeMemory
           RepositoryCredentials: 
           # need to add secret for github to authenticate
              CredentialsParameter: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:dev/github/containerregistry-Jv3cWl
           Essential: true
-          Environment:
-            - Name: REGION
-              Value: !Ref AWS::Region
-            - Name: BUILD_ID
-              Value: !Ref BuildId
           PortMappings:
             - ContainerPort: !Ref GatewayPort
               HostPort: 0
@@ -189,17 +167,12 @@ Resources:
               Value: 2000
         -
           Name: orleans-silo-test-2
-          Image: docker.pkg.github.com/PiotrJustyna/road-to-orleans/silo-host-test:main
+          Image: !Ref SiloImage
           Memory: !Ref SiloClusterNodeMemory
           RepositoryCredentials: 
           # need to add secret for github to authenticate
              CredentialsParameter: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:dev/github/containerregistry-Jv3cWl
           Essential: true
-          Environment:
-            - Name: REGION
-              Value: !Ref AWS::Region
-            - Name: BUILD_ID
-              Value: !Ref BuildId
           PortMappings:
             - ContainerPort: !Ref GatewayPort
               HostPort: 0
@@ -222,17 +195,12 @@ Resources:
               Value: 2000
         -
           Name: orleans-api-test
-          Image: docker.pkg.github.com/PiotrJustyna/road-to-orleans/silo-api-test:main
+          Image: !Ref ApiImage
           Memory: !Ref SiloClusterNodeMemory
           # need to add secret with username and github token for github to authenticate
           RepositoryCredentials: 
             CredentialsParameter: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:dev/github/containerregistry-Jv3cWl
           Essential: true
-          Environment:
-            - Name: REGION
-              Value: !Ref AWS::Region
-            - Name: BUILD_ID
-              Value: !Ref BuildId
           PortMappings:
             - ContainerPort: 80
               HostPort: 0
