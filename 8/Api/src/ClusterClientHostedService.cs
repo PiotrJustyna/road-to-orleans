@@ -25,12 +25,7 @@ namespace Api
         {
             _logger = logger;
             _logger.LogInformation("creating cluster client...");
-            var awsRegion = Environment.GetEnvironmentVariable("AWSREGION") ?? throw new Exception("Aws region cannot be null");
-            var membershipTable =  Environment.GetEnvironmentVariable("MEMBERSHIPTABLE") ?? throw new Exception("Membership table cannot be null");
-            var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
-            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT") ?? throw new Exception("Gateway port cannot be null"); 
-            var siloGatewayPort = int.Parse(extractedGatewayPort);
-
+    
             Client = new ClientBuilder()
                 .Configure<ClusterOptions>(clusterOptions =>
                 {
@@ -39,8 +34,8 @@ namespace Api
                 }).UseDynamoDBClustering(builder =>
                 {
                     //Connect to membership table in dynamo
-                    builder.TableName = membershipTable;
-                    builder.Service = awsRegion;
+                    builder.TableName = EnvironmentVariables.MembershipTable;
+                    builder.Service = EnvironmentVariables.AwsRegion;
                 })
                 .ConfigureLogging(loggingBuilder =>
                     loggingBuilder.SetMinimumLevel(LogLevel.Information).AddProvider(loggerProvider))

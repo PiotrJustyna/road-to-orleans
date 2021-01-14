@@ -243,8 +243,6 @@ Resources:
               Value: us-west-2
             - Name: MEMBERSHIPTABLE
               Value: !Ref OrleansClusterMembersTable
-            - Name: GATEWAYPORT
-              Value: 3000
 
   taskservice:
     Type: AWS::ECS::Service
