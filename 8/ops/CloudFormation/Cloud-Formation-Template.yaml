@@ -28,10 +28,10 @@ Parameters:
     Default: 1
   ApiImage:
     Type: String
-    Default: docker.pkg.github.com/mrblonde91/road-to-orleans/silo-api-test:updatetoecs
+    Default: docker.pkg.github.com/piotrjustyna/road-to-orleans/silo-api-test:latest
   SiloImage:
     Type: String
-    Default: docker.pkg.github.com/mrblonde91/road-to-orleans/silo-host-test:updatetoecs
+    Default: docker.pkg.github.com/piotrjustyna/road-to-orleans/silo-host-test:latest
 Resources:
   OrleansClusterMembersTable:
     Type: AWS::DynamoDB::Table
