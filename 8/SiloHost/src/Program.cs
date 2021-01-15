@@ -23,8 +23,9 @@ namespace SiloHost
                     siloBuilder.UseLinuxEnvironmentStatistics();
                     siloBuilder.ConfigureDashboardOptions(environmentVariablesService.GetDashboardPort());
                     siloBuilder.ConfigureDynamoDbClusteringOptions(environmentVariablesService.GetMembershipTableName(), environmentVariablesService.GetAwsRegion());
-                    siloBuilder.ConfigureClusterOptions();
-                    siloBuilder.ConfigureEndpointOptions(environmentVariablesService);
+                    siloBuilder.ConfigureClusterOptions("cluster-of-silos", "hello-world-service");
+                    siloBuilder.ConfigureEndpointOptions(environmentVariablesService.GetIsLocal(), environmentVariablesService.GetGatewayPort(),
+                        environmentVariablesService.GetSiloPort(), environmentVariablesService.GetAdvertisedIp(), environmentVariablesService.GetEcsContainerMetadataUri());
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
 

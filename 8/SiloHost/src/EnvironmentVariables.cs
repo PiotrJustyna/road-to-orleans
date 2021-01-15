@@ -24,7 +24,7 @@ namespace SiloHost
         public string GetAwsRegion() => Environment.GetEnvironmentVariable("AWSREGION") ??
                                      throw new Exception("Aws region cannot be null");
 
-        public string GetMembershipTable() => Environment.GetEnvironmentVariable("MEMBERSHIPTABLE") ??
+        public string GetMembershipTableName() => Environment.GetEnvironmentVariable("MEMBERSHIPTABLE") ??
                                            throw new Exception("Membership table cannot be null");
 
         public bool GetIsLocal()

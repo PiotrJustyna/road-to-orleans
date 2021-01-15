@@ -17,18 +17,17 @@ namespace SiloHost
         private const int DefaultSiloPort = 2000;
         private const int DefaultGatewayPort = 2000;
 
-        public static void ConfigureEndpointOptions(this ISiloBuilder siloBuilder,
-            IEnvironmentVariables environmentVariableService)
+        public static void ConfigureEndpointOptions(this ISiloBuilder siloBuilder, bool isLocal, int gatewayPort, int siloPort, string ip,
+            string ecsMetadataUri)
         {
             siloBuilder.Configure<EndpointOptions>(endpointOptions =>
             {
-                if (environmentVariableService.GetIsLocal())
-                    LocalEndpointSettings(endpointOptions, environmentVariableService.GetSiloPort(),
-                        environmentVariableService.GetGatewayPort(),
-                        environmentVariableService.GetAdvertisedIp());
+                if (isLocal)
+                    LocalEndpointSettings(endpointOptions, siloPort, gatewayPort,
+                        ip);
                 else
                     ElasticContainerServiceEndpointSettings(endpointOptions,
-                        environmentVariableService.GetEcsContainerMetadataUri());
+                        ecsMetadataUri);
 
                 endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultSiloPort);
                 endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultGatewayPort);
@@ -47,12 +46,12 @@ namespace SiloHost
             });
         }
 
-        public static void ConfigureClusterOptions(this ISiloBuilder siloBuilder)
+        public static void ConfigureClusterOptions(this ISiloBuilder siloBuilder, string clusterId, string serviceId)
         {
             siloBuilder.Configure<ClusterOptions>(clusterOptions =>
             {
-                clusterOptions.ClusterId = "cluster-of-silos";
-                clusterOptions.ServiceId = "hello-world-service";
+                clusterOptions.ClusterId = clusterId;
+                clusterOptions.ServiceId = serviceId;
             });
         }
 
