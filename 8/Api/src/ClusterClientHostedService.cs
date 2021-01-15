@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -101,31 +98,6 @@ namespace Api
                     error,
                     "Error while gracefully disconnecting from Orleans cluster. Will ignore and continue to shutdown.");
             }
-        }
-
-        private static IPAddress GetLocalIpAddress()
-        {
-            var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var network in networkInterfaces)
-            {
-                if (network.OperationalStatus != OperationalStatus.Up)
-                    continue;
-
-                var properties = network.GetIPProperties();
-                if (properties.GatewayAddresses.Count == 0)
-                    continue;
-
-                foreach (var address in properties.UnicastAddresses)
-                {
-                    if (address.Address.AddressFamily == AddressFamily.InterNetwork &&
-                        !IPAddress.IsLoopback(address.Address))
-                    {
-                        return address.Address;
-                    }
-                }
-            }
-
-            return null;
         }
     }
 }

@@ -35,13 +35,15 @@ namespace SiloHost
             });
         }
 
-        public static void ConfigureDynamoClusterOptions(this ISiloBuilder siloBuilder,
-            IEnvironmentVariables environmentVariableService)
+        public static void ConfigureDynamoDbClusteringOptions(
+            this ISiloBuilder siloBuilder,
+            string membershipTableName,
+            string awsRegion)
         {
             siloBuilder.UseDynamoDBClustering(clusteringOptions =>
             {
-                clusteringOptions.TableName = environmentVariableService.GetMembershipTable();
-                clusteringOptions.Service = environmentVariableService.GetAwsRegion();
+                clusteringOptions.TableName = membershipTableName;
+                clusteringOptions.Service = awsRegion;
             });
         }
 
@@ -55,26 +57,14 @@ namespace SiloHost
         }
 
         public static void ConfigureDashboardOptions(this ISiloBuilder siloBuilder,
-            IEnvironmentVariables environmentVariables)
+            int dashboardPort)
         {
-            if (environmentVariables.GetIsLocal())
-            {
-                siloBuilder.UseDashboard(dashboardOptions =>
+            siloBuilder.UseDashboard(dashboardOptions =>
                 {
                     dashboardOptions.Username = "piotr";
                     dashboardOptions.Password = "orleans";
-                    dashboardOptions.Port = environmentVariables.GetDashboardPort();
+                    dashboardOptions.Port = dashboardPort;
                 });
-            }
-            else
-            {
-                siloBuilder.UseDashboard(dashboardOptions =>
-                {
-                    dashboardOptions.Username = "piotr";
-                    dashboardOptions.Password = "orleans";
-                    dashboardOptions.Port = 8080;
-                });
-            }
         }
 
         private static void ElasticContainerServiceEndpointSettings(EndpointOptions endpointOptions,

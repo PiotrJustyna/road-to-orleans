@@ -5,12 +5,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
 using Microsoft.FeatureManagement.FeatureFilters;
 using Orleans;
-using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Statistics;
 using System.Threading.Tasks;
-using Amazon.Util.Internal;
-using OrleansDashboard;
 
 namespace SiloHost
 {
@@ -22,10 +19,10 @@ namespace SiloHost
                 .UseOrleans(siloBuilder =>
                 {
                     IEnvironmentVariables environmentVariablesService = new EnvironmentVariables();
+
                     siloBuilder.UseLinuxEnvironmentStatistics();
-                    siloBuilder.ConfigureDashboardOptions(environmentVariablesService);
-                    //Register silo with dynamo cluster
-                    siloBuilder.ConfigureDynamoClusterOptions(environmentVariablesService);
+                    siloBuilder.ConfigureDashboardOptions(environmentVariablesService.GetDashboardPort());
+                    siloBuilder.ConfigureDynamoDbClusteringOptions(environmentVariablesService.GetMembershipTableName(), environmentVariablesService.GetAwsRegion());
                     siloBuilder.ConfigureClusterOptions();
                     siloBuilder.ConfigureEndpointOptions(environmentVariablesService);
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
