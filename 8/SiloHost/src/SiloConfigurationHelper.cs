@@ -34,7 +34,7 @@ namespace SiloHost
 
          public static void ConfigureDynamoClusterOptions(this ISiloBuilder siloBuilder, IEnvironmentVariables environmentVariableService)
          {
-            siloBuilder.Configure<DynamoDBClusteringOptions>(clusteringOptions =>
+            siloBuilder.UseDynamoDBClustering(clusteringOptions =>
             {
                 clusteringOptions.TableName = environmentVariableService.MembershipTable();
                 clusteringOptions.Service = environmentVariableService.AwsRegion();
