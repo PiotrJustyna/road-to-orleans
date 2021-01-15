@@ -17,62 +17,68 @@ namespace SiloHost
         private const int DefaultSiloPort = 2000;
         private const int DefaultGatewayPort = 2000;
 
-        public static void ConfigureEndpointOptions(this ISiloBuilder siloBuilder, IEnvironmentVariables environmentVariableService)
+        public static void ConfigureEndpointOptions(this ISiloBuilder siloBuilder,
+            IEnvironmentVariables environmentVariableService)
         {
             siloBuilder.Configure<EndpointOptions>(endpointOptions =>
             {
-                if (environmentVariableService.IsLocal())
-                    LocalEndpointSettings(endpointOptions, environmentVariableService.SiloPort(), environmentVariableService.GatewayPort(), 
-                        environmentVariableService.AdvertisedIp());
+                if (environmentVariableService.GetIsLocal())
+                    LocalEndpointSettings(endpointOptions, environmentVariableService.GetSiloPort(),
+                        environmentVariableService.GetGatewayPort(),
+                        environmentVariableService.GetAdvertisedIp());
                 else
-                    ElasticContainerServiceEndpointSettings(endpointOptions, environmentVariableService.EcsContainerMetadataUri());
+                    ElasticContainerServiceEndpointSettings(endpointOptions,
+                        environmentVariableService.GetEcsContainerMetadataUri());
 
                 endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultSiloPort);
                 endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultGatewayPort);
             });
         }
 
-         public static void ConfigureDynamoClusterOptions(this ISiloBuilder siloBuilder, IEnvironmentVariables environmentVariableService)
-         {
+        public static void ConfigureDynamoClusterOptions(this ISiloBuilder siloBuilder,
+            IEnvironmentVariables environmentVariableService)
+        {
             siloBuilder.UseDynamoDBClustering(clusteringOptions =>
             {
-                clusteringOptions.TableName = environmentVariableService.MembershipTable();
-                clusteringOptions.Service = environmentVariableService.AwsRegion();
+                clusteringOptions.TableName = environmentVariableService.GetMembershipTable();
+                clusteringOptions.Service = environmentVariableService.GetAwsRegion();
             });
-         }
-         
-         public static void ConfigureClusterOptions(this ISiloBuilder siloBuilder)
-         {
+        }
+
+        public static void ConfigureClusterOptions(this ISiloBuilder siloBuilder)
+        {
             siloBuilder.Configure<ClusterOptions>(clusterOptions =>
             {
                 clusterOptions.ClusterId = "cluster-of-silos";
                 clusterOptions.ServiceId = "hello-world-service";
             });
-         }
-         
-         public static void ConfigureDashboardOptions(this ISiloBuilder siloBuilder, IEnvironmentVariables environmentVariables)
-         {
-             if (environmentVariables.IsLocal())
-             {
-                 siloBuilder.UseDashboard(dashboardOptions =>
-                 {
-                     dashboardOptions.Username = "piotr";
-                     dashboardOptions.Password = "orleans";
-                     dashboardOptions.Port = environmentVariables.DashboardPort();
-                 });
-             }
-             else
-             {
-                 siloBuilder.UseDashboard(dashboardOptions =>
-                 {
-                     dashboardOptions.Username = "piotr";
-                     dashboardOptions.Password = "orleans";
-                     dashboardOptions.Port = 8080;
-                 });
-             }
-         }
-         
-        private static void ElasticContainerServiceEndpointSettings(EndpointOptions endpointOptions, string ecsContainerMetadataUri)
+        }
+
+        public static void ConfigureDashboardOptions(this ISiloBuilder siloBuilder,
+            IEnvironmentVariables environmentVariables)
+        {
+            if (environmentVariables.GetIsLocal())
+            {
+                siloBuilder.UseDashboard(dashboardOptions =>
+                {
+                    dashboardOptions.Username = "piotr";
+                    dashboardOptions.Password = "orleans";
+                    dashboardOptions.Port = environmentVariables.GetDashboardPort();
+                });
+            }
+            else
+            {
+                siloBuilder.UseDashboard(dashboardOptions =>
+                {
+                    dashboardOptions.Username = "piotr";
+                    dashboardOptions.Password = "orleans";
+                    dashboardOptions.Port = 8080;
+                });
+            }
+        }
+
+        private static void ElasticContainerServiceEndpointSettings(EndpointOptions endpointOptions,
+            string ecsContainerMetadataUri)
         {
             var responseBody = string.Empty;
 
@@ -80,23 +86,26 @@ namespace SiloHost
             {
                 throw new Exception("ECS container metadata URI cannot be null.");
             }
-            
+
             var response = new HttpClient().GetAsync(ecsContainerMetadataUri).Result;
 
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 responseBody = response.Content.ReadAsStringAsync().Result;
             }
+
             var ecsMetadata = JsonSerializer.Deserialize<EcsMetadata>(responseBody);
             var ip = EC2InstanceMetadata.PrivateIpAddress;
             var siloPort = ecsMetadata?.Ports?.FirstOrDefault(x => x.ContainerPort == DefaultSiloPort)?.HostPort ?? 0;
-            var gatewayPort = ecsMetadata?.Ports?.FirstOrDefault(x => x.ContainerPort == DefaultGatewayPort)?.HostPort ?? 0;
+            var gatewayPort =
+                ecsMetadata?.Ports?.FirstOrDefault(x => x.ContainerPort == DefaultGatewayPort)?.HostPort ?? 0;
 
             if (ip == default || siloPort == default || gatewayPort == default)
             {
-                throw new Exception($"ECS metadata retrieval failed. Values received: Ip='{ip}', SiloPort='{siloPort}', GatewayPort='{gatewayPort}'.");
+                throw new Exception(
+                    $"ECS metadata retrieval failed. Values received: Ip='{ip}', SiloPort='{siloPort}', GatewayPort='{gatewayPort}'.");
             }
-                
+
             endpointOptions.AdvertisedIPAddress = IPAddress.Parse(ip);
             endpointOptions.SiloPort = siloPort;
             endpointOptions.GatewayPort = gatewayPort;
@@ -126,11 +135,13 @@ namespace SiloHost
 
             return null;
         }
-        
-        private static void LocalEndpointSettings(EndpointOptions endpointOptions, int siloPort, int gatewayPort, string advertisedIp)
+
+        private static void LocalEndpointSettings(EndpointOptions endpointOptions, int siloPort, int gatewayPort,
+            string advertisedIp)
         {
-            endpointOptions.AdvertisedIPAddress = string.IsNullOrEmpty(advertisedIp)?
-                GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
+            endpointOptions.AdvertisedIPAddress = string.IsNullOrEmpty(advertisedIp)
+                ? GetLocalIpAddress()
+                : IPAddress.Parse(advertisedIp);
             endpointOptions.SiloPort = siloPort;
             endpointOptions.GatewayPort = gatewayPort;
         }

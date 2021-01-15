@@ -18,7 +18,6 @@ namespace SiloHost
     {
         public static Task Main()
         {
-
             return new HostBuilder()
                 .UseOrleans(siloBuilder =>
                 {

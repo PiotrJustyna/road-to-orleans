@@ -8,4 +8,4 @@ MEMBERSHIPTABLE="test-orleans-table"
 #Can also optionally setup a local dynamo db and point at it like so http://$ADVERTISEDIP:8042
 AWSREGION="us-west-2"
 docker build -t client-cluster -f ./ops/Api/Dockerfile ./ &&
-  docker run -it -p 5432:80 -e ADVERTISEDIP=$ADVERTISEDIP  -e GATEWAYPORT=$GATEWAYPORT -e MEMBERSHIPTABLE=$MEMBERSHIPTABLE -e AWSREGION=$AWSREGION --rm client-cluster 
+  docker run -it -p 5432:80 -e MEMBERSHIPTABLE=$MEMBERSHIPTABLE -e AWSREGION=$AWSREGION --rm client-cluster 
