@@ -50,7 +50,7 @@ namespace SiloHost
         int GetSiloPort();
         int GetGatewayPort();
         string GetAwsRegion();
-        string GetMembershipTable();
+        string GetMembershipTableName();
         int GetDashboardPort();
         string GetEcsContainerMetadataUri();
         bool GetIsLocal();
