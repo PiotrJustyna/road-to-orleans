@@ -52,12 +52,24 @@ namespace SiloHost
          
          public static void ConfigureDashboardOptions(this ISiloBuilder siloBuilder, IEnvironmentVariables environmentVariables)
          {
-            siloBuilder.UseDashboard(dashboardOptions =>
-            {
-                dashboardOptions.Username = "piotr";
-                dashboardOptions.Password = "orleans";
-                dashboardOptions.Port = environmentVariables.DashboardPort();
-            });
+             if (environmentVariables.IsLocal())
+             {
+                 siloBuilder.UseDashboard(dashboardOptions =>
+                 {
+                     dashboardOptions.Username = "piotr";
+                     dashboardOptions.Password = "orleans";
+                     dashboardOptions.Port = environmentVariables.DashboardPort();
+                 });
+             }
+             else
+             {
+                 siloBuilder.UseDashboard(dashboardOptions =>
+                 {
+                     dashboardOptions.Username = "piotr";
+                     dashboardOptions.Password = "orleans";
+                     dashboardOptions.Port = 8080;
+                 });
+             }
          }
          
         private static void ElasticContainerServiceEndpointSettings(EndpointOptions endpointOptions, string ecsContainerMetadataUri)

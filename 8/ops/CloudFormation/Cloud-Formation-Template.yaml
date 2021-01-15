@@ -159,12 +159,6 @@ Resources:
               Value: !Ref AWS::Region
             - Name: MEMBERSHIPTABLE
               Value: test-orleans-table
-            - Name: DASHBOARDPORT
-              Value: 8080
-            - Name: GATEWAYPORT
-              Value: 3000
-            - Name: SILOPORT
-              Value: 2000
         -
           Name: orleans-silo-test-2
           Image: !Ref SiloImage
@@ -187,12 +181,6 @@ Resources:
               Value: !Ref AWS::Region
             - Name: MEMBERSHIPTABLE
               Value: test-orleans-table
-            - Name: DASHBOARDPORT
-              Value: 8080
-            - Name: GATEWAYPORT
-              Value: 3000
-            - Name: SILOPORT
-              Value: 2000
         -
           Name: orleans-api-test
           Image: !Ref ApiImage
