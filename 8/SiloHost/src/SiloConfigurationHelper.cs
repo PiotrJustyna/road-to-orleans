@@ -130,8 +130,8 @@ namespace SiloHost
                 : IPAddress.Parse(advertisedIp);
             endpointOptions.SiloPort = siloPort;
             endpointOptions.GatewayPort = gatewayPort;
-            endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultSiloPort);
-            endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultGatewayPort);
+            endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, siloPort);
+            endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, gatewayPort);
         }
         
         private static IPAddress GetLocalIpAddress()
