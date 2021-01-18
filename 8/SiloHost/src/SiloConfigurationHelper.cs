@@ -15,22 +15,33 @@ namespace SiloHost
     public static class SiloConfigurationHelper
     {
         private const int DefaultSiloPort = 2000;
-        private const int DefaultGatewayPort = 2000;
+        private const int DefaultGatewayPort = 3000;
 
-        public static void ConfigureEndpointOptions(this ISiloBuilder siloBuilder, bool isLocal, int gatewayPort, int siloPort, string ip,
+        public static void ConfigureEndpointOptions(
+            this ISiloBuilder siloBuilder,
+            int gatewayPort,
+            int siloPort,
+            string ip)
+        {
+            siloBuilder.Configure<EndpointOptions>(endpointOptions =>
+            {
+                LocalEndpointSettings(
+                    endpointOptions,
+                    siloPort,
+                    gatewayPort,
+                    ip);
+            });
+        }
+        
+        public static void ConfigureEndpointOptions(
+            this ISiloBuilder siloBuilder,
             string ecsMetadataUri)
         {
             siloBuilder.Configure<EndpointOptions>(endpointOptions =>
             {
-                if (isLocal)
-                    LocalEndpointSettings(endpointOptions, siloPort, gatewayPort,
-                        ip);
-                else
-                    ElasticContainerServiceEndpointSettings(endpointOptions,
-                        ecsMetadataUri);
-
-                endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultSiloPort);
-                endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultGatewayPort);
+                ElasticContainerServiceEndpointSettings(
+                    endpointOptions,
+                    ecsMetadataUri);
             });
         }
 
@@ -46,7 +57,10 @@ namespace SiloHost
             });
         }
 
-        public static void ConfigureClusterOptions(this ISiloBuilder siloBuilder, string clusterId, string serviceId)
+        public static void ConfigureClusterOptions(
+            this ISiloBuilder siloBuilder,
+            string clusterId,
+            string serviceId)
         {
             siloBuilder.Configure<ClusterOptions>(clusterOptions =>
             {
@@ -56,17 +70,20 @@ namespace SiloHost
         }
 
         public static void ConfigureDashboardOptions(this ISiloBuilder siloBuilder,
+            string username,
+            string password,
             int dashboardPort)
         {
             siloBuilder.UseDashboard(dashboardOptions =>
-                {
-                    dashboardOptions.Username = "piotr";
-                    dashboardOptions.Password = "orleans";
-                    dashboardOptions.Port = dashboardPort;
-                });
+            {
+                dashboardOptions.Username = username;
+                dashboardOptions.Password = password;
+                dashboardOptions.Port = dashboardPort;
+            });
         }
 
-        private static void ElasticContainerServiceEndpointSettings(EndpointOptions endpointOptions,
+        private static void ElasticContainerServiceEndpointSettings(
+            EndpointOptions endpointOptions,
             string ecsContainerMetadataUri)
         {
             var responseBody = string.Empty;
@@ -98,8 +115,25 @@ namespace SiloHost
             endpointOptions.AdvertisedIPAddress = IPAddress.Parse(ip);
             endpointOptions.SiloPort = siloPort;
             endpointOptions.GatewayPort = gatewayPort;
+            endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultSiloPort);
+            endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultGatewayPort);
         }
 
+        private static void LocalEndpointSettings(
+            EndpointOptions endpointOptions,
+            int siloPort,
+            int gatewayPort,
+            string advertisedIp)
+        {
+            endpointOptions.AdvertisedIPAddress = string.IsNullOrEmpty(advertisedIp)
+                ? GetLocalIpAddress()
+                : IPAddress.Parse(advertisedIp);
+            endpointOptions.SiloPort = siloPort;
+            endpointOptions.GatewayPort = gatewayPort;
+            endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultSiloPort);
+            endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, DefaultGatewayPort);
+        }
+        
         private static IPAddress GetLocalIpAddress()
         {
             var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
@@ -123,16 +157,6 @@ namespace SiloHost
             }
 
             return null;
-        }
-
-        private static void LocalEndpointSettings(EndpointOptions endpointOptions, int siloPort, int gatewayPort,
-            string advertisedIp)
-        {
-            endpointOptions.AdvertisedIPAddress = string.IsNullOrEmpty(advertisedIp)
-                ? GetLocalIpAddress()
-                : IPAddress.Parse(advertisedIp);
-            endpointOptions.SiloPort = siloPort;
-            endpointOptions.GatewayPort = gatewayPort;
         }
     }
 }

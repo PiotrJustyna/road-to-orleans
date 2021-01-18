@@ -1,4 +1,5 @@
-﻿using Grains;
+﻿using System;
+using Grains;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -21,11 +22,32 @@ namespace SiloHost
                     IEnvironmentVariables environmentVariablesService = new EnvironmentVariables();
 
                     siloBuilder.UseLinuxEnvironmentStatistics();
-                    siloBuilder.ConfigureDashboardOptions(environmentVariablesService.GetDashboardPort());
-                    siloBuilder.ConfigureDynamoDbClusteringOptions(environmentVariablesService.GetMembershipTableName(), environmentVariablesService.GetAwsRegion());
-                    siloBuilder.ConfigureClusterOptions("cluster-of-silos", "hello-world-service");
-                    siloBuilder.ConfigureEndpointOptions(environmentVariablesService.GetIsLocal(), environmentVariablesService.GetGatewayPort(),
-                        environmentVariablesService.GetSiloPort(), environmentVariablesService.GetAdvertisedIp(), environmentVariablesService.GetEcsContainerMetadataUri());
+                    siloBuilder.ConfigureDashboardOptions(
+                        "piotr",
+                        "orleans",
+                        environmentVariablesService.GetDashboardPort());
+                    siloBuilder.ConfigureDynamoDbClusteringOptions(
+                        environmentVariablesService.GetMembershipTableName(),
+                        environmentVariablesService.GetAwsRegion());
+                    siloBuilder.ConfigureClusterOptions(
+                        Guid.NewGuid().ToString(),
+                        "hello-world-service");
+
+                    var isLocal = environmentVariablesService.GetIsLocal();
+
+                    if (isLocal)
+                    {
+                        siloBuilder.ConfigureEndpointOptions(
+                            environmentVariablesService.GetGatewayPort(),
+                            environmentVariablesService.GetSiloPort(),
+                            environmentVariablesService.GetAdvertisedIp());
+                    }
+                    else
+                    {
+                        siloBuilder.ConfigureEndpointOptions(
+                            environmentVariablesService.GetEcsContainerMetadataUri());
+                    }
+                    
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
 

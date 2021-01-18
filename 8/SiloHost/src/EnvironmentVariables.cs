@@ -20,6 +20,13 @@ namespace SiloHost
                               throw new Exception("Gateway port cannot be null");
             return int.Parse(gatewayPort);
         }
+        
+        public int GetDashboardPort()
+        {
+            var dashboardBoardPort = Environment.GetEnvironmentVariable("DASHBOARDPORT") ??
+                                     throw new Exception("Dashboard port cannot be null");
+            return int.Parse(dashboardBoardPort);
+        }
 
         public string GetAwsRegion() => Environment.GetEnvironmentVariable("AWSREGION") ??
                                      throw new Exception("Aws region cannot be null");
@@ -29,15 +36,10 @@ namespace SiloHost
 
         public bool GetIsLocal()
         {
-            return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("ISLOCAL")) &&
-                   bool.Parse(Environment.GetEnvironmentVariable("ISLOCAL"));
-        }
-
-        public int GetDashboardPort()
-        {
-            var dashboardBoardPort = Environment.GetEnvironmentVariable("DASHBOARDPORT") ??
-                                     throw new Exception("Dashboard port cannot be null");
-            return int.Parse(dashboardBoardPort);
+            var isLocal = Environment.GetEnvironmentVariable("ISLOCAL") ??
+                          throw new Exception(
+                              "ISLOCAL env variable is needed to determine if the cluster is running locally or in the cloud.");
+            return bool.Parse(isLocal);
         }
 
         public string GetEcsContainerMetadataUri() =>
