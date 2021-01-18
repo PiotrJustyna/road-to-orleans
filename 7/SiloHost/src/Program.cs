@@ -32,12 +32,12 @@ namespace SiloHost
             var primaryAddress = Environment.GetEnvironmentVariable("PRIMARYADDRESS") ?? throw new Exception("Primary address cannot be null");
 
             var siloPort = int.Parse(extractedSiloPort);
-            var developmentPeerPort = int.Parse(extractedPrimaryPort);
+            var primarySiloPort = int.Parse(extractedPrimaryPort);
             var gatewayPort = int.Parse(extractedGatewayPort);
             var dashboardPort = int.Parse(extractDashboardPort);
             var primaryIp = IPAddress.Parse(primaryAddress);
 
-            var primarySiloEndpoint = new IPEndPoint(primaryIp, developmentPeerPort);
+            var primarySiloEndpoint = new IPEndPoint(primaryIp, primarySiloPort);
 
             var siloEndpointConfiguration = new SiloEndpointConfiguration(advertisedIpAddress, siloPort, gatewayPort);
 
