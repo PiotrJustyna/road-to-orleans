@@ -29,8 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Interfaces\Interfaces.csproj" />
-    <ProjectReference Include="..\..\..\Library\Library.fsproj" />
+    <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
+    <ProjectReference Include="..\Library\Library.fsproj" />
   </ItemGroup>
 
 </Project>
