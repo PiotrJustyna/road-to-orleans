@@ -1,0 +1,219 @@
+AWSTemplateFormatVersion: 2010-09-09
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/AWS_ECS.html
+
+Parameters:
+  Name:
+    Type: String
+    Description: "ECS task name - <git repo name>"
+    Default: orleans-simulation
+  Cluster:
+    Type: String
+    Description: "ECS Cluster name"
+    Default: "ECS-Silo-Cluster"
+  SiloClusterNodeMemory:
+    Type: String
+    Description: "ECS task memory constraints"
+    Default: 1024
+  SiloPort:
+    Type: String
+    Default: 2000
+  GatewayPort:
+    Type: String
+    Default: 3000
+  DashboardPort:
+    Type: String
+    Default: 8080
+  DesiredCount:
+    Type: String
+    Default: 1
+  ApiImage:
+    Type: String
+    Default: docker.pkg.github.com/piotrjustyna/road-to-orleans/silo-api-test:latest
+  SiloImage:
+    Type: String
+    Default: docker.pkg.github.com/piotrjustyna/road-to-orleans/silo-host-test:latest
+Resources:
+  OrleansClusterMembersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: DeploymentId
+          AttributeType: S
+        - AttributeName: SiloIdentity
+          AttributeType: S
+      KeySchema:
+        - AttributeName: DeploymentId
+          KeyType: HASH
+        - AttributeName: SiloIdentity
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      SSESpecification:
+        SSEEnabled: true
+      TableName: test-orleans-table
+  kmskey:
+    Type: AWS::KMS::Key
+    Properties:
+      Description: !Sub "KMS encryption key for ${Name}"
+      Enabled: true
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: "2012-10-17"
+        Id: "default-key-policy"
+        Statement:
+        - Sid: "Enable IAM User Permissions"
+          Effect: "Allow"
+          Principal:
+            AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+          Action: "kms:*"
+          Resource: "*"
+
+  iamrole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: secretsmanager_r
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+
+                - Effect: Allow
+                  Sid: AllowReadingFromSecretsManager
+                  Action:
+                    - secretsmanager:GetSecretValue
+                    - kms:Decrypt
+                  Resource:
+                    - !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:dev/github/containerregistry-Jv3cWl        
+                    - !GetAtt kmskey.Arn
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - dynamodb:BatchGetItem
+                  - dynamodb:BatchWriteItem
+                  - dynamodb:UpdateTimeToLive
+                  - dynamodb:ConditionCheckItem
+                  - dynamodb:PutItem
+                  - dynamodb:DescribeTable
+                  - dynamodb:DeleteItem
+                  - dynamodb:GetItem
+                  - dynamodb:Scan
+                  - dynamodb:Query
+                  - dynamodb:UpdateItem
+                  - dynamodb:DescribeTimeToLive
+                  - secretsmanager:GetSecretValue
+                  - kms:Decrypt
+                  - secretsmanager:GetSecretValue
+                  - kms:Decrypt
+                Resource:
+                  - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/test-orleans-table"
+                  - !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:dev/github/containerregistry-Jv3cWl        
+                  - !GetAtt kmskey.Arn
+                Effect: Allow
+          PolicyName: dynamodb_rw
+
+  # create ecs task definition
+  SiloClusterNode:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ExecutionRoleArn: !GetAtt iamrole.Arn
+      RequiresCompatibilities:
+        - "EC2"
+      Family: !Sub ${Name}
+      Memory: !Ref SiloClusterNodeMemory
+      TaskRoleArn: !GetAtt iamrole.Arn
+      PlacementConstraints:
+        -
+          Type: "memberOf"
+          Expression: "attribute:ecs.os-type == linux"
+      ContainerDefinitions:
+        -
+          Name: orleans-silo-test
+          Image: !Ref SiloImage
+          Memory: !Ref SiloClusterNodeMemory
+          RepositoryCredentials: 
+          # need to add secret for github to authenticate
+             CredentialsParameter: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:dev/github/containerregistry-Jv3cWl
+          Essential: true
+          PortMappings:
+            - ContainerPort: !Ref GatewayPort
+              HostPort: 0
+            - ContainerPort: !Ref SiloPort
+              HostPort: 0
+            - ContainerPort: !Ref DashboardPort
+              HostPort: 0
+          Environment:
+            - Name: REGION
+              Value: !Ref AWS::Region
+            - Name: AWSREGION
+              Value: !Ref AWS::Region
+            - Name: MEMBERSHIPTABLE
+              Value: test-orleans-table
+        -
+          Name: orleans-silo-test-2
+          Image: !Ref SiloImage
+          Memory: !Ref SiloClusterNodeMemory
+          RepositoryCredentials: 
+          # need to add secret for github to authenticate
+             CredentialsParameter: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:dev/github/containerregistry-Jv3cWl
+          Essential: true
+          PortMappings:
+            - ContainerPort: !Ref GatewayPort
+              HostPort: 0
+            - ContainerPort: !Ref SiloPort
+              HostPort: 0
+            - ContainerPort: !Ref DashboardPort
+              HostPort: 0
+          Environment:
+            - Name: REGION
+              Value: !Ref AWS::Region
+            - Name: AWSREGION
+              Value: !Ref AWS::Region
+            - Name: MEMBERSHIPTABLE
+              Value: test-orleans-table
+        -
+          Name: orleans-api-test
+          Image: !Ref ApiImage
+          Memory: !Ref SiloClusterNodeMemory
+          # need to add secret with username and github token for github to authenticate
+          RepositoryCredentials: 
+            CredentialsParameter: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:dev/github/containerregistry-Jv3cWl
+          Essential: true
+          PortMappings:
+            - ContainerPort: 80
+              HostPort: 0
+          Environment:
+            - Name: REGION
+              Value: !Ref AWS::Region
+            - Name: AWSREGION
+              Value: !Ref AWS::Region
+            - Name: MEMBERSHIPTABLE
+              Value: !Ref OrleansClusterMembersTable
+
+  taskservice:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref Cluster
+      DesiredCount: !Ref DesiredCount
+      TaskDefinition: !Ref SiloClusterNode
+      EnableECSManagedTags: true
+      DeploymentConfiguration:
+        MaximumPercent: 200
+      PlacementStrategies:
+        - Type: spread
+          Field: attribute:ecs.availability-zone
+        - Type: spread
+          Field: instanceId
+        - Type: binpack
+          Field: memory
+      SchedulingStrategy: REPLICA

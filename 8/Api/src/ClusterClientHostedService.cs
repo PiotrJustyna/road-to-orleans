@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -25,13 +22,7 @@ namespace Api
         {
             _logger = logger;
             _logger.LogInformation("creating cluster client...");
-            var awsRegion = Environment.GetEnvironmentVariable("AWSREGION") ?? throw new Exception("Aws region cannot be null");
-            var membershipTable =  Environment.GetEnvironmentVariable("MEMBERSHIPTABLE") ?? throw new Exception("Membership table cannot be null");
-            var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
-            var siloAdvertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
-            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT") ?? throw new Exception("Gateway port cannot be null"); 
-            var siloGatewayPort = int.Parse(extractedGatewayPort);
-
+    
             Client = new ClientBuilder()
                 .Configure<ClusterOptions>(clusterOptions =>
                 {
@@ -40,10 +31,9 @@ namespace Api
                 }).UseDynamoDBClustering(builder =>
                 {
                     //Connect to membership table in dynamo
-                    builder.TableName = membershipTable;
-                    builder.Service = awsRegion;
+                    builder.TableName = EnvironmentVariables.MembershipTable;
+                    builder.Service = EnvironmentVariables.AwsRegion;
                 })
-                .UseStaticClustering(new IPEndPoint(siloAdvertisedIpAddress, siloGatewayPort))
                 .ConfigureLogging(loggingBuilder =>
                     loggingBuilder.SetMinimumLevel(LogLevel.Information).AddProvider(loggerProvider))
                 .Build();
@@ -108,31 +98,6 @@ namespace Api
                     error,
                     "Error while gracefully disconnecting from Orleans cluster. Will ignore and continue to shutdown.");
             }
-        }
-
-        private static IPAddress GetLocalIpAddress()
-        {
-            var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var network in networkInterfaces)
-            {
-                if (network.OperationalStatus != OperationalStatus.Up)
-                    continue;
-
-                var properties = network.GetIPProperties();
-                if (properties.GatewayAddresses.Count == 0)
-                    continue;
-
-                foreach (var address in properties.UnicastAddresses)
-                {
-                    if (address.Address.AddressFamily == AddressFamily.InterNetwork &&
-                        !IPAddress.IsLoopback(address.Address))
-                    {
-                        return address.Address;
-                    }
-                }
-            }
-
-            return null;
         }
     }
 }

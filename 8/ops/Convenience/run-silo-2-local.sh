@@ -4,12 +4,11 @@ RetrieveIp(){
 }
 
 export ADVERTISEDIP=`RetrieveIp`
-export PRIMARYADDRESS=`RetrieveIp`
 export GATEWAYPORT=3002
 export DASHBOARDPORT=8082
 export SILOPORT=2002
-export PRIMARYPORT=2001
-export MEMBERSHIPTABLE="OrleansMembership"
+export MEMBERSHIPTABLE="test-orleans-table"
 export AWSREGION="us-west-2"
+export ISLOCAL=true
 
 dotnet run --project ./SiloHost/SiloHost.csproj
