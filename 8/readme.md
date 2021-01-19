@@ -10,15 +10,18 @@ It also means that the client only needs the dynamo connection info to find all 
 ## running the code
 ### ECS
 * To pull this code in CloudFormation, it'll be necessary to store your github user and authentication token in the aws secrets manager
- so the image can be pull from git container registry. Then
-point at the secret in the cloud formation template, below is a sample of how the secret should be stored.
+ so the image can be pulled from git container registry. Then point at the secret in the cloud formation template, 
+ below is a sample of how the secret should be stored.
 
 `{
   "username" : "mrblonde91",
   "password" : "token"
 }`
 * Run the template to pull the image and it will start creating the containers.
+
 ![Container ports info](imgs/1.png)
+
+
 * Internally the ports are defaulted and externally an available one is selected.
 ![Dynamo table info](imgs/2.png)
 * A sample of the dynamo data is displayed above, the cluster id acts as a unique identifier for each cluster. So multiple clusters can be stored 
