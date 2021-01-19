@@ -9,14 +9,11 @@ namespace Api
 
         public string GetMembershipTable() => Environment.GetEnvironmentVariable("MEMBERSHIPTABLE") ??
                                                 throw new Exception("Membership table cannot be null");
-        public string GetClusterId() =>
-            Environment.GetEnvironmentVariable("CLUSTER_ID") ?? throw new Exception("Cluster Id cannot be null");
     }
 
     public interface IEnvironmentVariables
     {
         string GetAwsRegion();
         string GetMembershipTable();
-        string GetClusterId();
     }
 }

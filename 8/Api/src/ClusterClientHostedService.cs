@@ -26,7 +26,7 @@ namespace Api
             Client = new ClientBuilder()
                 .Configure<ClusterOptions>(clusterOptions =>
                 {
-                    clusterOptions.ClusterId = environmentVariablesService.GetClusterId();
+                    clusterOptions.ClusterId = "cluster-of-silos";
                     clusterOptions.ServiceId = "hello-world-service";
                 }).UseDynamoDBClustering(builder =>
                 {
