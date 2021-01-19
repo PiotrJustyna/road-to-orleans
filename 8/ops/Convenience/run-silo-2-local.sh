@@ -10,5 +10,6 @@ export SILOPORT=2002
 export MEMBERSHIPTABLE="test-orleans-table"
 export AWSREGION="us-west-2"
 export ISLOCAL=true
+export CLUSTER_ID="cluster-of-silos"
 
 dotnet run --project ./SiloHost/SiloHost.csproj

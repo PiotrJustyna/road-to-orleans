@@ -44,6 +44,8 @@ namespace SiloHost
 
         public string GetEcsContainerMetadataUri() =>
             Environment.GetEnvironmentVariable("ECS_CONTAINER_METADATA_URI");
+        public string GetClusterId() =>
+            Environment.GetEnvironmentVariable("CLUSTER_ID") ?? throw new Exception("Cluster Id cannot be null");
     }
 
     public interface IEnvironmentVariables
@@ -56,5 +58,6 @@ namespace SiloHost
         int GetDashboardPort();
         string GetEcsContainerMetadataUri();
         bool GetIsLocal();
+        string GetClusterId();
     }
 }

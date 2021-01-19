@@ -30,7 +30,7 @@ namespace SiloHost
                         environmentVariablesService.GetMembershipTableName(),
                         environmentVariablesService.GetAwsRegion());
                     siloBuilder.ConfigureClusterOptions(
-                        Guid.NewGuid().ToString(),
+                        environmentVariablesService.GetClusterId(),
                         "hello-world-service");
 
                     var isLocal = environmentVariablesService.GetIsLocal();

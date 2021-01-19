@@ -22,17 +22,17 @@ namespace Api
         {
             _logger = logger;
             _logger.LogInformation("creating cluster client...");
-    
+            IEnvironmentVariables environmentVariablesService = new EnvironmentVariables();
             Client = new ClientBuilder()
                 .Configure<ClusterOptions>(clusterOptions =>
                 {
-                    clusterOptions.ClusterId = "cluster-of-silos";
+                    clusterOptions.ClusterId = environmentVariablesService.GetClusterId();
                     clusterOptions.ServiceId = "hello-world-service";
                 }).UseDynamoDBClustering(builder =>
                 {
                     //Connect to membership table in dynamo
-                    builder.TableName = EnvironmentVariables.MembershipTable;
-                    builder.Service = EnvironmentVariables.AwsRegion;
+                    builder.TableName = environmentVariablesService.GetMembershipTable();
+                    builder.Service = environmentVariablesService.GetAwsRegion();
                 })
                 .ConfigureLogging(loggingBuilder =>
                     loggingBuilder.SetMinimumLevel(LogLevel.Information).AddProvider(loggerProvider))
