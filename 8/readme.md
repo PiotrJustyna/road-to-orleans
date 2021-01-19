@@ -28,7 +28,7 @@ It also means that the client only needs the dynamo connection info to find all 
 in the same table if the user wishes. Clusters can also contain different versions of silos eg for testing purposes.
 ### Running Silo local -> Aws Cluster
 
-* Authenticate with aws in your terminal. As in example 7, the following scripts can be used to run silos locally:
+* Authenticate with aws in your terminal and make sure your environment variables are set. As in example 7, the following scripts can be used to run silos locally:
 
 * `./run-docker-silo.sh`
 * `./run-local-silo.sh`
@@ -55,6 +55,8 @@ As in example 7, following scripts can be used to run clients:
 The following variables need to be set to allow for a connection to the dynamo db.
 * `MEMBERSHIPTABLE` set to name of membership table eg "OrleansMembership"
 * `AWSREGION` set to ecs region eg "us-west"
+
+* When requests are made, they get distributed to one of the silos from the cluster which can be either the local or cloud instance.
 #### running the demo
 
 * run the cluster: `./run-demo-cluster.sh` (3 silos: 2 hosted in docker, 1 hosted locally), if joining ECS instance, this will increase overall number to 5
