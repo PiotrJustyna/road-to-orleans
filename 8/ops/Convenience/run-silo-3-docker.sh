@@ -12,6 +12,7 @@ PRIMARYPORT=2001
 MEMBERSHIPTABLE="test-orleans-table"
 AWSREGION="us-west-2"
 ISLOCAL=true
+CLUSTER_ID="cluster-of-silos"
 
 docker build -t silo-host-cluster -f ./ops/SiloHost/Dockerfile ./ &&
   docker run -d -e AWS_REGION -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN -e AWS_ACCESS_KEY_ID\
