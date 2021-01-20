@@ -28,7 +28,7 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 | [solution5](5/readme.md) | Solution4 where the grain interfaces F# library code. Additionally, F# unit tests covering the F# library code. | silo, client | in-memory | n | 1 C# grain interfacing F# library code. | n - console |
 | [solution6](6/readme.md) | Solution5 where the cluster is being called from a Web API. | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
 | [solution7](7/readme.md) | Solution6 + [FeatureManagement](https://www.nuget.org/packages/Microsoft.FeatureManagement/), dependency injection in grains, unit tests for grains using [OrleansTestKit](https://www.nuget.org/packages/OrleansTestKit/). | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
-
+| [solution8](8/readme.md) | Solution7 + Persistent Membership Table in Dynamo, CloudFormation Template| silo, client | Dynamo | n | 1 C# grain interfacing F# library code | n - web api |
 ## further reading
 
 * https://github.com/dotnet/orleans - orleans repository
