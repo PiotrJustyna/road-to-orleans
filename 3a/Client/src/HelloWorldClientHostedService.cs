@@ -18,7 +18,7 @@ namespace Client
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            var helloWorldGrain = _clusterClient.GetGrain<IHelloWorld>(0);
+            var helloWorldGrain = _clusterClient.GetGrain<IHelloWorld>(2);
             Console.WriteLine($"{await helloWorldGrain.SayHello("Piotr")}");
         }
 
