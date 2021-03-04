@@ -12,7 +12,7 @@
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
         <PackageReference Include="Microsoft.FeatureManagement" Version="2.2.0" />
         <PackageReference Include="Microsoft.Orleans.Clustering.DynamoDB" Version="3.4.0" />
-        <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.4.0">
+        <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.4.1">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
