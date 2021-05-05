@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "SiloHost run",
+      "name": "run silo host",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",

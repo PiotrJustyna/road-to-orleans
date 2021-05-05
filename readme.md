@@ -21,17 +21,23 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 
 ![solutions](./solutions/road-to-orleans.png)
 
-| solution | description | docker support | clustering | clustered silos | grains | clients |
-| --- | --- | --- | --- | --- | --- | --- |
-| [solution1](1/readme.md) | One basic silo, no grains. | silo | - | 1 | 0 | 0 |
-| [solution2](2/readme.md) | One basic silo, one grain, one console client. | - | - | 1 | 1 C# grain | 1 - console |
-| [solution3](3/readme.md) | One basic silo, one grain, one console client, everything containerized. | silo, client | - | 1 | 1 C# grain | 1 - console |
-| [solution3a](3a/readme.md) | Solution3 + grain persistence. | silo, client | - | 1 | 1 C# grain | 1 - console |
-| [solution4](4/readme.md) | First in-memory clustering example. Many silos, many clients. | silo, client | in-memory | n | 1 C# grain | n - console |
-| [solution5](5/readme.md) | Solution4 where the grain interfaces F# library code. Additionally, F# unit tests covering the F# library code. | silo, client | in-memory | n | 1 C# grain interfacing F# library code. | n - console |
-| [solution6](6/readme.md) | Solution5 where the cluster is being called from a Web API. | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
-| [solution7](7/readme.md) | Solution6 + [FeatureManagement](https://www.nuget.org/packages/Microsoft.FeatureManagement/), dependency injection in grains, unit tests for grains using [OrleansTestKit](https://www.nuget.org/packages/OrleansTestKit/). | silo, client | in-memory | n | 1 C# grain interfacing F# library code | n - web api |
-| [solution8](8/readme.md) | Solution7 + Persistent Membership Table in DynamoEB, ECS hosting, CloudFormation Template. | silo, client | Dynamo | n | 1 C# grain interfacing F# library code | n - web api |
+| solution | description | docker support | clustering | clustered silos | grains | clients | \*visual studio code support | \*remote containers support |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [solution1](1/readme.md) | One basic silo, no grains. | :white_check_mark: | - | 1 | 0 | 0 | :white_check_mark: | :white_check_mark: |
+| [solution2](2/readme.md) | One basic silo, one grain, one console client. | - | - | 1 | 1 C# grain | 1 - console | :white_check_mark: | :white_check_mark: |
+| [solution3](3/readme.md) | One basic silo, one grain, one console client, everything containerized. | :white_check_mark: | - | 1 | 1 C# grain | 1 - console |||
+| [solution3a](3a/readme.md) | Solution3 + grain persistence. | :white_check_mark: | - | 1 | 1 C# grain | 1 - console |||
+| [solution4](4/readme.md) | First in-memory clustering example. Many silos, many clients. | :white_check_mark: | in-memory | n | 1 C# grain | n - console |||
+| [solution5](5/readme.md) | Solution4 where the grain interfaces F# library code. Additionally, F# unit tests covering the F# library code. | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code. | n - console |||
+| [solution6](6/readme.md) | Solution5 where the cluster is being called from a Web API. | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code | n - web api |||
+| [solution7](7/readme.md) | Solution6 + [FeatureManagement](https://www.nuget.org/packages/Microsoft.FeatureManagement/), dependency injection in grains, unit tests for grains using [OrleansTestKit](https://www.nuget.org/packages/OrleansTestKit/). | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code | n - web api |||
+| [solution8](8/readme.md) | Solution7 + Persistent Membership Table in DynamoEB, ECS hosting, CloudFormation Template. | :white_check_mark: | Dynamo | n | 1 C# grain interfacing F# library code | n - web api |||
+
+\*visual studio code support:
+* `[ctrl/cmd]+shift+b`: builds selected projects
+* `f5`: runs selected projects
+
+\*remote containers support: ability to develop/build/run/debug code inside [containers](https://code.visualstudio.com/docs/remote/containers). This is to support those who just want to quickly pull the repository code and experiment with it with e.g. Visual Studio Code. Code + batteries included.
 
 ## further reading
 

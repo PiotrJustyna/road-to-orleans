@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "run silo host",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build silo host",
+      "program": "${workspaceFolder}/SiloHost/bin/Debug/net5.0/SiloHost.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/SiloHost",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    },
+    {
+      "name": "run client",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build client",
+      "program": "${workspaceFolder}/Client/bin/Debug/net5.0/Client.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/Client",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    }
+  ]
+}
