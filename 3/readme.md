@@ -15,6 +15,8 @@ In this basic setup we still only have one silo and localhost clustering with on
     * `./run-silo-local.sh`
     * `./run-client-docker.sh`
 
+Alternatively, one can use the `.vscode/tasks.json` and `.vscode/launch.json` files to build and run local instances of silos and clients.
+
 The way it is all set up is:
 
 * for local runs (local, meaning on the physical machine, non-dockerized), both the client and the silo host get the local ip address of the machine they are running on. They use that IP to communicate with each other.

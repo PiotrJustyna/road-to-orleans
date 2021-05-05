@@ -25,7 +25,7 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [solution1](1/readme.md) | One basic silo, no grains. | :white_check_mark: | - | 1 | 0 | 0 | :white_check_mark: | :white_check_mark: |
 | [solution2](2/readme.md) | One basic silo, one grain, one console client. | - | - | 1 | 1 C# grain | 1 - console | :white_check_mark: | :white_check_mark: |
-| [solution3](3/readme.md) | One basic silo, one grain, one console client, everything containerized. | :white_check_mark: | - | 1 | 1 C# grain | 1 - console |||
+| [solution3](3/readme.md) | One basic silo, one grain, one console client, everything containerized. | :white_check_mark: | - | 1 | 1 C# grain | 1 - console | :white_check_mark: | :white_check_mark: |
 | [solution3a](3a/readme.md) | Solution3 + grain persistence. | :white_check_mark: | - | 1 | 1 C# grain | 1 - console |||
 | [solution4](4/readme.md) | First in-memory clustering example. Many silos, many clients. | :white_check_mark: | in-memory | n | 1 C# grain | n - console |||
 | [solution5](5/readme.md) | Solution4 where the grain interfaces F# library code. Additionally, F# unit tests covering the F# library code. | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code. | n - console |||

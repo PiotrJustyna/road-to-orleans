@@ -1,0 +1,22 @@
+{
+	"name": "C# (.NET)",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { }
+	},
+
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2,
+		"editor.detectIndentation": false
+	},
+
+	"extensions": [
+		"ms-vscode.csharp",
+		"ms-dotnettools.csharp",
+		"yzhang.markdown-all-in-one"
+	],
+
+	"remoteUser": "vscode"
+}
