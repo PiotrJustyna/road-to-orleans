@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "SiloHost": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "PRIMARYADDRESS": "",
+        "DASHBOARDPORT": "8081",
+        "SILOPORT": "2001",
+        "PRIMARYPORT": "2001",
+        "GATEWAYPORT": "3001"
+      }
+    }
+  }
+}
