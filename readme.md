@@ -6,6 +6,8 @@
 
 # road to orleans
 
+[![Join the chat at https://gitter.im/road-to-orleans/test](https://badges.gitter.im/road-to-orleans/test.svg)](https://gitter.im/road-to-orleans/test?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This repository illustrates the road to orleans with practical, real-life examples as .NET solutions. From most basic, to more advanced techniques. The code is written using .NET 5 and was tested on MacOS (Catalina 10.15.7) and, wherever docker is supported, Linux (Alpine 3.12).
 
 ## build & run
