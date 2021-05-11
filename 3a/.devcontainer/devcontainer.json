@@ -1,0 +1,29 @@
+{
+	"name": "C# (.NET)",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { }
+	},
+
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2,
+		"editor.detectIndentation": false
+	},
+
+	"extensions": [
+		"ms-vscode.csharp",
+		"ms-dotnettools.csharp",
+		"yzhang.markdown-all-in-one"
+	],
+
+	"remoteUser": "vscode",
+
+	"remoteEnv": {
+		"AWS_DEFAULT_REGION": "${localEnv:AWS_DEFAULT_REGION}",
+		"AWS_SECRET_ACCESS_KEY": "${localEnv:AWS_SECRET_ACCESS_KEY}",
+		"AWS_SESSION_TOKEN": "${localEnv:AWS_SESSION_TOKEN}",
+		"AWS_ACCESS_KEY_ID": "${localEnv:AWS_ACCESS_KEY_ID}"
+	}
+}
