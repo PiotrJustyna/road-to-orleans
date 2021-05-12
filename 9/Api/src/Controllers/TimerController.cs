@@ -1,5 +1,4 @@
-﻿using System;
-using Interfaces;
+﻿using Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Orleans;
 using System.Threading;
@@ -9,15 +8,13 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TimerWorldController : ControllerBase
+    public class TimerController : ControllerBase
     {
         private readonly IClusterClient _clusterClient;
-        private readonly Random _generator;
 
-        public TimerWorldController(IClusterClient clusterClient)
+        public TimerController(IClusterClient clusterClient)
         {
             _clusterClient = clusterClient;
-            _generator = new Random();
         }
 
         [HttpGet("activate")]
@@ -29,11 +26,10 @@ namespace Api.Controllers
             {
                 var grainCancellationTokenSource = new GrainCancellationTokenSource();
 
-                //A random integer (1 - 2) is generated to allow for a new timer world grain to be created or reused per client.
-                var timerActivationResult = await _clusterClient.GetGrain<ITimerWorld>(_generator.Next(1, 3))
+                await _clusterClient.GetGrain<ITimer>(1)
                     .ActivateTimer(grainCancellationTokenSource.Token);
 
-                result = Ok(timerActivationResult);
+                result = Ok("Timer activated");
             }
 
             return result;
@@ -47,12 +43,11 @@ namespace Api.Controllers
             if (!cancellationToken.IsCancellationRequested)
             {
                 var grainCancellationTokenSource = new GrainCancellationTokenSource();
-                
-                //A random integer (1 - 2) is generated to allow for a new timer world grain to be created or reused per client.
-                var timerDeactivationResult = await _clusterClient.GetGrain<ITimerWorld>(_generator.Next(1, 3))
+
+                await _clusterClient.GetGrain<ITimer>(1)
                     .DeactivateTimer(grainCancellationTokenSource.Token);
 
-                result = Ok(timerDeactivationResult);
+                result = Ok("Timer deactivated");
             }
 
             return result;
@@ -67,11 +62,10 @@ namespace Api.Controllers
             {
                 var grainCancellationTokenSource = new GrainCancellationTokenSource();
 
-                //A random integer (1 - 2) is generated to allow for a new timer world grain to be created or reused per client.
-                var grainDeactivationResult = await _clusterClient.GetGrain<ITimerWorld>(_generator.Next(1, 3))
+                await _clusterClient.GetGrain<ITimer>(1)
                     .DeactivateGrain(grainCancellationTokenSource.Token);
 
-                result = Ok(grainDeactivationResult);
+                result = Ok("Grain activation deactivated");
             }
 
             return result;

@@ -11,11 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiloHost", "SiloHost\SiloHo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{3FE033B4-96DA-4A4B-8610-FDF7A5310154}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Library", "Library\Library.fsproj", "{D4DBA653-DC93-4DD0-A894-92681DB2745F}"
-EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Library.UnitTests", "Library.UnitTests\Library.UnitTests.fsproj", "{82584F29-799D-4F2F-9009-2EB36ADE35F7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grains.UnitTests", "Grains.UnitTests\Grains.UnitTests.csproj", "{0B8853A1-6ED6-488B-83A0-D13BC00D942E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grains.UnitTests", "Grains.UnitTests\Grains.UnitTests.csproj", "{0B8853A1-6ED6-488B-83A0-D13BC00D942E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,14 +35,6 @@ Global
 		{3FE033B4-96DA-4A4B-8610-FDF7A5310154}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FE033B4-96DA-4A4B-8610-FDF7A5310154}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FE033B4-96DA-4A4B-8610-FDF7A5310154}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4DBA653-DC93-4DD0-A894-92681DB2745F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4DBA653-DC93-4DD0-A894-92681DB2745F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4DBA653-DC93-4DD0-A894-92681DB2745F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4DBA653-DC93-4DD0-A894-92681DB2745F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82584F29-799D-4F2F-9009-2EB36ADE35F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82584F29-799D-4F2F-9009-2EB36ADE35F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82584F29-799D-4F2F-9009-2EB36ADE35F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82584F29-799D-4F2F-9009-2EB36ADE35F7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0B8853A1-6ED6-488B-83A0-D13BC00D942E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0B8853A1-6ED6-488B-83A0-D13BC00D942E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B8853A1-6ED6-488B-83A0-D13BC00D942E}.Release|Any CPU.ActiveCfg = Release|Any CPU

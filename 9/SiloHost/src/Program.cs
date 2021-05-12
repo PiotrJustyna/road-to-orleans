@@ -1,17 +1,12 @@
 ﻿using Grains;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.FeatureManagement;
-using Microsoft.FeatureManagement.FeatureFilters;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
-using Orleans.Serialization;
 using Orleans.Statistics;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -19,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace SiloHost
 {
-    class Program
+    internal class Program
     {
         public static Task Main()
         {
@@ -69,23 +64,9 @@ namespace SiloHost
                         });
 
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
-                        applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
-
-                    /*Registering Feature Management, to allow DI of IFeatureManagerSnapshot in HelloWorld grain.
-                     Using built in Percentage filter to demonstrate a feature being on/off.*/
-                    siloBuilder.ConfigureServices(serviceCollection =>
-                    {
-                        serviceCollection.AddFeatureManagement()
-                            .AddFeatureFilter<PercentageFilter>();
-                    });
+                        applicationPartManager.AddApplicationPart(typeof(Timer).Assembly).WithReferences());
                 })
                 .ConfigureLogging(logging => logging.AddConsole())
-
-                //Registering a Configuration source for Feature Management.
-                .ConfigureAppConfiguration(config =>
-                {
-                    config.AddJsonFile("appsettings.json");
-                })
                 .RunConsoleAsync();
         }
 
@@ -95,11 +76,15 @@ namespace SiloHost
             foreach (var network in networkInterfaces)
             {
                 if (network.OperationalStatus != OperationalStatus.Up)
+                {
                     continue;
+                }
 
                 var properties = network.GetIPProperties();
                 if (properties.GatewayAddresses.Count == 0)
+                {
                     continue;
+                }
 
                 foreach (var address in properties.UnicastAddresses)
                 {

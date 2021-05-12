@@ -15,20 +15,20 @@ namespace Grains.UnitTests
         public async Task TimerCanBeRegistered()
         {
             var token = new GrainCancellationTokenSource().Token;
-            var sut = await Silo.CreateGrainAsync<TimerWorld>(1);
+            var sut = await Silo.CreateGrainAsync<Timer>(1);
 
             await sut.ActivateTimer(token);
 
-            Silo.TimerRegistry.Mock.Verify(x => x.RegisterTimer(It.IsAny<TimerWorld>(),
+            Silo.TimerRegistry.Mock.Verify(x => x.RegisterTimer(It.IsAny<Timer>(),
                 It.IsAny<Func<object, Task>>(), null, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(1)), Times.Once);
         }
 
         [Fact]
         public async Task TimerCanBeFiredAfterRegistration()
         {
-            var logger = Silo.AddServiceProbe<ILogger<TimerWorld>>();
+            var logger = Silo.AddServiceProbe<ILogger<Timer>>();
             var token = new GrainCancellationTokenSource().Token;
-            var sut = await Silo.CreateGrainAsync<TimerWorld>(1);
+            var sut = await Silo.CreateGrainAsync<Timer>(1);
 
             await sut.ActivateTimer(token);
             await Silo.FireAllTimersAsync();
@@ -40,12 +40,11 @@ namespace Grains.UnitTests
         public async Task TimerCanBeUnregistered()
         {
             var token = new GrainCancellationTokenSource().Token;
-            var sut = await Silo.CreateGrainAsync<TimerWorld>(1);
+            var sut = await Silo.CreateGrainAsync<Timer>(1);
 
             await sut.ActivateTimer(token);
-            var deactivationResult = await sut.DeactivateTimer(token);
+            await sut.DeactivateTimer(token);
 
-            Assert.StartsWith("Timer unregistered", deactivationResult);
             var field = sut.GetType().GetField("_timer", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(sut);
             Assert.Null(field);
         }
@@ -54,12 +53,11 @@ namespace Grains.UnitTests
         public async Task TimerCanBeUnregisteredByGrainDeactivation()
         {
             var token = new GrainCancellationTokenSource().Token;
-            var sut = await Silo.CreateGrainAsync<TimerWorld>(1);
+            var sut = await Silo.CreateGrainAsync<Timer>(1);
 
             await sut.ActivateTimer(token);
-            var deactivationResult = await sut.DeactivateGrain(token);
+            await sut.DeactivateGrain(token);
 
-            Assert.StartsWith("Grain deactivation requested", deactivationResult);
             Silo.VerifyRuntime(x => x.DeactivateOnIdle(sut), Times.Once);
         }
     }
