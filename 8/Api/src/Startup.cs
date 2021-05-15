@@ -21,6 +21,10 @@ namespace Api
             services.AddSingleton<IHostedService>(_ => _.GetService<ClusterClientHostedService>());
             services.AddSingleton(_ => _.GetService<ClusterClientHostedService>().Client);
             services.AddControllers();
+
+            var orleansSettings = Configuration.GetSection(nameof(OrleansSettings)).Get<OrleansSettings>();
+            orleansSettings.Validate();
+            services.AddSingleton<IOrleansSettings>(orleansSettings);
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

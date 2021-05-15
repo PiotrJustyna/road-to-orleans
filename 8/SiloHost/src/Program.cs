@@ -17,52 +17,52 @@ namespace SiloHost
         public static Task Main()
         {
             return new HostBuilder()
-                .UseOrleans(siloBuilder =>
+                .ConfigureLogging(logging => logging.AddConsole())
+                //Registering a Configuration source for Feature Management.
+                .ConfigureAppConfiguration(config => config.AddJsonFile("appsettings.json").AddEnvironmentVariables())
+                .UseOrleans((hostBuilderContext, siloBuilder) =>
                 {
-                    IEnvironmentVariables environmentVariablesService = new EnvironmentVariables();
+                    var orleansSettings = hostBuilderContext.Configuration.GetSection(nameof(OrleansHostSettings)).Get<OrleansHostSettings>();
+                    orleansSettings.Validate();
 
                     siloBuilder.UseLinuxEnvironmentStatistics();
                     siloBuilder.ConfigureDashboardOptions(
                         "piotr",
                         "orleans",
-                        environmentVariablesService.GetDashboardPort());
+                        orleansSettings.DashboardPort);
                     siloBuilder.ConfigureDynamoDbClusteringOptions(
-                        environmentVariablesService.GetMembershipTableName(),
-                        environmentVariablesService.GetAwsRegion());
+                        orleansSettings.MembershipTableName,
+                        orleansSettings.AwsRegion);
                     siloBuilder.ConfigureClusterOptions(
                         "cluster-of-silos",
                         "hello-world-service");
 
-                    var isLocal = environmentVariablesService.GetIsLocal();
+                    var isLocal = orleansSettings.IsLocal;
 
-                    if (isLocal)
+                    if (isLocal.Value)
                     {
                         siloBuilder.ConfigureEndpointOptions(
-                            environmentVariablesService.GetGatewayPort(),
-                            environmentVariablesService.GetSiloPort(),
-                            environmentVariablesService.GetAdvertisedIp());
+                            orleansSettings.GatewayPort,
+                            orleansSettings.SiloPort,
+                            orleansSettings.AdvertisedIp);
                     }
                     else
                     {
                         siloBuilder.ConfigureEndpointOptions(
-                            environmentVariablesService.GetEcsContainerMetadataUri());
+                            orleansSettings.EcsContainerMetadataUri);
                     }
-                    
+
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
 
                     /*Registering Feature Management, to allow DI of IFeatureManagerSnapshot in HelloWorld grain.
-                     Using built in Percentage filter to demonstrate a feature being on/off.*/
+                        Using built in Percentage filter to demonstrate a feature being on/off.*/
                     siloBuilder.ConfigureServices(serviceCollection =>
                     {
                         serviceCollection.AddFeatureManagement()
                             .AddFeatureFilter<PercentageFilter>();
                     });
                 })
-                .ConfigureLogging(logging => logging.AddConsole())
-
-                //Registering a Configuration source for Feature Management.
-                .ConfigureAppConfiguration(config => { config.AddJsonFile("appsettings.json"); })
                 .RunConsoleAsync();
         }
     }

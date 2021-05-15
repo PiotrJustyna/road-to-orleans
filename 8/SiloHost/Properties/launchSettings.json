@@ -1,0 +1,17 @@
+{
+  "profiles": {
+    "SiloHost": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "OrleansHostSettings__AdvertisedIp": "",
+        "OrleansHostSettings__SiloPort": "2001",
+        "OrleansHostSettings__GatewayPort": "3001",
+        "OrleansHostSettings__DashboardPort": "8081",
+        "OrleansHostSettings__AwsRegion": "us-west-2",
+        "OrleansHostSettings__MembershipTableName": "some-table-name",
+        "OrleansHostSettings__IsLocal": "true",
+        "OrleansHostSettings__EcsContainerMetadataUri": ""
+      }
+    }
+  }
+}
