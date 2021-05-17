@@ -18,11 +18,12 @@ namespace Api
 
         public ClusterClientHostedService(
             ILogger<ClusterClientHostedService> logger,
-            ILoggerProvider loggerProvider)
+            ILoggerProvider loggerProvider,
+            IOrleansSettings orleansSettings)
         {
             _logger = logger;
             _logger.LogInformation("creating cluster client...");
-            IEnvironmentVariables environmentVariablesService = new EnvironmentVariables();
+
             Client = new ClientBuilder()
                 .Configure<ClusterOptions>(clusterOptions =>
                 {
@@ -31,8 +32,8 @@ namespace Api
                 }).UseDynamoDBClustering(builder =>
                 {
                     //Connect to membership table in dynamo
-                    builder.TableName = environmentVariablesService.GetMembershipTable();
-                    builder.Service = environmentVariablesService.GetAwsRegion();
+                    builder.TableName = orleansSettings.MembershipTable;
+                    builder.Service = orleansSettings.AwsRegion;
                 })
                 .ConfigureLogging(loggingBuilder =>
                     loggingBuilder.SetMinimumLevel(LogLevel.Information).AddProvider(loggerProvider))
