@@ -47,6 +47,7 @@ namespace SiloHost
                         {
                             options.UseJson = true;
                             options.Service = "us-west-2";
+                            options.TableName = "grainPersistenceTable";
                         });
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
