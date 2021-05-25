@@ -15,7 +15,8 @@
 	"extensions": [
 		"ms-vscode.csharp",
 		"ms-dotnettools.csharp",
-		"yzhang.markdown-all-in-one"
+		"yzhang.markdown-all-in-one",
+		"bierner.markdown-emoji"
 	],
 
 	"remoteUser": "vscode",
