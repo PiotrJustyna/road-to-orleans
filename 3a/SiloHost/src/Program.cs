@@ -46,7 +46,6 @@ namespace SiloHost
                         configureOptions: options =>
                         {
                             options.UseJson = true;
-                            options.TableName
                             options.Service = "us-west-2";
                             options.TableName = "grainPersistenceTable";
                         });
