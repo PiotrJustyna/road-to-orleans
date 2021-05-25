@@ -28,13 +28,14 @@ namespace SiloHost
                                        throw new Exception("Dashboard port cannot be null");
             var extractedPrimaryPort = Environment.GetEnvironmentVariable("PRIMARYPORT") ?? throw new Exception("Primary port cannot be null");
             // For the sake of simplicity, a primary silo is used here (even though all silos are peers in the cluster) as in-memory cluster membership emulation was utilised in this example.
-            var primaryAddress = Environment.GetEnvironmentVariable("PRIMARYADDRESS") ?? throw new Exception("Primary address cannot be null");
+            // If the primary address is not provided, we're assuming all silos in the cluster are running under one IP.
+            var primaryAddress = Environment.GetEnvironmentVariable("PRIMARYADDRESS");
 
             var siloPort = int.Parse(extractedSiloPort);
             var developmentPeerPort = int.Parse(extractedPrimaryPort);
             var gatewayPort = int.Parse(extractedGatewayPort);
             var dashboardPort = int.Parse(extractDashboardPort);
-            var primaryIp = IPAddress.Parse(primaryAddress);
+            var primaryIp = primaryAddress == null ? advertisedIpAddress : IPAddress.Parse(primaryAddress);
 
             var primarySiloEndpoint = new IPEndPoint(primaryIp, developmentPeerPort);
 
