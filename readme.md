@@ -32,7 +32,7 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 | [solution6](6/readme.md) | Solution5 where the cluster is being called from a Web API. | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code | n - web api |||
 | [solution7](7/readme.md) | Solution6 + [FeatureManagement](https://www.nuget.org/packages/Microsoft.FeatureManagement/), dependency injection in grains, unit tests for grains using [OrleansTestKit](https://www.nuget.org/packages/OrleansTestKit/). | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code | n - web api |||
 | [solution8](8/readme.md) | Solution7 + Persistent Membership Table in DynamoEB, ECS hosting, CloudFormation Template. | :white_check_mark: | Dynamo | n | 1 C# grain interfacing F# library code | n - web api |||
-| [solution9](9/readme.md) | Solution7 + Timers. | :white_check_mark: | in-memory | n | 2 C# grains interfacing F# library code | n - web api |||
+| [solution9](9/readme.md) | Solution6 + Timers. | :white_check_mark: | in-memory | n | 1 C# grains interfacing F# library code | n - web api |||
 
 \*visual studio code support:
 * `[ctrl/cmd]+shift+b`: builds selected projects
