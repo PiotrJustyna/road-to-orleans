@@ -44,6 +44,10 @@ hide empty description
       Solution8 : ECS hosting, CloudFormation Template.
     }
 
+    state "solution 9" as Solution9{
+      Solution9 : Solution6 illustrating Timers
+    }
+
     [*] --> Solution1
     Solution1 --> Solution2
     Solution2 --> Solution3
@@ -52,6 +56,7 @@ hide empty description
     Solution4 --> Solution5
     Solution5 --> Solution6
     Solution6 --> Solution7
+    Solution6 --> Solution9
     Solution7 --> Solution8
     Solution8 --> [*]
   }
