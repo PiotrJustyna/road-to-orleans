@@ -4,6 +4,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Grains;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans;
@@ -41,6 +42,9 @@ namespace SiloHost
                         endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, 2000);
                         endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, siloEndpointConfiguration.GatewayPort);
                     });
+                    siloBuilder.ConfigureServices(services =>
+                        services.Configure<TelemetryOptions>(
+                            telemetryOptions => telemetryOptions.AddConsumer<DatadogTelemetryConsumer>()));
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
                 })

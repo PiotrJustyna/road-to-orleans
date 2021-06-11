@@ -71,10 +71,11 @@ namespace SiloHost
             IDictionary<string, string> properties = null)
         {
             if (ShouldRecord(name))
-
             {
-                _service.Distribution(FormatMetricName(name), value.TotalMilliseconds, tags:
-                    GetTags(properties));
+                _service.Distribution(
+                    FormatMetricName(name),
+                    value.TotalMilliseconds,
+                    tags: GetTags(properties)?.ToArray());
             }
         }
 
@@ -88,7 +89,7 @@ namespace SiloHost
                 _service.Distribution(
                     FormatMetricName(name),
                     value,
-                    tags: GetTags(properties));
+                    tags: GetTags(properties)?.ToArray());
             }
         }
 
@@ -102,15 +103,11 @@ namespace SiloHost
 
         private string FormatMetricName(string name) => $"orleans.{name}";
 
-        private string[] GetTags(IDictionary<string, string> properties)
+        private IEnumerable<string> GetTags(IDictionary<string, string> properties)
         {
-            if (properties is null)
-            {
-                return null;
-            }
-
-            return properties
-                .Select(kvp => $"{kvp.Key.Replace(':', '_')}:{kvp.Value.Replace(':', '_')}").ToArray();
+            return properties?
+                .Select(kvp =>
+                    $"{kvp.Key.Replace(':', '_')}:{kvp.Value.Replace(':', '_')}");
         }
     }
 }
