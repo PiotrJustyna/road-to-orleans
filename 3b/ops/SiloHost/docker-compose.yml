@@ -8,8 +8,6 @@ services:
     container_name: datadog-agent
     links:
       - silo-host
-    ports:
-      - 127.0.0.1:8126:8126/tcp
     image: gcr.io/datadoghq/agent:latest
     networks:
       - hostnet
