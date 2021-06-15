@@ -1,0 +1,38 @@
+version: "3"
+
+networks:
+  hostnet:
+
+services:
+  datadog-agent:
+    container_name: datadog-agent
+    links:
+      - silo-host
+    ports:
+      - 127.0.0.1:8126:8126/tcp
+    image: gcr.io/datadoghq/agent:latest
+    networks:
+      - hostnet
+    environment:
+      - DD_API_KEY=<DD_API_KEY>
+      - DD_APM_ENABLED=true
+      - DD_APM_NON_LOCAL_TRAFFIC=true
+      - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+
+  silo-host:
+    container_name: silo-host
+    image: silo-host
+    networks:
+      - hostnet
+    ports:
+      - 8080:8080
+    environment:
+      - DD_AGENT_HOST=datadog-agent
+      - DD_VERSION=1.0
+      - DD_SERVICE=orleans3b
+      - DD_ENV=dev
+      - GATEWAYPORT=3000
