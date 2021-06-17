@@ -6,7 +6,7 @@ using StatsdClient;
 
 namespace SiloHost
 {
-    public class DatadogTelemetryConsumer : ITelemetryConsumer, IDisposable
+    public class DatadogTelemetryConsumer : IMetricTelemetryConsumer, IDisposable
     {
         private readonly DogStatsdService _service;
 
@@ -99,7 +99,9 @@ namespace SiloHost
 
         public void Dispose() => _service.Dispose();
 
-        private bool ShouldRecord(string name) => _metricPrefixes.Any(name.StartsWith);
+        // private bool ShouldRecord(string name) => _metricPrefixes.Any(name.StartsWith);
+
+        private bool ShouldRecord(string name) => true;
 
         private string FormatMetricName(string name) => $"orleans.{name}";
 
