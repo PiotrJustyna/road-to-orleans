@@ -42,6 +42,6 @@ namespace SiloHost
 
         private string[] ToTags(IDictionary<string, string> properties) => properties?.Select(ToTag).ToArray();
 
-        private static string ToTag(KeyValuePair<string, string> property) => $"{property.Key}:{property.Value}";
+        private static string ToTag(KeyValuePair<string, string> property) => $"{property.Key.Replace(':', '_')}:{property.Value.Replace(':', '_')}";
     }
 }
