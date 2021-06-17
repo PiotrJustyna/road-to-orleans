@@ -9,7 +9,7 @@ services:
     networks:
       - hostnet
     environment:
-      - DD_API_KEY=<API_KEY_HERE>
+      - DD_API_KEY=${DATADOG_API_KEY}
       - DD_APM_ENABLED=true
       - DD_APM_NON_LOCAL_TRAFFIC=true
       - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
@@ -20,13 +20,18 @@ services:
 
   silo-host:
     image: silo-host
+    links:
+      - datadog-agent
     networks:
       - hostnet
     ports:
-      - 8080:8080
+      - ${DASHBOARDPORT}:${DASHBOARDPORT}
+      - ${GATEWAYPORT}:${GATEWAYPORT}
     environment:
       - DD_AGENT_HOST=datadog-agent
       - DD_VERSION=1.0
-      - DD_SERVICE=orleans3b
-      - DD_ENV=dev
-      - GATEWAYPORT=3000
+      - DD_SERVICE=${DATADOG_SERVICE_NAME}
+      - DD_ENV=${DATADOG_ENVIRONMENT}
+      - ADVERTISEDIP=${ADVERTISEDIP}
+      - GATEWAYPORT=${GATEWAYPORT}
+      - DASHBOARDPORT=${DASHBOARDPORT}

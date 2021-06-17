@@ -10,3 +10,4 @@ plot.html
 results.bin
 **/.vs
 RoadToOrleans.sln.DotSettings.user
+*.env
