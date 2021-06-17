@@ -5,16 +5,11 @@ networks:
 
 services:
   datadog-agent:
-    container_name: datadog-agent
-    links:
-      - silo-host
-    ports:
-      - 127.0.0.1:8126:8126/tcp
     image: gcr.io/datadoghq/agent:latest
     networks:
       - hostnet
     environment:
-      - DD_API_KEY=<DD_API_KEY>
+      - DD_API_KEY=<API_KEY_HERE>
       - DD_APM_ENABLED=true
       - DD_APM_NON_LOCAL_TRAFFIC=true
       - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
@@ -24,7 +19,6 @@ services:
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
 
   silo-host:
-    container_name: silo-host
     image: silo-host
     networks:
       - hostnet
