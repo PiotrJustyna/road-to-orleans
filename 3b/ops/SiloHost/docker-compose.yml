@@ -28,6 +28,14 @@ services:
       - ${DASHBOARDPORT}:${DASHBOARDPORT}
       - ${GATEWAYPORT}:${GATEWAYPORT}
     environment:
+      - CORECLR_ENABLE_PROFILING=1
+      - CORECLR_PROFILER={846F5F1C-F9AE-4B07-969E-05C26BC060D8}
+      - CORECLR_PROFILER_PATH=/opt/datadog/Datadog.Trace.ClrProfiler.Native.so
+      - DD_INTEGRATIONS=/opt/datadog/integrations.json
+      - DD_DOTNET_TRACER_HOME=/opt/datadog
+      - DD_LOGS_INJECTION=true
+      - DD_TRACE_SAMPLE_RATE=1
+      - DD_RUNTIME_METRICS_ENABLED=true
       - DD_AGENT_HOST=datadog-agent
       - DD_VERSION=1.0
       - DD_SERVICE=${DATADOG_SERVICE_NAME}
