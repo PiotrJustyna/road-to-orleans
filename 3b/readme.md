@@ -1,6 +1,6 @@
 # readme
 
-This example builds on ttop of Solution 3 by introducing datadog as an APM tool. The goal is to demonstrate how:
+This example builds on top of Solution 3 by introducing datadog as an APM tool. The goal is to demonstrate how to:
 
 * send orleans metrics to datadog
 * implement `IMetricTelemetryConsumer` with datadog
