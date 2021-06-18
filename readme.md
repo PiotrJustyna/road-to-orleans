@@ -13,11 +13,11 @@ This repository illustrates the road to orleans with practical, real-life exampl
 ## build & run
 
 * IDE: build + run (first the cluster, then the client)
-* docker (where supported): `run.sh`
+* `run-[client/silo]-[docker/local].sh`
 
 ## monitoring
 
-Silo dashboards are available by default on `localhost:8080` unless configured otherwise in the code/`dockerfile`/`run.sh`.
+Silo dashboards are available by default on `localhost:8080` unless configured otherwise in the code/`dockerfile`/`run-[client/silo]-[docker/local].sh`.
 
 ## code
 
@@ -29,6 +29,7 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 | [solution2](2/readme.md) | One basic silo, one grain, one console client. | - | - | 1 | 1 C# grain | 1 - console | :white_check_mark: | :white_check_mark: |
 | [solution3](3/readme.md) | One basic silo, one grain, one console client, everything containerized. | :white_check_mark: | - | 1 | 1 C# grain | 1 - console | :white_check_mark: | :white_check_mark: |
 | [solution3a](3a/readme.md) | Solution3 + grain persistence. | :white_check_mark: | - | 1 | 1 C# grain | 1 - console | :white_check_mark: | :white_check_mark: |
+| [solution3b](3b/readme.md) | Solution3 + datadog APM. | :white_check_mark: | - | 1 | 1 C# grain | 1 - console |||
 | [solution4](4/readme.md) | First in-memory clustering example. Many silos, many clients. | :white_check_mark: | in-memory | n | 1 C# grain | n - console | :white_check_mark: | :white_check_mark: |
 | [solution5](5/readme.md) | Solution4 where the grain interfaces F# library code. Additionally, F# unit tests covering the F# library code. | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code. | n - console |||
 | [solution6](6/readme.md) | Solution5 where the cluster is being called from a Web API. | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code | n - web api |||

@@ -1,4 +1,4 @@
-@startuml "road-to-orleans"
+@startuml
 hide empty description
   state "road to orleans" as PhaseA{
     state "solution 1" as Solution1{
@@ -17,6 +17,10 @@ hide empty description
 
     state "solution 3a" as Solution3a{
       Solution3a : Solution3 + grain persistence.
+    }
+
+    state "solution 3b" as Solution3b{
+      Solution3b : Solution3 + datadog APM.
     }
 
     state "solution 4" as Solution4{
@@ -48,6 +52,7 @@ hide empty description
     Solution1 --> Solution2
     Solution2 --> Solution3
     Solution3 --> Solution3a
+    Solution3 --> Solution3b
     Solution3 --> Solution4
     Solution4 --> Solution5
     Solution5 --> Solution6
