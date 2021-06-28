@@ -17,7 +17,7 @@ This repository illustrates the road to orleans with practical, real-life exampl
 
 ## monitoring
 
-Silo dashboards are available by default on `localhost:8080` unless configured otherwise in the code/`dockerfile`/`run-[client/silo]-[docker/local].sh`.
+Silo dashboards are available by default on `localhost:8080` unless configured otherwise in the code/`dockerfile`/`run-[client/silo]-[docker/local].sh`. Additionally, Datadog APM support is illustrated in solution 3b.
 
 ## code
 
