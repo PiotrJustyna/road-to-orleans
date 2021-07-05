@@ -22,6 +22,8 @@ The easiest way to run the code is to execute:
   ![](./img/docker-compose-output.png)
 * run-client-docker.sh - this starts the orleans client, no changes there
 
+The code can also be ran locally or in remote containers provided that the `SiloHost` can communicate with datadog agent.
+
 ## metrics
 
 There are 167 metrics the telemetry consumer exposes:
