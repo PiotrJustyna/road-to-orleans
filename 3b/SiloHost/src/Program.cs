@@ -21,7 +21,7 @@ namespace SiloHost
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var advertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
             var gatewayPort = int.Parse(Environment.GetEnvironmentVariable("GATEWAYPORT") ?? "3000");
-            
+
             var siloEndpointConfiguration = GetSiloEndpointConfiguration(advertisedIpAddress, gatewayPort);
 
             return new HostBuilder()
@@ -40,11 +40,17 @@ namespace SiloHost
                         endpointOptions.SiloPort = siloEndpointConfiguration.SiloPort;
                         endpointOptions.GatewayPort = siloEndpointConfiguration.GatewayPort;
                         endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, 2000);
-                        endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, siloEndpointConfiguration.GatewayPort);
+                        endpointOptions.GatewayListeningEndpoint =
+                            new IPEndPoint(IPAddress.Any, siloEndpointConfiguration.GatewayPort);
                     });
                     siloBuilder.ConfigureServices(services =>
+                    {
+                        // This is how the `DatadogTelemetryConsumer` is configured.
+                        // services.AddSingleton(serviceProvider =>
+                        //     new DatadogTelemetryConsumer(new[] {"App.Requests.Total.Requests.Current"}));
                         services.Configure<TelemetryOptions>(
-                            telemetryOptions => telemetryOptions.AddConsumer<DatadogTelemetryConsumer>()));
+                            telemetryOptions => telemetryOptions.AddConsumer<DatadogTelemetryConsumer>());
+                    });
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
                 })
@@ -56,7 +62,6 @@ namespace SiloHost
             IPAddress advertisedAddress,
             int gatewayPort)
         {
-
             return new SiloEndpointConfiguration(
                 advertisedAddress,
                 2000,
@@ -70,11 +75,11 @@ namespace SiloHost
             {
                 if (network.OperationalStatus != OperationalStatus.Up)
                     continue;
-            
+
                 var properties = network.GetIPProperties();
                 if (properties.GatewayAddresses.Count == 0)
                     continue;
-            
+
                 foreach (var address in properties.UnicastAddresses)
                 {
                     if (address.Address.AddressFamily == AddressFamily.InterNetwork &&
@@ -84,7 +89,7 @@ namespace SiloHost
                     }
                 }
             }
-            
+
             return null;
         }
     }
