@@ -36,8 +36,13 @@ namespace SiloHost
         /// Careful, there could be tens of metrics tracked!
         /// Metric names are case sensitive.
         /// </param>
-        public DatadogTelemetryConsumer(string[] namesOfRelevantMetrics) : this()
+        public DatadogTelemetryConsumer(
+            string[] namesOfRelevantMetrics,
+            StatsdConfig statsdConfig)
         {
+            _service = new DogStatsdService();
+            _service.Configure(statsdConfig);
+            
             _namesOfRelevantMetrics = namesOfRelevantMetrics;
         }
 

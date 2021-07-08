@@ -11,6 +11,7 @@ using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Statistics;
+using StatsdClient;
 
 namespace SiloHost
 {
@@ -46,8 +47,16 @@ namespace SiloHost
                     siloBuilder.ConfigureServices(services =>
                     {
                         // This is how the `DatadogTelemetryConsumer` is configured.
+                        // More on statsd configuration here:
+                        // https://docs.datadoghq.com/developers/service_checks/dogstatsd_service_checks_submission/
                         // services.AddSingleton(serviceProvider =>
-                        //     new DatadogTelemetryConsumer(new[] {"App.Requests.Total.Requests.Current"}));
+                        //     new DatadogTelemetryConsumer(
+                        //         new[] {"App.Requests.Total.Requests.Current"},
+                        //         new StatsdConfig
+                        //         {
+                        //             StatsdServerName = "127.0.0.1",
+                        //             StatsdPort = 8125
+                        //         }));
                         services.Configure<TelemetryOptions>(
                             telemetryOptions => telemetryOptions.AddConsumer<DatadogTelemetryConsumer>());
                     });

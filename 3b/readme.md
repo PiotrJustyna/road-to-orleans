@@ -23,16 +23,24 @@ The consumer has two constructors:
 * `DatadogTelemetryConsumer(string[] namesOfRelevantMetrics)` - accepts a collection of metric names to be tracked.
 
   ```c#
-  siloBuilder.ConfigureServices(services =>
-  {
+    siloBuilder.ConfigureServices(services =>
+    {
       services.AddSingleton(serviceProvider =>
-           new DatadogTelemetryConsumer(new[] {"App.Requests.Total.Requests.Current"}));
+          new DatadogTelemetryConsumer(
+              new[] {"App.Requests.Total.Requests.Current"},
+              new StatsdConfig
+              {
+                  StatsdServerName = "127.0.0.1",
+                  StatsdPort = 8125
+              }));
       services.Configure<TelemetryOptions>(
           telemetryOptions => telemetryOptions.AddConsumer<DatadogTelemetryConsumer>());
-  });
+    });
   ```
 
   Here, Orleans will detect that `DatadogTelemetryConsumer` is already registered in the collection of silo's services and will not instantiate it again.
+
+  More on statsd configuration here: https://docs.datadoghq.com/developers/service_checks/dogstatsd_service_checks_submission/
 
 * `DatadogTelemetryConsumer()` - Orleans uses this one by default if `DatadogTelemetryConsumer` instance cannot be found in the collection of silo's services.
 
