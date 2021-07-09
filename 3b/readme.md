@@ -20,7 +20,7 @@ We now have a [docker-compose.yml](./ops/SiloHost/docker-compose.yml) file which
 
 The consumer has two constructors:
 
-* `DatadogTelemetryConsumer(string[] namesOfRelevantMetrics)` - accepts a collection of metric names to be tracked.
+* `DatadogTelemetryConsumer(string[] namesOfRelevantMetrics, StatsdConfig statsdConfig)` - accepts a collection of metric names to be tracked and datadog statsd configuration
 
   ```c#
     siloBuilder.ConfigureServices(services =>
