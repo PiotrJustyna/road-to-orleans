@@ -52,3 +52,7 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 * https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/Orleans-MSR-TR-2014-41.pdf - virtual actors paper
 * https://github.com/OrleansContrib - orbiting repositories (e.g. orleans dashboard)
 * https://github.com/PiotrJustyna/FeatureManagementSandbox - more involved use cases for [FeatureManagement](https://www.nuget.org/packages/Microsoft.FeatureManagement/)
+
+## to watch
+
+* https://youtu.be/GKXiGhFBd90 - observability: logs, tracing, metrics
