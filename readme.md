@@ -56,3 +56,4 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 ## to watch
 
 * https://youtu.be/GKXiGhFBd90 - observability: logs, tracing, metrics
+* https://youtu.be/R0ODfwU6MzQ - orleans: deep dive
