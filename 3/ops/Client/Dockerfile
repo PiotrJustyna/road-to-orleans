@@ -10,5 +10,12 @@ COPY ./ops/Client/entrypoint.sh /Client/
 
 RUN dotnet publish --verbosity normal "/src/Client/Client.csproj" --configuration Release --output /Client
 
-CMD ["dotnet", "/Client/Client.dll"]
-ENTRYPOINT ["/Client/entrypoint.sh"]
+
+# final stage/image
+FROM mcr.microsoft.com/dotnet/runtime:5.0-alpine
+
+WORKDIR /Client
+COPY --from=build /Client ./
+
+CMD ["dotnet", "Client.dll"]
+ENTRYPOINT ["./entrypoint.sh"]
