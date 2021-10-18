@@ -16,7 +16,7 @@ namespace SiloHost
         public static Task Main()
         {
             var siloEndpointConfiguration = GetSiloEndpointConfiguration();
-            
+
             return new HostBuilder()
                 .UseOrleans(siloBuilder =>
                 {
@@ -39,13 +39,10 @@ namespace SiloHost
                 .ConfigureLogging(logging => logging.AddConsole())
                 .RunConsoleAsync();
         }
-        
+
         private static SiloEndpointConfiguration GetSiloEndpointConfiguration()
         {
-            return new SiloEndpointConfiguration(
-                GetLocalIpAddress(),
-                2000,
-                3000);
+            return new(GetLocalIpAddress(), 2000, 3000);
         }
 
         private static IPAddress GetLocalIpAddress()
