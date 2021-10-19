@@ -24,8 +24,8 @@ namespace SiloHost
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var advertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
 
-            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT")?? throw new Exception("Gateway port cannot be null");
-            var extractedSiloPort = Environment.GetEnvironmentVariable("SILOPORT")?? throw new Exception("Silo port cannot be null");
+            var extractedGatewayPort = Environment.GetEnvironmentVariable("GATEWAYPORT") ?? throw new Exception("Gateway port cannot be null");
+            var extractedSiloPort = Environment.GetEnvironmentVariable("SILOPORT") ?? throw new Exception("Silo port cannot be null");
             var extractDashboardPort = Environment.GetEnvironmentVariable("DASHBOARDPORT") ?? throw new Exception("Dashboard port cannot be null");
             var extractedPrimaryPort = Environment.GetEnvironmentVariable("PRIMARYPORT") ?? throw new Exception("Primary port cannot be null");
 
@@ -39,7 +39,7 @@ namespace SiloHost
 
             var primarySiloEndpoint = new IPEndPoint(primaryIp, primarySiloPort);
 
-            var siloEndpointConfiguration = new SiloEndpointConfiguration(advertisedIpAddress, siloPort, gatewayPort);
+            var siloEndpointConfiguration = new(advertisedIpAddress, siloPort, gatewayPort);
 
             return new HostBuilder()
                 .UseOrleans(siloBuilder =>
@@ -77,7 +77,7 @@ namespace SiloHost
                     });
                 })
                 .ConfigureLogging(logging => logging.AddConsole())
-                
+
                 //Registering a Configuration source for Feature Management.
                 .ConfigureAppConfiguration(config =>
                 {
