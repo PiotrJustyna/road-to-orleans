@@ -20,7 +20,7 @@ namespace SiloHost
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var advertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
             var gatewayPort = int.Parse(Environment.GetEnvironmentVariable("GATEWAYPORT") ?? "3000");
-            
+
             var siloEndpointConfiguration = GetSiloEndpointConfiguration(advertisedIpAddress, gatewayPort);
 
             return new HostBuilder()
@@ -52,11 +52,7 @@ namespace SiloHost
             IPAddress advertisedAddress,
             int gatewayPort)
         {
-
-            return new SiloEndpointConfiguration(
-                advertisedAddress,
-                2000,
-                gatewayPort);
+            return new(advertisedAddress, 2000, gatewayPort);
         }
 
         private static IPAddress GetLocalIpAddress()
@@ -66,11 +62,11 @@ namespace SiloHost
             {
                 if (network.OperationalStatus != OperationalStatus.Up)
                     continue;
-            
+
                 var properties = network.GetIPProperties();
                 if (properties.GatewayAddresses.Count == 0)
                     continue;
-            
+
                 foreach (var address in properties.UnicastAddresses)
                 {
                     if (address.Address.AddressFamily == AddressFamily.InterNetwork &&
@@ -80,7 +76,7 @@ namespace SiloHost
                     }
                 }
             }
-            
+
             return null;
         }
     }

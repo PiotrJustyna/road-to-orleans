@@ -71,10 +71,7 @@ namespace SiloHost
             IPAddress advertisedAddress,
             int gatewayPort)
         {
-            return new SiloEndpointConfiguration(
-                advertisedAddress,
-                2000,
-                gatewayPort);
+            return new(advertisedAddress, 2000, gatewayPort);
         }
 
         private static IPAddress GetLocalIpAddress()
