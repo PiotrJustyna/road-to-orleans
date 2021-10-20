@@ -15,5 +15,12 @@ RUN dotnet publish --verbosity normal "/src/SiloHost/SiloHost.csproj" --configur
 
 EXPOSE 3000 8080
 
-CMD ["dotnet", "/SiloHost/SiloHost.dll"]
-ENTRYPOINT ["/SiloHost/entrypoint.sh"]
+# final stage/image
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
+
+WORKDIR /SiloHost
+COPY --from=build /SiloHost ./
+EXPOSE 3000 8080
+
+CMD ["dotnet", "SiloHost.dll"]
+ENTRYPOINT ["./entrypoint.sh"]
