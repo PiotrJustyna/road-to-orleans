@@ -9,5 +9,5 @@ MEMBERSHIPTABLE="test-orleans-table"
 AWSREGION="us-west-2"
 
 docker build -t client-cluster -f ./ops/Api/Dockerfile ./ &&
-  docker run -it -p 5432:80 -e AWS_REGION -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN -e AWS_ACCESS_KEY_ID -e\
+  docker run -it -p 5432:80 -e AWS_REGION -e AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN -e AWS_ACCESS_KEY_ID \
    -e MEMBERSHIPTABLE=$MEMBERSHIPTABLE -e AWSREGION=$AWSREGION --rm client-cluster 
