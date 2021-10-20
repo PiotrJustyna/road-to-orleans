@@ -37,7 +37,7 @@ namespace SiloHost
 
             var primarySiloEndpoint = new IPEndPoint(primaryIp, primarySiloPort);
 
-            var siloEndpointConfiguration = new(advertisedIpAddress, siloPort, gatewayPort);
+            SiloEndpointConfiguration siloEndpointConfiguration = new(advertisedIpAddress, siloPort, gatewayPort);
 
             return new HostBuilder()
                 .UseOrleans(siloBuilder =>
