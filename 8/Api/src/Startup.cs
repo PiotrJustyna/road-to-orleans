@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +22,6 @@ namespace Api
             services.AddSingleton<IHostedService>(_ => _.GetService<ClusterClientHostedService>());
             services.AddSingleton(_ => _.GetService<ClusterClientHostedService>().Client);
             services.AddControllers();
-
             var orleansSettings = Configuration.GetSection(nameof(OrleansSettings)).Get<OrleansSettings>();
             orleansSettings.Validate();
             services.AddSingleton<IOrleansSettings>(orleansSettings);
