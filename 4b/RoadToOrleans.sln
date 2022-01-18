@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiloHost", "SiloHost\SiloHost.csproj", "{F20FB6A8-AF43-43B0-A493-A31C790D2F80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{DAC801B9-F73D-4B9D-BD70-807D2EB36A05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{F20FB6A8-AF43-43B0-A493-A31C790D2F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F20FB6A8-AF43-43B0-A493-A31C790D2F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F20FB6A8-AF43-43B0-A493-A31C790D2F80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAC801B9-F73D-4B9D-BD70-807D2EB36A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAC801B9-F73D-4B9D-BD70-807D2EB36A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAC801B9-F73D-4B9D-BD70-807D2EB36A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAC801B9-F73D-4B9D-BD70-807D2EB36A05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
