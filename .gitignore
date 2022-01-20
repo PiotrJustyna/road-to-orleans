@@ -11,3 +11,4 @@ results.bin
 **/.vs
 RoadToOrleans.sln.DotSettings.user
 *.env
+*/UnitTests/SampleTestRun.xml

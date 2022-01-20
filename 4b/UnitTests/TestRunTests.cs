@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using Interfaces;
@@ -39,6 +40,40 @@ namespace UnitTests
                     {
                         RunDeploymentRoot = GenerateString()
                     }
+                },
+                TestResults = new Results(),
+                TestDefinitions = new TestDefinitions(),
+                TestEntries = new List<TestEntry>
+                {
+                    new()
+                    {
+                        TestId = GenerateString(),
+                        ExecutionId = GenerateString(),
+                        TestListId = GenerateString()
+                    },
+                    new()
+                    {
+                        TestId = GenerateString(),
+                        ExecutionId = GenerateString(),
+                        TestListId = GenerateString()
+                    }
+                },
+                TestLists = new List<TestList>
+                {
+                    new()
+                    {
+                        Id = GenerateString(),
+                        Name = "Results Not in a List"
+                    },
+                    new()
+                    {
+                        Id = GenerateString(),
+                        Name = "All Loaded Results"
+                    }
+                },
+                ResultSummary = new ResultSummary
+                {
+                    Outcome = GenerateString()
                 }
             };
 
