@@ -39,16 +39,20 @@ let ipAddress () : Async<IPAddress> =
             }
     }
 
+let advertisedIpAddress () : Async<IPAddress> = raise(NotImplementedException())
+
+let siloPort () : Async<int> = raise(NotImplementedException())
+
+let gatewayPort () : Async<int> = raise(NotImplementedException())
+
+let primarySiloPort () : Async<int> = raise(NotImplementedException())
+
+let dashboardPort() : Async<int> = raise(NotImplementedException())
+
+let primarySiloEndpoint() : Async<IPEndPoint> = raise(NotImplementedException())
+
 [<EntryPoint>]
 let main args =
-    //    let builder = WebApplication.CreateBuilder(args)
-//    let app = builder.Build()
-//
-//    app.MapGet("/", Func<string>(fun () -> "Hello World!")) |> ignore
-//
-//    app.Run()
-//
-//    0 // Exit code
-    printfn $"{ipAddress ()}"
+    //TODO Add Orleans host
 
     0
