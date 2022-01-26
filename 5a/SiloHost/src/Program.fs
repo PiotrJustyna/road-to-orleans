@@ -39,7 +39,7 @@ let ipAddress () : Async<IPAddress> =
             }
     }
 
-let advertisedIpAddress () : Async<IPAddress> = raise(NotImplementedException())
+let advertisedIpAddress () : Async<IPAddress> = ipAddress ()
 
 let siloPort () : Async<int> = raise(NotImplementedException())
 
