@@ -25,7 +25,7 @@ let localIpAddress () : Async<IPAddress> =
             |> Seq.head
     }
 
-let ipAddress () : Async<IPAddress> =
+let advertisedIpAddress () : Async<IPAddress> =
     async {
         let parsed, environmentIp =
             Environment.GetEnvironmentVariable("ADVERTISEDIP")
@@ -38,8 +38,6 @@ let ipAddress () : Async<IPAddress> =
                 | false -> return! localIpAddress ()
             }
     }
-
-let advertisedIpAddress () : Async<IPAddress> = ipAddress ()
 
 let siloPort () : Async<int> =
     async {
