@@ -41,38 +41,50 @@ let advertisedIpAddress () : Async<IPAddress> =
 
 let siloPort () : Async<int> =
     async {
-        let siloPort =
+        let parsed, siloPort =
             Environment.GetEnvironmentVariable("SILOPORT")
-            |> int
+            |> Int32.TryParse
 
-        return siloPort
+        return
+            match parsed with
+            | true -> siloPort
+            | false -> raise (ArgumentException("SILOPORT environment variable not set"))
     }
 
 let gatewayPort () : Async<int> =
     async {
-        let gatewayPort =
+        let parsed, gatewayPort =
             Environment.GetEnvironmentVariable("GATEWAYPORT")
-            |> int
+            |> Int32.TryParse
 
-        return gatewayPort
+        return
+            match parsed with
+            | true -> gatewayPort
+            | false -> raise (ArgumentException("GATEWAYPORT environment variable not set"))
     }
 
 let primarySiloPort () : Async<int> =
     async {
-        let primarySiloPort =
+        let parsed, primarySiloPort =
             Environment.GetEnvironmentVariable("PRIMARYPORT")
-            |> int
+            |> Int32.TryParse
 
-        return primarySiloPort
+        return
+            match parsed with
+            | true -> primarySiloPort
+            | false -> raise (ArgumentException("PRIMARYPORT environment variable not set"))
     }
 
 let dashboardPort () : Async<int> =
     async {
-        let dashboardPort =
+        let parsed, dashboardPort =
             Environment.GetEnvironmentVariable("DASHBOARDPORT")
-            |> int
+            |> Int32.TryParse
 
-        return dashboardPort
+        return
+            match parsed with
+            | true -> dashboardPort
+            | false -> raise (ArgumentException("DASHBOARDPORT environment variable not set"))
     }
 
 [<EntryPoint>]
