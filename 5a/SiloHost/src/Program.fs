@@ -41,11 +41,11 @@ let advertisedIpAddress () : Async<IPAddress> =
 
 let siloPort () : Async<int> =
     async {
-        let gatewayPort =
+        let siloPort =
             Environment.GetEnvironmentVariable("SILOPORT")
             |> int
 
-        return gatewayPort
+        return siloPort
     }
 
 let gatewayPort () : Async<int> =
@@ -59,20 +59,20 @@ let gatewayPort () : Async<int> =
 
 let primarySiloPort () : Async<int> =
     async {
-        let gatewayPort =
+        let primarySiloPort =
             Environment.GetEnvironmentVariable("PRIMARYPORT")
             |> int
 
-        return gatewayPort
+        return primarySiloPort
     }
 
 let dashboardPort () : Async<int> =
     async {
-        let gatewayPort =
+        let dashboardPort =
             Environment.GetEnvironmentVariable("DASHBOARDPORT")
             |> int
 
-        return gatewayPort
+        return dashboardPort
     }
 
 [<EntryPoint>]
