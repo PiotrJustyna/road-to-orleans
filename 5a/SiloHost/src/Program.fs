@@ -41,22 +41,29 @@ let ipAddress () : Async<IPAddress> =
 
 let advertisedIpAddress () : Async<IPAddress> = ipAddress ()
 
-let siloPort () : Async<int> = raise(NotImplementedException())
+let siloPort () : Async<int> =
+    async {
+        let gatewayPort =
+            Environment.GetEnvironmentVariable("SILOPORT")
+            |> int
+
+        return gatewayPort
+    }
 
 let gatewayPort () : Async<int> =
     async {
         let gatewayPort =
             Environment.GetEnvironmentVariable("GATEWAYPORT")
             |> int
-            
+
         return gatewayPort
     }
 
-let primarySiloPort () : Async<int> = raise(NotImplementedException())
+let primarySiloPort () : Async<int> = raise (NotImplementedException())
 
-let dashboardPort() : Async<int> = raise(NotImplementedException())
+let dashboardPort () : Async<int> = raise (NotImplementedException())
 
-let primarySiloEndpoint() : Async<IPEndPoint> = raise(NotImplementedException())
+let primarySiloEndpoint () : Async<IPEndPoint> = raise (NotImplementedException())
 
 [<EntryPoint>]
 let main args =
