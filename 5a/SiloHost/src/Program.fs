@@ -25,7 +25,7 @@ let localIpAddress () : Async<IPAddress> =
             |> Seq.head
     }
 
-let ipAddress () : Async<IPAddress> =
+let advertisedIpAddress () : Async<IPAddress> =
     async {
         let parsed, environmentIp =
             Environment.GetEnvironmentVariable("ADVERTISEDIP")
@@ -39,20 +39,85 @@ let ipAddress () : Async<IPAddress> =
             }
     }
 
-let advertisedIpAddress () : Async<IPAddress> = raise(NotImplementedException())
+let siloPort () : Async<int> =
+    async {
+        let parsed, siloPort =
+            Environment.GetEnvironmentVariable("SILOPORT")
+            |> Int32.TryParse
 
-let siloPort () : Async<int> = raise(NotImplementedException())
+        return
+            match parsed with
+            | true -> siloPort
+            | false -> raise (ArgumentException("SILOPORT environment variable not set"))
+    }
 
-let gatewayPort () : Async<int> = raise(NotImplementedException())
+let gatewayPort () : Async<int> =
+    async {
+        let parsed, gatewayPort =
+            Environment.GetEnvironmentVariable("GATEWAYPORT")
+            |> Int32.TryParse
 
-let primarySiloPort () : Async<int> = raise(NotImplementedException())
+        return
+            match parsed with
+            | true -> gatewayPort
+            | false -> raise (ArgumentException("GATEWAYPORT environment variable not set"))
+    }
 
-let dashboardPort() : Async<int> = raise(NotImplementedException())
+let primarySiloPort () : Async<int> =
+    async {
+        let parsed, primarySiloPort =
+            Environment.GetEnvironmentVariable("PRIMARYPORT")
+            |> Int32.TryParse
 
-let primarySiloEndpoint() : Async<IPEndPoint> = raise(NotImplementedException())
+        return
+            match parsed with
+            | true -> primarySiloPort
+            | false -> raise (ArgumentException("PRIMARYPORT environment variable not set"))
+    }
+
+let dashboardPort () : Async<int> =
+    async {
+        let parsed, dashboardPort =
+            Environment.GetEnvironmentVariable("DASHBOARDPORT")
+            |> Int32.TryParse
+
+        return
+            match parsed with
+            | true -> dashboardPort
+            | false -> raise (ArgumentException("DASHBOARDPORT environment variable not set"))
+    }
 
 [<EntryPoint>]
 let main args =
+    let portsAsync =
+        async {
+            let tasks =
+                [ siloPort ()
+                  gatewayPort ()
+                  primarySiloPort ()
+                  dashboardPort () ]
+
+            let! results = tasks |> Async.Parallel
+
+            let siloPort = results[0]
+            let gatewayPort = results[1]
+            let primarySiloPort = results[2]
+            let dashboardPort = results[3]
+
+            return siloPort, gatewayPort, primarySiloPort, dashboardPort
+        }
+
+    let ipAddress =
+        advertisedIpAddress () |> Async.RunSynchronously
+
+    let siloPort, gatewayPort, primarySiloPort, dashboardPort = portsAsync |> Async.RunSynchronously
+    printfn $"IP Address: {ipAddress.ToString()}"
+    printfn $"Silo Port: {siloPort}"
+    printfn $"Gateway Port: {gatewayPort}"
+    printfn $"Primary Silo Port: {primarySiloPort}"
+    printfn $"Dashboard Port: {dashboardPort}"
+
     //TODO Add Orleans host
+
 
     0
