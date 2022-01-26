@@ -43,7 +43,14 @@ let advertisedIpAddress () : Async<IPAddress> = ipAddress ()
 
 let siloPort () : Async<int> = raise(NotImplementedException())
 
-let gatewayPort () : Async<int> = raise(NotImplementedException())
+let gatewayPort () : Async<int> =
+    async {
+        let gatewayPort =
+            Environment.GetEnvironmentVariable("GATEWAYPORT")
+            |> int
+            
+        return gatewayPort
+    }
 
 let primarySiloPort () : Async<int> = raise(NotImplementedException())
 
