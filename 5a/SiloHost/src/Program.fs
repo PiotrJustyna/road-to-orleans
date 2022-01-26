@@ -59,7 +59,14 @@ let gatewayPort () : Async<int> =
         return gatewayPort
     }
 
-let primarySiloPort () : Async<int> = raise (NotImplementedException())
+let primarySiloPort () : Async<int> =
+    async {
+        let gatewayPort =
+            Environment.GetEnvironmentVariable("PRIMARYPORT")
+            |> int
+
+        return gatewayPort
+    }
 
 let dashboardPort () : Async<int> = raise (NotImplementedException())
 
