@@ -89,6 +89,24 @@ let dashboardPort () : Async<int> =
 
 [<EntryPoint>]
 let main args =
+    let task = async {
+        let! ipAddress = advertisedIpAddress ()
+        let! siloPort = siloPort ()
+        let! gatewayPort = gatewayPort ()
+        let! primarySiloPort = primarySiloPort ()
+        let! dashboardPort = dashboardPort ()
+        
+        return ipAddress, siloPort, gatewayPort, primarySiloPort, dashboardPort
+    }
+    
+    let ipAddress, siloPort, gatewayPort, primarySiloPort, dashboardPort = task |> Async.RunSynchronously
+    printfn $"IP Address: {ipAddress.ToString()}"
+    printfn $"Silo Port: {siloPort}"
+    printfn $"Gateway Port: {gatewayPort}"
+    printfn $"Primary Silo Port: {primarySiloPort}"
+    printfn $"Dashboard Port: {dashboardPort}"
+    
     //TODO Add Orleans host
+
 
     0
