@@ -1,17 +1,17 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine as build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 as build
 
-COPY ./Client/Client.csproj /src/Client/Client.csproj
-COPY ./Client/src/* /src/Client/
+COPY ./Client/Client.fsproj /src/Client/Client.fsproj
+COPY ./Client/src/* /src/Client/src/
 
 COPY ./Interfaces/Interfaces.csproj /src/Interfaces/Interfaces.csproj
 COPY ./Interfaces/src/* /src/Interfaces/
 
 COPY ./ops/Client/entrypoint.sh /Client/
 
-RUN dotnet publish --verbosity normal "/src/Client/Client.csproj" --configuration Release --output /Client
+RUN dotnet publish --verbosity normal "/src/Client/Client.fsproj" --configuration Release --output /Client
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/runtime:5.0-alpine
+FROM mcr.microsoft.com/dotnet/runtime:6.0
 
 WORKDIR /Client
 COPY --from=build /Client ./
