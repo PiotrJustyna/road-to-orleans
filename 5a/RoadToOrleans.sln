@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grains", "Grains\Grains.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Interfaces\Interfaces.csproj", "{983292C4-9979-4203-B446-A3B6F35002C3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{04EB5BBD-0AD6-4100-8250-34647E04B6E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.fsproj", "{04EB5BBD-0AD6-4100-8250-34647E04B6E7}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Library", "Library\Library.fsproj", "{FC96C450-5EFC-4C60-BF49-4D24DB9B31AB}"
 EndProject
