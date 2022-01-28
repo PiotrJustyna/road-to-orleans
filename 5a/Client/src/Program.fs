@@ -92,7 +92,14 @@ let main _args =
     |> Async.AwaitTask
     |> Async.RunSynchronously
 
-    //    let grain = client.GetGrain<IHelloWorld>(0)
-    //    grain.SayHello("Popcorn!").Wait()
+    let grain = client.GetGrain<IHelloWorld>(0)
+    grain.SayHello("Popcorn!")
+    |> Async.AwaitTask
+    |> Async.RunSynchronously
+    |> ignore
+    
+    client.Close()
+    |> Async.AwaitTask
+    |> Async.RunSynchronously
 
     0
