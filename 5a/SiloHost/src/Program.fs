@@ -2,6 +2,14 @@ open System
 open System.Net
 open System.Net.NetworkInformation
 open System.Net.Sockets
+open Grains
+open Microsoft.Extensions.Hosting
+open Microsoft.Extensions.Logging
+open Orleans.Configuration
+open Orleans.Hosting
+open Orleans.Statistics
+open Orleans
+open OrleansDashboard
 
 let localIpAddress () : Async<IPAddress> =
     async {
@@ -117,7 +125,32 @@ let main args =
     printfn $"Primary Silo Port: {primarySiloPort}"
     printfn $"Dashboard Port: {dashboardPort}"
 
-    //TODO Add Orleans host
+    let builder = HostBuilder()
+    let testing =
+        fun (siloBuilder: ISiloBuilder) ->
+            siloBuilder
+                .UseDevelopmentClustering(fun (options: DevelopmentClusterMembershipOptions) -> options.PrimarySiloEndpoint <- IPEndPoint(ipAddress, primarySiloPort))
+                .UseLinuxEnvironmentStatistics()
+                .UseDashboard(fun (options: DashboardOptions) -> options.Username <- "user")
+                .UseDashboard(fun (options: DashboardOptions) -> options.Password <- "password")
+                .UseDashboard(fun (options: DashboardOptions) -> options.Port <- dashboardPort)
+                .Configure<EndpointOptions>(fun (options: EndpointOptions) -> options.SiloPort <- siloPort)
+                .Configure<EndpointOptions>(fun (options: EndpointOptions) -> options.AdvertisedIPAddress <- ipAddress)
+                .Configure<EndpointOptions>(fun (options: EndpointOptions) -> options.GatewayPort <- gatewayPort)
+                .Configure<EndpointOptions>(fun (options: EndpointOptions) -> options.SiloListeningEndpoint <- IPEndPoint(IPAddress.Any, siloPort))
+                .Configure<EndpointOptions>(fun (options: EndpointOptions) -> options.GatewayListeningEndpoint <- IPEndPoint(IPAddress.Any, gatewayPort))
+                .Configure<ClusterOptions>(fun (options: ClusterOptions) -> options.ClusterId <- "cluster-of-silos")
+                .Configure<ClusterOptions>(fun (options: ClusterOptions) -> options.ServiceId <- "hello-world-service")
+                .ConfigureApplicationParts(fun x -> x.AddApplicationPart(typeof<HelloWorld>.Assembly).WithReferences() |> ignore) |> ignore
 
+    let configureLogging (builder : ILoggingBuilder) =
+        let filter (l : LogLevel) = l.Equals LogLevel.Error
+        builder.AddFilter(filter).AddConsole().AddDebug() |> ignore
+
+    builder.ConfigureLogging(configureLogging) |> ignore
+    
+    builder.UseOrleans(testing).RunConsoleAsync()
+    |> Async.AwaitTask
+    |> Async.RunSynchronously
 
     0
