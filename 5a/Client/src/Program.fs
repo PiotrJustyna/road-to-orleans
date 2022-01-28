@@ -2,6 +2,7 @@ open System
 open System.Net
 open System.Net.NetworkInformation
 open System.Net.Sockets
+open Interfaces
 open Microsoft.Extensions.Logging
 open Orleans
 open Orleans.Configuration
@@ -54,10 +55,10 @@ let port (environmentVariableKey: string) : Async<int> =
             | false -> raise (ArgumentException($"${environmentVariableKey} environment variable not set"))
     }
 
-let gatewayPort () : Async<int> = async { return! port ("GATEWAYPORT") }
+let gatewayPort () : Async<int> = async { return! port "GATEWAYPORT" }
 
 [<EntryPoint>]
-let main args =
+let main _args =
     let ipAddress =
         advertisedIpAddress () |> Async.RunSynchronously
 
@@ -76,5 +77,19 @@ let main args =
                     .AddConsole()
                 |> ignore)
             .Build()
+
+    // Connect client
+    client.Connect
+        (fun (error) ->
+            if error != null then
+                printfn $"Error connecting to cluster: ${error}"
+                return false
+            else
+                printfn "Connected to cluster"
+                return true)
+    |> ignore
+
+//    let grain = client.GetGrain<IHelloWorld>(0)
+//    grain.SayHello("Popcorn!").Wait()
 
     0
