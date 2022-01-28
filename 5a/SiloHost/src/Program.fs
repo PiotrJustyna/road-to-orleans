@@ -134,17 +134,20 @@ let main args =
         fun (siloBuilder: ISiloBuilder) ->
             siloBuilder
                 .UseDevelopmentClustering(fun (options: DevelopmentClusterMembershipOptions) -> options.PrimarySiloEndpoint <- IPEndPoint(ipAddress, primarySiloPort))
+                .Configure<ClusterOptions>(fun (options: ClusterOptions) ->
+                    options.ClusterId <- "cluster-of-silos"
+                    options.ServiceId <- "hello-world-service")
+                .Configure<EndpointOptions>(fun (options: EndpointOptions) ->
+                    options.SiloPort <- siloPort
+                    options.AdvertisedIPAddress <- ipAddress
+                    options.GatewayPort <- gatewayPort
+                    options.SiloListeningEndpoint <- IPEndPoint(IPAddress.Any, siloPort)
+                    options.GatewayListeningEndpoint <- IPEndPoint(IPAddress.Any, gatewayPort))
+                .UseDashboard(fun (options: DashboardOptions) ->
+                    options.Username <- "piotr"
+                    options.Password <- "orleans"
+                    options.Port <- dashboardPort)
                 .UseLinuxEnvironmentStatistics()
-                .UseDashboard(fun (options: DashboardOptions) -> options.Username <- "user")
-                .UseDashboard(fun (options: DashboardOptions) -> options.Password <- "password")
-                .UseDashboard(fun (options: DashboardOptions) -> options.Port <- dashboardPort)
-                .Configure<EndpointOptions>(fun (options: EndpointOptions) -> options.SiloPort <- siloPort)
-                .Configure<EndpointOptions>(fun (options: EndpointOptions) -> options.AdvertisedIPAddress <- ipAddress)
-                .Configure<EndpointOptions>(fun (options: EndpointOptions) -> options.GatewayPort <- gatewayPort)
-                .Configure<EndpointOptions>(fun (options: EndpointOptions) -> options.SiloListeningEndpoint <- IPEndPoint(IPAddress.Any, siloPort))
-                .Configure<EndpointOptions>(fun (options: EndpointOptions) -> options.GatewayListeningEndpoint <- IPEndPoint(IPAddress.Any, gatewayPort))
-                .Configure<ClusterOptions>(fun (options: ClusterOptions) -> options.ClusterId <- "cluster-of-silos")
-                .Configure<ClusterOptions>(fun (options: ClusterOptions) -> options.ServiceId <- "hello-world-service")
                 .ConfigureApplicationParts(fun applicationPartManager -> applicationPartManager.AddApplicationPart(typeof<HelloWorld>.Assembly).WithReferences() |> ignore)
                 .ConfigureLogging(configureLogging) |> ignore
     
