@@ -1,24 +1,24 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine as build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine as build
 
-COPY ./SiloHost/SiloHost.csproj /src/SiloHost/SiloHost.csproj
-COPY ./SiloHost/src/* /src/SiloHost/
+WORKDIR /src
 
-COPY ./Interfaces/Interfaces.csproj /src/Interfaces/Interfaces.csproj
-COPY ./Interfaces/src/* /src/Interfaces/
+COPY ./SiloHost/SiloHost.fsproj /src/SiloHost/
+COPY ./SiloHost/src/ /src/SiloHost/src/
 
-COPY ./Grains/Grains.csproj /src/Grains/Grains.csproj
-COPY ./Grains/src/* /src/Grains/
+COPY ./Interfaces/Interfaces.csproj /src/Interfaces/
+COPY ./Interfaces/src/ /src/Interfaces/src/
+
+COPY ./Grains/Grains.csproj /src/Grains/
+COPY ./Grains/src/ /src/Grains/src
 
 COPY ./Library/* /src/Library/
 
 COPY ./ops/SiloHost/entrypoint.sh /SiloHost/
 
-RUN dotnet publish --verbosity normal "/src/SiloHost/SiloHost.csproj" --configuration Release --output /SiloHost
-
-EXPOSE 3000 8080
+RUN dotnet publish --verbosity normal "./SiloHost/SiloHost.fsproj" --configuration Release --output /SiloHost
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 
 WORKDIR /SiloHost
 COPY --from=build /SiloHost ./
