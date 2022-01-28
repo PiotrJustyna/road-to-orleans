@@ -39,53 +39,25 @@ let advertisedIpAddress () : Async<IPAddress> =
             }
     }
 
-let siloPort () : Async<int> =
+let port (environmentVariableKey: string) : Async<int> =
     async {
-        let parsed, siloPort =
-            Environment.GetEnvironmentVariable("SILOPORT")
+        let parsed, port =
+            Environment.GetEnvironmentVariable(environmentVariableKey)
             |> Int32.TryParse
 
         return
             match parsed with
-            | true -> siloPort
-            | false -> raise (ArgumentException("SILOPORT environment variable not set"))
+            | true -> port
+            | false -> raise (ArgumentException($"${environmentVariableKey} environment variable not set"))
     }
 
-let gatewayPort () : Async<int> =
-    async {
-        let parsed, gatewayPort =
-            Environment.GetEnvironmentVariable("GATEWAYPORT")
-            |> Int32.TryParse
+let siloPort () : Async<int> = async { return! port ("SILOPORT") }
 
-        return
-            match parsed with
-            | true -> gatewayPort
-            | false -> raise (ArgumentException("GATEWAYPORT environment variable not set"))
-    }
+let gatewayPort () : Async<int> = async { return! port ("GATEWAYPORT") }
 
-let primarySiloPort () : Async<int> =
-    async {
-        let parsed, primarySiloPort =
-            Environment.GetEnvironmentVariable("PRIMARYPORT")
-            |> Int32.TryParse
+let primarySiloPort () : Async<int> = async { return! port ("PRIMARYPORT") }
 
-        return
-            match parsed with
-            | true -> primarySiloPort
-            | false -> raise (ArgumentException("PRIMARYPORT environment variable not set"))
-    }
-
-let dashboardPort () : Async<int> =
-    async {
-        let parsed, dashboardPort =
-            Environment.GetEnvironmentVariable("DASHBOARDPORT")
-            |> Int32.TryParse
-
-        return
-            match parsed with
-            | true -> dashboardPort
-            | false -> raise (ArgumentException("DASHBOARDPORT environment variable not set"))
-    }
+let dashboardPort () : Async<int> = async { return! port ("DASHBOARDPORT") }
 
 [<EntryPoint>]
 let main args =
@@ -99,10 +71,10 @@ let main args =
 
             let! results = tasks |> Async.Parallel
 
-            let siloPort = results[0]
-            let gatewayPort = results[1]
-            let primarySiloPort = results[2]
-            let dashboardPort = results[3]
+            let siloPort = results[ 0 ]
+            let gatewayPort = results[ 1 ]
+            let primarySiloPort = results[ 2 ]
+            let dashboardPort = results[ 3 ]
 
             return siloPort, gatewayPort, primarySiloPort, dashboardPort
         }
