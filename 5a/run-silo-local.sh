@@ -10,4 +10,4 @@ export SILOPORT=2001
 export PRIMARYPORT=2001
 export DASHBOARDPORT=8081
 
-dotnet run --project ./SiloHost/SiloHost.csproj
+dotnet run --project ./SiloHost/SiloHost.fsproj
