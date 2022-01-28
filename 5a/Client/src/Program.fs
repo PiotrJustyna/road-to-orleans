@@ -2,6 +2,9 @@ open System
 open System.Net
 open System.Net.NetworkInformation
 open System.Net.Sockets
+open Microsoft.Extensions.Logging
+open Orleans
+open Orleans.Configuration
 
 let localIpAddress () : Async<IPAddress> =
     async {
@@ -60,5 +63,18 @@ let main args =
 
     let gatewayPort = gatewayPort () |> Async.RunSynchronously
     printfn $"Starting Client on ${ipAddress.ToString()} on port ${gatewayPort}"
+
+    let client =
+        ClientBuilder()
+            .Configure<ClusterOptions>(fun (clusterOptions: ClusterOptions) ->
+                clusterOptions.ClusterId <- "cluster-of-silos"
+                clusterOptions.ServiceId <- "hello-world-service")
+            .UseStaticClustering(IPEndPoint(ipAddress, gatewayPort))
+            .ConfigureLogging(fun (builder: ILoggingBuilder) ->
+                builder
+                    .SetMinimumLevel(LogLevel.Information)
+                    .AddConsole()
+                |> ignore)
+            .Build()
 
     0
