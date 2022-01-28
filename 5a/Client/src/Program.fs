@@ -81,15 +81,18 @@ let main _args =
     // Connect client
     client.Connect
         (fun (error) ->
-            if error != null then
-                printfn $"Error connecting to cluster: ${error}"
-                return false
-            else
-                printfn "Connected to cluster"
-                return true)
-    |> ignore
+            task {
+                if not (error = null) then
+                    printfn $"Error connecting to cluster: ${error}"
+                    return false
+                else
+                    printfn "Connected to cluster"
+                    return true
+            })
+    |> Async.AwaitTask
+    |> Async.RunSynchronously
 
-//    let grain = client.GetGrain<IHelloWorld>(0)
-//    grain.SayHello("Popcorn!").Wait()
+    //    let grain = client.GetGrain<IHelloWorld>(0)
+    //    grain.SayHello("Popcorn!").Wait()
 
     0
