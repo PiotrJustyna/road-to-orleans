@@ -124,6 +124,10 @@ let main args =
     printfn $"Gateway Port: {gatewayPort}"
     printfn $"Primary Silo Port: {primarySiloPort}"
     printfn $"Dashboard Port: {dashboardPort}"
+    
+    let configureLogging (builder : ILoggingBuilder) =
+        let filter (l : LogLevel) = l.Equals LogLevel.Information
+        builder.AddFilter(filter).AddConsole().AddDebug() |> ignore
 
     let builder = HostBuilder()
     let siloConfiguration =
@@ -141,13 +145,8 @@ let main args =
                 .Configure<EndpointOptions>(fun (options: EndpointOptions) -> options.GatewayListeningEndpoint <- IPEndPoint(IPAddress.Any, gatewayPort))
                 .Configure<ClusterOptions>(fun (options: ClusterOptions) -> options.ClusterId <- "cluster-of-silos")
                 .Configure<ClusterOptions>(fun (options: ClusterOptions) -> options.ServiceId <- "hello-world-service")
-                .ConfigureApplicationParts(fun applicationPartManager -> applicationPartManager.AddApplicationPart(typeof<HelloWorld>.Assembly).WithReferences() |> ignore) |> ignore
-
-    let configureLogging (builder : ILoggingBuilder) =
-        let filter (l : LogLevel) = l.Equals LogLevel.Error
-        builder.AddFilter(filter).AddConsole().AddDebug() |> ignore
-
-    builder.ConfigureLogging(configureLogging) |> ignore
+                .ConfigureApplicationParts(fun applicationPartManager -> applicationPartManager.AddApplicationPart(typeof<HelloWorld>.Assembly).WithReferences() |> ignore)
+                .ConfigureLogging(configureLogging) |> ignore
     
     builder.UseOrleans(siloConfiguration).RunConsoleAsync()
     |> Async.AwaitTask
