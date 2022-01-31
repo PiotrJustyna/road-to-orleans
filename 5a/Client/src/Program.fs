@@ -2,6 +2,7 @@ open System
 open System.Net
 open System.Net.NetworkInformation
 open System.Net.Sockets
+open System.Threading.Tasks
 open Interfaces
 open Microsoft.Extensions.Logging
 open Orleans
@@ -64,6 +65,9 @@ let main _args =
 
     let gatewayPort = gatewayPort () |> Async.RunSynchronously
     printfn $"Starting Client on ${ipAddress.ToString()} on port ${gatewayPort}"
+    
+    let mutable attempts = 0
+    let maxAttempts = 100
 
     let client =
         ClientBuilder()
@@ -73,7 +77,7 @@ let main _args =
             .UseStaticClustering(IPEndPoint(ipAddress, gatewayPort))
             .ConfigureLogging(fun (builder: ILoggingBuilder) ->
                 builder
-                    .SetMinimumLevel(LogLevel.Information)
+                    .SetMinimumLevel(LogLevel.Warning)
                     .AddConsole()
                 |> ignore)
             .Build()
@@ -82,12 +86,12 @@ let main _args =
     client.Connect
         (fun error ->
             task {
-                if not (error = null) then
-                    printfn $"Error connecting to cluster: ${error}"
-                    return false
-                else
-                    printfn "Connected to cluster"
-                    return true
+                Async.Sleep(TimeSpan.FromSeconds(1)) |> Async.RunSynchronously
+                attempts <- attempts + 1
+                printfn $"Failed to connect to cluster on attempt {attempts} of {maxAttempts}"
+
+                return if attempts > maxAttempts then false
+                    else not(error = null)
             })
     |> Async.AwaitTask
     |> Async.RunSynchronously
