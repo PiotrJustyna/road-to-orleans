@@ -96,8 +96,8 @@ let main _args =
     grain.SayHello("Popcorn!")
     |> Async.AwaitTask
     |> Async.RunSynchronously
-    |> ignore
-    
+    |> printfn "%s"
+
     client.Close()
     |> Async.AwaitTask
     |> Async.RunSynchronously
