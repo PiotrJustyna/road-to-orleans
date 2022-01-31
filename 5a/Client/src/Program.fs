@@ -76,7 +76,7 @@ let main _args =
             .UseStaticClustering(IPEndPoint(ipAddress, gatewayPort))
             .ConfigureLogging(fun (builder: ILoggingBuilder) ->
                 builder
-                    .SetMinimumLevel(LogLevel.Warning)
+                    .SetMinimumLevel(LogLevel.Information)
                     .AddConsole()
                 |> ignore)
             .Build()
