@@ -96,7 +96,10 @@ let main _args =
     |> Async.AwaitTask
     |> Async.RunSynchronously
 
-    let grain = client.GetGrain<IHelloWorld>(0)
+    // Generate random grain number key
+    let key = (Random().Next() % 100)
+    
+    let grain = client.GetGrain<IHelloWorld>(key)
     grain.SayHello("Popcorn!")
     |> Async.AwaitTask
     |> Async.RunSynchronously
