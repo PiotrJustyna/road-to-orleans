@@ -85,7 +85,7 @@ let main _args =
     client.Connect
         (fun error ->
             task {
-                Async.Sleep(TimeSpan.FromSeconds(1)) |> Async.RunSynchronously
+                do! Async.Sleep(TimeSpan.FromSeconds(1))
                 attempts <- attempts + 1
                 printfn $"Failed to connect to cluster on attempt {attempts} of {maxAttempts}"
 
