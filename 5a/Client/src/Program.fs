@@ -1,53 +1,14 @@
-open System
 open System.Net
-open System.Net.NetworkInformation
-open System.Net.Sockets
 open OrleansConfiguration
 open Interfaces
 open Microsoft.Extensions.Logging
 open Orleans
 open Orleans.Configuration
 
-let localIpAddress () : Async<IPAddress> =
-    async {
-        let networkInterfaces =
-            NetworkInterface.GetAllNetworkInterfaces()
-            |> Array.filter (fun ni -> ni.OperationalStatus.Equals(OperationalStatus.Up))
-
-        let addresses =
-            seq {
-                for ni in networkInterfaces do
-                    for unicastAddress in ni.GetIPProperties().UnicastAddresses do
-                        yield unicastAddress.Address
-            }
-
-        return
-            addresses
-            |> Seq.filter
-                (fun address ->
-                    address.AddressFamily.Equals(AddressFamily.InterNetwork)
-                    && not (IPAddress.IsLoopback(address)))
-            |> Seq.head
-    }
-
-let advertisedIpAddress () : Async<IPAddress> =
-    async {
-        let parsed, environmentIp =
-            Environment.GetEnvironmentVariable("ADVERTISEDIP")
-            |> IPAddress.TryParse
-
-        return!
-            async {
-                match parsed with
-                | true -> return environmentIp
-                | false -> return! localIpAddress ()
-            }
-    }
-
 [<EntryPoint>]
 let main _args =
     let ipAddress =
-        advertisedIpAddress () |> Async.RunSynchronously
+        IpAddresses.advertisedIpAddress () |> Async.RunSynchronously
 
     let gatewayPort = Ports.gatewayPort () |> Async.RunSynchronously
     printfn $"Starting Client on ${ipAddress.ToString()} on port ${gatewayPort}"
