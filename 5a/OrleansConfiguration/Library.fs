@@ -20,6 +20,12 @@ module Ports =
 
     let gatewayPort () : Async<int> = async { return! port "GATEWAYPORT" }
 
+    let siloPort () : Async<int> = async { return! port "SILOPORT" }
+
+    let primarySiloPort () : Async<int> = async { return! port "PRIMARYPORT" }
+
+    let dashboardPort () : Async<int> = async { return! port "DASHBOARDPORT" }
+
 module IpAddresses =
     let localIpAddress () : Async<IPAddress> =
         async {
