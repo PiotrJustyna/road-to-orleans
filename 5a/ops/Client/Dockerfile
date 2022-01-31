@@ -6,6 +6,8 @@ COPY ./Client/src/* /src/Client/src/
 COPY ./Interfaces/Interfaces.csproj /src/Interfaces/Interfaces.csproj
 COPY ./Interfaces/src/* /src/Interfaces/
 
+COPY ./OrleansConfiguration/* /src/OrleansConfiguration/
+
 COPY ./ops/Client/entrypoint.sh /Client/
 
 RUN dotnet publish --verbosity normal "/src/Client/Client.fsproj" --configuration Release --output /Client
