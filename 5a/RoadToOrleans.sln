@@ -15,7 +15,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "UnitTests", "UnitTests\src\
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SiloHost", "SiloHost\SiloHost.fsproj", "{74E4FD74-207F-44BE-B99A-3A94AC9013B2}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Configuration", "Configuration\Configuration.fsproj", "{1E6EAC5A-4D8A-4313-9D1D-30FDF785F648}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OrleansConfiguration", "OrleansConfiguration\OrleansConfiguration.fsproj", "{1E6EAC5A-4D8A-4313-9D1D-30FDF785F648}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

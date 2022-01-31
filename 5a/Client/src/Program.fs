@@ -2,6 +2,7 @@ open System
 open System.Net
 open System.Net.NetworkInformation
 open System.Net.Sockets
+open OrleansConfiguration
 open Interfaces
 open Microsoft.Extensions.Logging
 open Orleans
@@ -43,26 +44,12 @@ let advertisedIpAddress () : Async<IPAddress> =
             }
     }
 
-let port (environmentVariableKey: string) : Async<int> =
-    async {
-        let parsed, port =
-            Environment.GetEnvironmentVariable(environmentVariableKey)
-            |> Int32.TryParse
-
-        return
-            match parsed with
-            | true -> port
-            | false -> raise (ArgumentException($"${environmentVariableKey} environment variable not set"))
-    }
-
-let gatewayPort () : Async<int> = async { return! port "GATEWAYPORT" }
-
 [<EntryPoint>]
 let main _args =
     let ipAddress =
         advertisedIpAddress () |> Async.RunSynchronously
 
-    let gatewayPort = gatewayPort () |> Async.RunSynchronously
+    let gatewayPort = Ports.gatewayPort () |> Async.RunSynchronously
     printfn $"Starting Client on ${ipAddress.ToString()} on port ${gatewayPort}"
 
     let client =
