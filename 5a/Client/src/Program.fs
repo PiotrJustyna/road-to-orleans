@@ -80,7 +80,7 @@ let main _args =
 
     // Connect client
     client.Connect
-        (fun (error) ->
+        (fun error ->
             task {
                 if not (error = null) then
                     printfn $"Error connecting to cluster: ${error}"
