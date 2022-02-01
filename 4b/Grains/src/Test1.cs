@@ -8,7 +8,6 @@ namespace Grains
         public async Task<bool> HelloWorldTest()
         {
             await Task.Delay(1000);
-            
             return await Task.FromResult(true);
         }
     }
