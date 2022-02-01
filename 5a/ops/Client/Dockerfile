@@ -1,19 +1,21 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 as build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine as build
 
-COPY ./Client/Client.fsproj /src/Client/Client.fsproj
-COPY ./Client/src/* /src/Client/src/
+WORKDIR /src
 
-COPY ./Interfaces/Interfaces.csproj /src/Interfaces/Interfaces.csproj
-COPY ./Interfaces/src/* /src/Interfaces/
+COPY ./Client/Client.fsproj /src/Client/
+COPY ./Client/src/ /src/Client/src/
+
+COPY ./Interfaces/Interfaces.fsproj /src/Interfaces/
+COPY ./Interfaces/src/ /src/Interfaces/src/
 
 COPY ./OrleansConfiguration/* /src/OrleansConfiguration/
 
 COPY ./ops/Client/entrypoint.sh /Client/
 
-RUN dotnet publish --verbosity normal "/src/Client/Client.fsproj" --configuration Release --output /Client
+RUN dotnet publish --verbosity normal "./Client/Client.fsproj" --configuration Release --output /Client
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/runtime:6.0
+FROM mcr.microsoft.com/dotnet/runtime:6.0-alpine
 
 WORKDIR /Client
 COPY --from=build /Client ./

@@ -63,7 +63,7 @@ let main args =
                     options.Password <- "orleans"
                     options.Port <- dashboardPort)
                 .UseLinuxEnvironmentStatistics()
-                .ConfigureApplicationParts(fun applicationPartManager -> applicationPartManager.AddApplicationPart(typeof<IHelloWorld>.Assembly).WithCodeGeneration() |> ignore)
+                .ConfigureApplicationParts(fun applicationPartManager -> applicationPartManager.AddFromApplicationBaseDirectory().WithReferences() |> ignore)
                 .ConfigureLogging(configureLogging) |> ignore
     
     builder.UseOrleans(siloConfiguration).RunConsoleAsync()

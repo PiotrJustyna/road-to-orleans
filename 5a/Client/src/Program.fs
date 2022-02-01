@@ -1,3 +1,4 @@
+open System
 open System.Net
 open OrleansConfiguration
 open Interfaces
@@ -22,6 +23,7 @@ let main _args =
                 clusterOptions.ClusterId <- "cluster-of-silos"
                 clusterOptions.ServiceId <- "hello-world-service")
             .UseStaticClustering(IPEndPoint(ipAddress, gatewayPort))
+            .ConfigureApplicationParts(fun applicationPartManager -> applicationPartManager.AddFromApplicationBaseDirectory().WithReferences() |> ignore)
             .ConfigureLogging(fun (builder: ILoggingBuilder) ->
                 builder
                     .SetMinimumLevel(LogLevel.Information)
