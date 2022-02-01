@@ -64,6 +64,9 @@ let main _args =
 
     let gatewayPort = gatewayPort () |> Async.RunSynchronously
     printfn $"Starting Client on ${ipAddress.ToString()} on port ${gatewayPort}"
+    
+    let mutable attempts = 0
+    let maxAttempts = 100
 
     let client =
         ClientBuilder()
@@ -82,17 +85,20 @@ let main _args =
     client.Connect
         (fun error ->
             task {
-                if not (error = null) then
-                    printfn $"Error connecting to cluster: ${error}"
-                    return false
-                else
-                    printfn "Connected to cluster"
-                    return true
+                do! Async.Sleep(TimeSpan.FromSeconds(1))
+                attempts <- attempts + 1
+                printfn $"Failed to connect to cluster on attempt {attempts} of {maxAttempts}"
+
+                return if attempts > maxAttempts then false
+                    else not(error = null)
             })
     |> Async.AwaitTask
     |> Async.RunSynchronously
 
-    let grain = client.GetGrain<IHelloWorld>(0)
+    // Generate random grain number key
+    let key = (Random().Next() % 100)
+    
+    let grain = client.GetGrain<IHelloWorld>(key)
     grain.SayHello("Popcorn!")
     |> Async.AwaitTask
     |> Async.RunSynchronously
