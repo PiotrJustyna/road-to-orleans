@@ -18,6 +18,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Grains\Grains.csproj" />
         <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
+        <ProjectReference Include="..\OrleansConfiguration\OrleansConfiguration.fsproj" />
     </ItemGroup>
 
     <ItemGroup>
