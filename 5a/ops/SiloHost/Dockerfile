@@ -13,6 +13,8 @@ COPY ./Grains/src/ /src/Grains/src
 
 COPY ./Library/* /src/Library/
 
+COPY ./OrleansConfiguration/* /src/OrleansConfiguration/
+
 COPY ./ops/SiloHost/entrypoint.sh /SiloHost/
 
 RUN dotnet publish --verbosity normal "./SiloHost/SiloHost.fsproj" --configuration Release --output /SiloHost
