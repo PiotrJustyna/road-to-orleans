@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine as build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine as build
 
 COPY ./SiloHost/SiloHost.csproj /src/SiloHost/SiloHost.csproj
 COPY ./SiloHost/src/* /src/SiloHost/
@@ -14,7 +14,7 @@ COPY ./ops/SiloHost/entrypoint.sh /SiloHost/
 RUN dotnet publish --verbosity normal "/src/SiloHost/SiloHost.csproj" --configuration Release --output /SiloHost
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 
 WORKDIR /SiloHost
 COPY --from=build /SiloHost ./
