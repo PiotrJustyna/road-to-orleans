@@ -1,6 +1,6 @@
 open System.Net
+open System.Reflection
 open Grains
-open Interfaces
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open Orleans.Configuration
@@ -63,7 +63,7 @@ let main args =
                     options.Password <- "orleans"
                     options.Port <- dashboardPort)
                 .UseLinuxEnvironmentStatistics()
-                .ConfigureApplicationParts(fun applicationPartManager -> applicationPartManager.AddFromApplicationBaseDirectory().WithReferences() |> ignore)
+                .ConfigureApplicationParts(fun applicationPartManager -> applicationPartManager.AddApplicationPart(Assembly.GetAssembly(typeof<HelloWorld>)).WithReferences().WithCodeGeneration() |> ignore)
                 .ConfigureLogging(configureLogging) |> ignore
     
     builder.UseOrleans(siloConfiguration).RunConsoleAsync()

@@ -1,10 +1,12 @@
 open System
 open System.Net
-open OrleansConfiguration
+open System.Reflection
 open Interfaces
+open OrleansConfiguration
 open Microsoft.Extensions.Logging
 open Orleans
 open Orleans.Configuration
+open Orleans.Hosting
 
 [<EntryPoint>]
 let main _args =
@@ -23,7 +25,7 @@ let main _args =
                 clusterOptions.ClusterId <- "cluster-of-silos"
                 clusterOptions.ServiceId <- "hello-world-service")
             .UseStaticClustering(IPEndPoint(ipAddress, gatewayPort))
-            .ConfigureApplicationParts(fun applicationPartManager -> applicationPartManager.AddFromApplicationBaseDirectory().WithReferences() |> ignore)
+            .ConfigureApplicationParts(fun applicationPartManager -> applicationPartManager.AddApplicationPart(Assembly.GetExecutingAssembly()).WithReferences().WithCodeGeneration() |> ignore)
             .ConfigureLogging(fun (builder: ILoggingBuilder) ->
                 builder
                     .SetMinimumLevel(LogLevel.Information)

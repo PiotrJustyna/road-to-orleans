@@ -5,4 +5,4 @@ open Orleans
 
 type IHelloWorld =
     inherit IGrainWithIntegerKey
-    abstract member SayHello: name: string -> Task<string>
+    abstract member SayHello : name: string -> Task<string>

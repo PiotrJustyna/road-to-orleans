@@ -8,5 +8,4 @@ type HelloWorld() =
     inherit Grain()
 
     interface IHelloWorld with
-        member this.SayHello(name: string) =
-            task { return Say.hello (name) } 
+        member this.SayHello(name: string) = task { return Say.hello (name) }
