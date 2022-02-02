@@ -3,6 +3,7 @@ using System.Xml.Serialization;
 
 namespace Interfaces
 {
+    [XmlRoot(ElementName = "Times")]
     public class Times
     {
         [XmlAttribute(AttributeName = "creation")]
