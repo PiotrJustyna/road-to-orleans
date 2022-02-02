@@ -17,13 +17,6 @@ namespace Grains
         public async Task<string> RunTests()
         {
             var stopwatch = new Stopwatch();
-            
-            var serializer = new XmlSerializer(typeof(TestRun));
-            var serializerNamespaces = new XmlSerializerNamespaces();
-            serializerNamespaces.Add(
-                prefix: "",
-                ns: "");
-            
             stopwatch.Start();
             
             var testRun = new TestRun()
@@ -48,11 +41,17 @@ namespace Grains
                 GrainFactory.GetGrain<ITest2>(8).HelloWorldTest()
             };
 
-            testRun.Times.Start = DateTime.Now.ToString(CultureInfo.CurrentCulture);
+            testRun.Times.Start = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             await Task.WhenAll(tests);
-            testRun.Times.Finish = DateTime.Now.ToString(CultureInfo.CurrentCulture);
+            testRun.Times.Finish = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             
             stopwatch.Stop();
+            
+            var serializer = new XmlSerializer(typeof(TestRun));
+            var serializerNamespaces = new XmlSerializerNamespaces();
+            serializerNamespaces.Add(
+                prefix: "",
+                ns: "");
             
             var writer = new StringWriter();
             serializer.Serialize(
@@ -63,10 +62,6 @@ namespace Grains
             var document = XDocument.Parse(writer.ToString());
             document.Descendants().Attributes().Where(a => a.IsNamespaceDeclaration).Remove();
 
-            // todo: instead of this silly string, return a *VERY* basic trx
-            // iteration 1:
-            // * TestRun
-            // * Times
             return await Task.FromResult($"-- Test Execution Details --- \n {document}");
         }
     }
