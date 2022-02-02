@@ -26,7 +26,19 @@ namespace Grains
                 Times = new Times()
                 {
                     Creation = DateTime.Now.ToString(CultureInfo.CurrentCulture)
+                },
+                TestSettings = new TestSettings()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "default"
                 }
+            };
+            
+            testRun.Times.Start = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
+
+            testRun.TestDefinitions = new TestDefinitions()
+            {
+                UnitTestDefinitions = new List<UnitTestDefinition>()
             };
 
             var tests = new List<Task>
@@ -41,8 +53,12 @@ namespace Grains
                 GrainFactory.GetGrain<ITest2>(8).HelloWorldTest()
             };
 
-            testRun.Times.Start = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             await Task.WhenAll(tests);
+            foreach (var task in tests)
+            {
+                var test = (Task<UnitTestDefinition>) task;
+                testRun.TestDefinitions.UnitTestDefinitions.Add(test.Result);
+            }
             testRun.Times.Finish = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             
             stopwatch.Stop();

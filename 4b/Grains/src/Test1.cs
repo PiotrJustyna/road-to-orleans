@@ -1,3 +1,6 @@
+using System;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Interfaces;
 
@@ -5,10 +8,37 @@ namespace Grains
 {
     public class Test1 : Orleans.Grain, ITest1
     {
-        public async Task<bool> HelloWorldTest()
+        public async Task<UnitTestDefinition> HelloWorldTest()
         {
             await Task.Delay(1000);
-            return await Task.FromResult(true);
+
+            var methodName = CallerName();
+            var classFullName = this.GetType().FullName;
+            var assembly = Assembly.GetAssembly(typeof(Test1));
+            
+            var testDefinition = new UnitTestDefinition()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Execution = new Execution()
+                {
+                    Id = Guid.NewGuid().ToString()
+                },
+                Name = $"{classFullName}.{methodName}",
+                Storage = assembly.FullName,
+                TestMethod = new TestMethod()
+                {
+                    AdapterTypeName = "Orleans",
+                    ClassName = classFullName,
+                    Name = methodName,
+                    CodeBase = $"/{assembly.Location}/"
+                }
+            };
+            return testDefinition;
+        }
+        
+        private static string CallerName([CallerMemberName]string name = "")
+        {
+            return name;
         }
     }
 }

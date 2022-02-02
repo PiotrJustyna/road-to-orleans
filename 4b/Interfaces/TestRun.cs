@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -27,6 +28,7 @@ namespace Interfaces
         [XmlAttribute(AttributeName = "name")] 
         public string Name { get; set; }
 
+        [Obsolete]
         public Deployment Deployment { get; set; }
     }
 
@@ -36,13 +38,8 @@ namespace Interfaces
         public string RunDeploymentRoot { get; set; }
     }
 
+    [XmlRoot(ElementName = "Results")]
     public class Results
-    {
-        [XmlElement(ElementName = "UnitTestResult")]
-        public List<UnitTestResult> UnitTestResult { get; set; }
-    }
-
-    public class TestDefinitions
     {
         [XmlElement(ElementName = "UnitTestResult")]
         public List<UnitTestResult> UnitTestResult { get; set; }

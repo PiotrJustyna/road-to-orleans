@@ -4,6 +4,6 @@ namespace Interfaces
 {
     public interface ITest2 : Orleans.IGrainWithIntegerKey
     {
-        Task<bool> HelloWorldTest();
+        Task<UnitTestDefinition> HelloWorldTest();
     }
 }
