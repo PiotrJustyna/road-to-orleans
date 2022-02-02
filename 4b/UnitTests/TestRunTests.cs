@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using Interfaces;
+using Interfaces.TRX;
 using Xunit;
 
 namespace UnitTests

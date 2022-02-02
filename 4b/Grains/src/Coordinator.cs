@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Interfaces;
+using Interfaces.TRX;
 
 namespace Grains
 {
@@ -39,10 +40,10 @@ namespace Grains
 
             testRun.TestDefinitions = new TestDefinitions()
             {
-                UnitTestDefinitions = new List<UnitTestDefinition>()
+                UnitTests = new List<UnitTest>()
             };
 
-            var tests = new List<Task<UnitTestDefinition>>
+            var tests = new List<Task<UnitTest>>
             {
                 GrainFactory.GetGrain<ITest1>(1).HelloWorldTest(),
                 GrainFactory.GetGrain<ITest2>(2).HelloWorldTest(),
@@ -55,7 +56,7 @@ namespace Grains
             };
 
             await Task.WhenAll(tests);
-            testRun.TestDefinitions.UnitTestDefinitions = tests.Select(t => t.Result).ToList();
+            testRun.TestDefinitions.UnitTests = tests.Select(t => t.Result).ToList();
             testRun.Times.Finish = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             
             stopwatch.Stop();

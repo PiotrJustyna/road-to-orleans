@@ -1,12 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using Interfaces;
+using Interfaces.TRX;
 
 namespace Grains
 {
     public class Test2 : Orleans.Grain, ITest2
     {
-        public async Task<UnitTestDefinition> HelloWorldTest()
+        public async Task<UnitTest> HelloWorldTest()
         {
             await Task.Delay(2000);
 
@@ -14,7 +15,7 @@ namespace Grains
             var classFullName = this.GetType().FullName;
             var assemblyName = this.GetType().Assembly.GetName();
             
-            var testDefinition = new UnitTestDefinition()
+            var unitTest = new UnitTest()
             {
                 Id = Guid.NewGuid().ToString(),
                 Execution = new Execution()
@@ -31,7 +32,7 @@ namespace Grains
                     CodeBase = $"{assemblyName.Name}.dll"
                 }
             };
-            return testDefinition;
+            return unitTest;
         }
     }
 }
