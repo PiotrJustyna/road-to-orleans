@@ -23,18 +23,20 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 
 ![solutions](./solutions/road-to-orleans.png)
 
-| solution | description | docker support | clustering | clustered silos | grains | clients | \*visual studio code support | \*remote containers support |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [solution1](1/readme.md) | One basic silo, no grains. | :white_check_mark: | - | 1 | 0 | 0 | :white_check_mark: | :white_check_mark: |
-| [solution2](2/readme.md) | One basic silo, one grain, one console client. | - | - | 1 | 1 C# grain | 1 - console | :white_check_mark: | :white_check_mark: |
-| [solution3](3/readme.md) | One basic silo, one grain, one console client, everything containerized. | :white_check_mark: | - | 1 | 1 C# grain | 1 - console | :white_check_mark: | :white_check_mark: |
+| solution                   | description | docker support | clustering | clustered silos | grains | clients | \*visual studio code support | \*remote containers support |
+|----------------------------| --- | --- | --- | --- | --- | --- | --- | --- |
+| [solution1](1/readme.md)   | One basic silo, no grains. | :white_check_mark: | - | 1 | 0 | 0 | :white_check_mark: | :white_check_mark: |
+| [solution2](2/readme.md)   | One basic silo, one grain, one console client. | - | - | 1 | 1 C# grain | 1 - console | :white_check_mark: | :white_check_mark: |
+| [solution3](3/readme.md)   | One basic silo, one grain, one console client, everything containerized. | :white_check_mark: | - | 1 | 1 C# grain | 1 - console | :white_check_mark: | :white_check_mark: |
 | [solution3a](3a/readme.md) | Solution3 + grain persistence. | :white_check_mark: | - | 1 | 1 C# grain | 1 - console | :white_check_mark: | :white_check_mark: |
 | [solution3b](3b/readme.md) | Solution3 + datadog APM. | :white_check_mark: | - | 1 | 1 C# grain | 1 - console | :white_check_mark: | :white_check_mark: |
-| [solution4](4/readme.md) | First in-memory clustering example. Many silos, many clients. | :white_check_mark: | in-memory | n | 1 C# grain | n - console | :white_check_mark: | :white_check_mark: |
-| [solution5](5/readme.md) | Solution4 where the grain interfaces F# library code. Additionally, F# unit tests covering the F# library code. | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code. | n - console |||
-| [solution6](6/readme.md) | Solution5 where the cluster is being called from a Web API. | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code | n - web api |||
-| [solution7](7/readme.md) | Solution6 + [FeatureManagement](https://www.nuget.org/packages/Microsoft.FeatureManagement/), dependency injection in grains, unit tests for grains using [OrleansTestKit](https://www.nuget.org/packages/OrleansTestKit/). | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code | n - web api |||
-| [solution8](8/readme.md) | Solution7 + Persistent Membership Table in DynamoEB, ECS hosting, CloudFormation Template. | :white_check_mark: | Dynamo | n | 1 C# grain interfacing F# library code | n - web api |||
+| [solution4](4/readme.md)   | First in-memory clustering example. Many silos, many clients. | :white_check_mark: | in-memory | n | 1 C# grain | n - console | :white_check_mark: | :white_check_mark: |
+| [solution4a](4a/readme.md) | This is solution 4 with added [lua](https://www.lua.org/home.html) support. | :white_check_mark: | in-memory | n | 1 C# grain | n - console | :white_check_mark: | :white_check_mark: |
+| [solution4b](4b/readme.md) | Solution4 adapted for parallel test execution. | :white_check_mark: | in-memory | n | 1 C# grain | n - console | :white_check_mark: | :white_check_mark: |
+| [solution5](5/readme.md)   | Solution4 where the grain interfaces F# library code. Additionally, F# unit tests covering the F# library code. | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code. | n - console |||
+| [solution6](6/readme.md)   | Solution5 where the cluster is being called from a Web API. | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code | n - web api |||
+| [solution7](7/readme.md)   | Solution6 + [FeatureManagement](https://www.nuget.org/packages/Microsoft.FeatureManagement/), dependency injection in grains, unit tests for grains using [OrleansTestKit](https://www.nuget.org/packages/OrleansTestKit/). | :white_check_mark: | in-memory | n | 1 C# grain interfacing F# library code | n - web api |||
+| [solution8](8/readme.md)   | Solution7 + Persistent Membership Table in DynamoEB, ECS hosting, CloudFormation Template. | :white_check_mark: | Dynamo | n | 1 C# grain interfacing F# library code | n - web api |||
 
 \*visual studio code support:
 * `[ctrl/cmd]+shift+b`: builds selected projects
