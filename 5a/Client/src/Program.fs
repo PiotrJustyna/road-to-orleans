@@ -49,9 +49,10 @@ let main _args =
 
     // Generate random grain number key
     let key = (Random().Next() % 100)
+    let gcts = new GrainCancellationTokenSource()
     
     let grain = client.GetGrain<IHelloWorld>(key)
-    grain.SayHello("Popcorn!")
+    grain.SayHello "Popcorn!" gcts.Token 
     |> Async.AwaitTask
     |> Async.RunSynchronously
     |> printfn "%s"
