@@ -1,6 +1,4 @@
 using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Interfaces;
 
@@ -11,10 +9,10 @@ namespace Grains
         public async Task<UnitTestDefinition> HelloWorldTest()
         {
             await Task.Delay(2000);
-            
-            var methodName = CallerName();
+
+            var methodName = Helpers.CallerName();
             var classFullName = this.GetType().FullName;
-            var assembly = Assembly.GetAssembly(typeof(Test1));
+            var assemblyName = this.GetType().Assembly.GetName();
             
             var testDefinition = new UnitTestDefinition()
             {
@@ -24,21 +22,16 @@ namespace Grains
                     Id = Guid.NewGuid().ToString()
                 },
                 Name = $"{classFullName}.{methodName}",
-                Storage = assembly.FullName,
+                Storage = $"{assemblyName.Name}.dll",
                 TestMethod = new TestMethod()
                 {
-                    AdapterTypeName = "Orleans",
+                    AdapterTypeName = "orleans",
                     ClassName = classFullName,
                     Name = methodName,
-                    CodeBase = $"/{assembly.Location}/"
+                    CodeBase = $"{assemblyName.Name}.dll"
                 }
             };
             return testDefinition;
-        }
-        
-        private static string CallerName([CallerMemberName]string name = "")
-        {
-            return name;
         }
     }
 }

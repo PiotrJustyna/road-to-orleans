@@ -35,13 +35,14 @@ namespace Grains
             };
             
             testRun.Times.Start = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
+            testRun.Times.Queuing = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
 
             testRun.TestDefinitions = new TestDefinitions()
             {
                 UnitTestDefinitions = new List<UnitTestDefinition>()
             };
 
-            var tests = new List<Task>
+            var tests = new List<Task<UnitTestDefinition>>
             {
                 GrainFactory.GetGrain<ITest1>(1).HelloWorldTest(),
                 GrainFactory.GetGrain<ITest2>(2).HelloWorldTest(),
@@ -54,11 +55,7 @@ namespace Grains
             };
 
             await Task.WhenAll(tests);
-            foreach (var task in tests)
-            {
-                var test = (Task<UnitTestDefinition>) task;
-                testRun.TestDefinitions.UnitTestDefinitions.Add(test.Result);
-            }
+            testRun.TestDefinitions.UnitTestDefinitions = tests.Select(t => t.Result).ToList();
             testRun.Times.Finish = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             
             stopwatch.Stop();
