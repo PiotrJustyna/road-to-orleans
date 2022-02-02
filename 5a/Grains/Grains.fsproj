@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="src\HelloWorld.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Interfaces\Interfaces.fsproj" />
+      <ProjectReference Include="..\Library\Library.fsproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Orleans.Core.Abstractions" Version="3.6.0" />
+        <PackageReference Include="Microsoft.Orleans.OrleansCodeGenerator" Version="3.6.0" />
+    </ItemGroup>
+
+</Project>
