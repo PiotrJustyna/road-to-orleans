@@ -1,6 +1,6 @@
 # readme
 
-This solution builds on top of solution 5 and is written exclusively in F#. This repository illustrates how to create Clients and Silos.
+This solution builds on top of solution 5 and is written exclusively in F#.
 
 ## running the code
 

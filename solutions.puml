@@ -34,8 +34,7 @@ hide empty description
     }
 
     state "solution 5a" as Solution5a{
-      Solution5a : Solution5 where the host and client F# code.
-      Solution5a : Additionally, F# unit tests covering the F# library code.
+      Solution5a : Solution5 where the host and client are written in F#.
     }
 
     state "solution 6" as Solution6{
