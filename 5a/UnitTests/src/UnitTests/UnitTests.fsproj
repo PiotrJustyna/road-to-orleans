@@ -28,8 +28,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Client\Client.fsproj" />
-    <ProjectReference Include="..\..\..\Grains\Grains.csproj" />
-    <ProjectReference Include="..\..\..\Interfaces\Interfaces.csproj" />
+    <ProjectReference Include="..\..\..\Grains\Grains.fsproj" />
+    <ProjectReference Include="..\..\..\Interfaces\Interfaces.fsproj" />
     <ProjectReference Include="..\..\..\Library\Library.fsproj" />
   </ItemGroup>
 

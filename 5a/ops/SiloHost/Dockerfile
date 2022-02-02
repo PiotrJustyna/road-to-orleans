@@ -5,10 +5,10 @@ WORKDIR /src
 COPY ./SiloHost/SiloHost.fsproj /src/SiloHost/
 COPY ./SiloHost/src/ /src/SiloHost/src/
 
-COPY ./Interfaces/Interfaces.csproj /src/Interfaces/
+COPY ./Interfaces/Interfaces.fsproj /src/Interfaces/
 COPY ./Interfaces/src/ /src/Interfaces/src/
 
-COPY ./Grains/Grains.csproj /src/Grains/
+COPY ./Grains/Grains.fsproj /src/Grains/
 COPY ./Grains/src/ /src/Grains/src
 
 COPY ./Library/* /src/Library/
