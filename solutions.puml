@@ -33,6 +33,10 @@ hide empty description
       Solution5 : Additionally, F# unit tests covering the F# library code.
     }
 
+    state "solution 5a" as Solution5a{
+      Solution5a : Solution5 where the host and client are written in F#.
+    }
+
     state "solution 6" as Solution6{
       Solution6 : Solution5 where the cluster is being called from a Web API.
     }
@@ -55,6 +59,7 @@ hide empty description
     Solution3 --> Solution3b
     Solution3 --> Solution4
     Solution4 --> Solution5
+    Solution5 --> Solution5a
     Solution5 --> Solution6
     Solution6 --> Solution7
     Solution7 --> Solution8
