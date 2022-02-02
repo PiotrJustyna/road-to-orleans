@@ -22,7 +22,7 @@ namespace Grains
             var testRun = new TestRun()
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = $"{this.GetType().Name}/{MethodBase.GetCurrentMethod()?.Name}",
+                Name = $"{this.GetType().Name}/{MethodBase.GetCurrentMethod().Name}",
                 Times = new Times()
                 {
                     Creation = DateTime.Now.ToString(CultureInfo.CurrentCulture)
@@ -41,9 +41,9 @@ namespace Grains
                 GrainFactory.GetGrain<ITest2>(8).HelloWorldTest()
             };
 
-            testRun.Times.Start = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            testRun.Times.Start = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             await Task.WhenAll(tests);
-            testRun.Times.Finish = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            testRun.Times.Finish = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             
             stopwatch.Stop();
             
@@ -62,7 +62,7 @@ namespace Grains
             var document = XDocument.Parse(writer.ToString());
             document.Descendants().Attributes().Where(a => a.IsNamespaceDeclaration).Remove();
 
-            return await Task.FromResult($"-- Test Execution Details --- \n {document}");
+            return await Task.FromResult(document.ToString());
         }
     }
 }
