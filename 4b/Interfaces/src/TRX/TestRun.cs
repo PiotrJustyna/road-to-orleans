@@ -137,17 +137,4 @@ namespace Interfaces.src.TRX
         [XmlElement(ElementName = "StdOut")]
         public string StdOut { get; set; }
     }
-
-    [XmlRoot(ElementName = "TestEntry")]
-    public class TestEntry
-    {
-        [XmlAttribute(AttributeName = "testId")]
-        public string TestId { get; set; }
-
-        [XmlAttribute(AttributeName = "executionId")]
-        public string ExecutionId { get; set; }
-
-        [XmlAttribute(AttributeName = "testListId")]
-        public string TestListId { get; set; }
-    }    
 }

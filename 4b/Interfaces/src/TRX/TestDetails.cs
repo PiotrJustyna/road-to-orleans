@@ -4,5 +4,7 @@ namespace Interfaces.src.TRX
     {
         public UnitTestResult UnitTestResult { get; set; }
         public UnitTestDefinition UnitTestDefinition { get; set; }
+        
+        public TestEntry TestEntry { get; set; }
     }
 }
