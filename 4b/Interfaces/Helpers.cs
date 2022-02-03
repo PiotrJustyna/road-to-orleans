@@ -15,7 +15,7 @@ namespace Interfaces
         {
             var methodName = callerName;
             var classFullName = classType.FullName;
-            var assemblyName = classType.Assembly.GetName();
+            var assemblyName = $"{classType.Assembly.GetName().Name}.dll";
             
             var unitTest = new UnitTestDefinition()
             {
@@ -25,13 +25,13 @@ namespace Interfaces
                     Id = Guid.NewGuid().ToString()
                 },
                 Name = $"{classFullName}.{methodName}",
-                Storage = $"{assemblyName.Name}.dll",
+                Storage = assemblyName,
                 TestMethod = new TestMethod()
                 {
                     AdapterTypeName = "orleans",
                     ClassName = classFullName,
                     Name = methodName,
-                    CodeBase = $"{assemblyName.Name}.dll"
+                    CodeBase = assemblyName
                 }
             };
 
