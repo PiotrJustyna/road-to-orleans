@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Interfaces.TRX
+namespace Interfaces.src.TRX
 {
     [XmlRoot(ElementName = "TestList")]
     public class TestList

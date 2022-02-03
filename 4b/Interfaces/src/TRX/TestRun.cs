@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-//TODO: Find an appropriate directory for the TRX objects
-namespace Interfaces.TRX
+namespace Interfaces.src.TRX
 {
     [XmlRoot("TestRun", Namespace = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")]
     public class TestRun

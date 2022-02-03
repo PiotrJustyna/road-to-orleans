@@ -1,7 +1,6 @@
-using System;
 using System.Threading.Tasks;
 using Interfaces;
-using Interfaces.TRX;
+using Interfaces.src.TRX;
 
 namespace Grains
 {
@@ -9,29 +8,8 @@ namespace Grains
     {
         public async Task<UnitTest> HelloWorldTest()
         {
-            await Task.Delay(2000);
-
-            var methodName = Helpers.CallerName();
-            var classFullName = this.GetType().FullName;
-            var assemblyName = this.GetType().Assembly.GetName();
-            
-            var unitTest = new UnitTest()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Execution = new Execution()
-                {
-                    Id = Guid.NewGuid().ToString()
-                },
-                Name = $"{classFullName}.{methodName}",
-                Storage = $"{assemblyName.Name}.dll",
-                TestMethod = new TestMethod()
-                {
-                    AdapterTypeName = "orleans",
-                    ClassName = classFullName,
-                    Name = methodName,
-                    CodeBase = $"{assemblyName.Name}.dll"
-                }
-            };
+            await Task.Delay(200);
+            var unitTest = Helpers.UnitTestCreator(this.GetType(), Helpers.CallerName());
             return unitTest;
         }
     }

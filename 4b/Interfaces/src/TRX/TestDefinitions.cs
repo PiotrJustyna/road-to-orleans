@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Interfaces.TRX
+namespace Interfaces.src.TRX
 {
     [XmlRoot(ElementName = "TestDefinitions")]
     public class TestDefinitions

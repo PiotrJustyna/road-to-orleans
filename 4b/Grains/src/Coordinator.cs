@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Interfaces;
-using Interfaces.TRX;
+using Interfaces.src.TRX;
 
 namespace Grains
 {

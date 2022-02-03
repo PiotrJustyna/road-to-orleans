@@ -1,6 +1,7 @@
+using System;
 using System.Runtime.CompilerServices;
+using Interfaces.src.TRX;
 
-//TODO: Find an appropriate directory for a helper class
 namespace Interfaces
 {
     public static class Helpers
@@ -8,6 +9,32 @@ namespace Interfaces
         public static string CallerName([CallerMemberName]string name = "")
         {
             return name;
+        }
+
+        public static UnitTest UnitTestCreator(Type classType, string callerName )
+        {
+            var methodName = callerName;
+            var classFullName = classType.FullName;
+            var assemblyName = classType.Assembly.GetName();
+            
+            var unitTest = new UnitTest()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Execution = new Execution()
+                {
+                    Id = Guid.NewGuid().ToString()
+                },
+                Name = $"{classFullName}.{methodName}",
+                Storage = $"{assemblyName.Name}.dll",
+                TestMethod = new TestMethod()
+                {
+                    AdapterTypeName = "orleans",
+                    ClassName = classFullName,
+                    Name = methodName,
+                    CodeBase = $"{assemblyName.Name}.dll"
+                }
+            };
+            return unitTest;
         }
     }
 }

@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Interfaces.TRX;
+using Interfaces.src.TRX;
 
 namespace Interfaces
 {
