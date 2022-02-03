@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
-using Interfaces;
+using Interfaces.src.TRX;
 using Xunit;
 
 namespace UnitTests

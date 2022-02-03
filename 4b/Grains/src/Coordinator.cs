@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Interfaces;
+using Interfaces.src.TRX;
 
 namespace Grains
 {
@@ -26,10 +27,23 @@ namespace Grains
                 Times = new Times()
                 {
                     Creation = DateTime.Now.ToString(CultureInfo.CurrentCulture)
+                },
+                TestSettings = new TestSettings()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "default"
                 }
             };
+            
+            testRun.Times.Start = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
+            testRun.Times.Queuing = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
 
-            var tests = new List<Task>
+            testRun.TestDefinitions = new TestDefinitions()
+            {
+                UnitTests = new List<UnitTest>()
+            };
+
+            var tests = new List<Task<UnitTest>>
             {
                 GrainFactory.GetGrain<ITest1>(1).HelloWorldTest(),
                 GrainFactory.GetGrain<ITest2>(2).HelloWorldTest(),
@@ -41,8 +55,8 @@ namespace Grains
                 GrainFactory.GetGrain<ITest2>(8).HelloWorldTest()
             };
 
-            testRun.Times.Start = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             await Task.WhenAll(tests);
+            testRun.TestDefinitions.UnitTests = tests.Select(t => t.Result).ToList();
             testRun.Times.Finish = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             
             stopwatch.Stop();
