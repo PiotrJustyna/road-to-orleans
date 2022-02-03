@@ -7,9 +7,10 @@ namespace Interfaces.src.TRX
     public class Results
     {
         [XmlElement(ElementName = "UnitTestResult")]
-        public List<UnitTestResult> UnitTestResult { get; set; }
+        public List<UnitTestResult> UnitTestResults { get; set; }
     }
     
+    [XmlRoot(ElementName = "UnitTestResult")]
     public class UnitTestResult
     {
         [XmlAttribute(AttributeName = "executionId")]

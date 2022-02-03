@@ -11,13 +11,13 @@ namespace Interfaces
             return name;
         }
 
-        public static UnitTest UnitTestCreator(Type classType, string callerName )
+        public static TestDetails UnitTestCreator(Type classType, string callerName )
         {
             var methodName = callerName;
             var classFullName = classType.FullName;
             var assemblyName = classType.Assembly.GetName();
             
-            var unitTest = new UnitTest()
+            var unitTest = new UnitTestDefinition()
             {
                 Id = Guid.NewGuid().ToString(),
                 Execution = new Execution()
@@ -34,7 +34,17 @@ namespace Interfaces
                     CodeBase = $"{assemblyName.Name}.dll"
                 }
             };
-            return unitTest;
+
+            var unitTestResult = new UnitTestResult()
+            {
+
+            };
+
+            return new TestDetails()
+            {
+                UnitTestDefinition = unitTest,
+                UnitTestResult = unitTestResult
+            };
         }
     }
 }
