@@ -6,7 +6,7 @@ namespace Grains
 {
     public class Test2 : Orleans.Grain, ITest2
     {
-        public async Task<UnitTest> HelloWorldTest()
+        public async Task<TestDetails> HelloWorldTest()
         {
             await Task.Delay(200);
             var unitTest = Helpers.UnitTestCreator(this.GetType(), Helpers.CallerName());

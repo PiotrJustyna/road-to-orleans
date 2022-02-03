@@ -8,11 +8,11 @@ namespace Interfaces.src.TRX
     public class TestDefinitions
     {
         [XmlElement(ElementName = "UnitTest")]
-        public List<UnitTest> UnitTests { get; set; }
+        public List<UnitTestDefinition> UnitTests { get; set; }
     }
 
     [XmlRoot(ElementName = "UnitTest")]
-    public class UnitTest
+    public class UnitTestDefinition
     {
         [XmlAttribute(AttributeName = "id")]
         public string Id { get; set; }

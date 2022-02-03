@@ -38,12 +38,26 @@ namespace Grains
             testRun.Times.Start = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             testRun.Times.Queuing = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
 
+            testRun.TestLists = new List<TestList>()
+            {
+                new TestList()
+                {
+                    Name = "Results Not in a List",
+                    Id = Guid.NewGuid().ToString()
+                },
+                new TestList()
+                {
+                    Name = "All Loaded Results",
+                    Id = Guid.NewGuid().ToString()
+                }
+            };
+            
             testRun.TestDefinitions = new TestDefinitions()
             {
-                UnitTests = new List<UnitTest>()
+                UnitTests = new List<UnitTestDefinition>()
             };
 
-            var tests = new List<Task<UnitTest>>
+            var tests = new List<Task<TestDetails>>
             {
                 GrainFactory.GetGrain<ITest1>(1).HelloWorldTest(),
                 GrainFactory.GetGrain<ITest2>(2).HelloWorldTest(),
@@ -56,7 +70,8 @@ namespace Grains
             };
 
             await Task.WhenAll(tests);
-            testRun.TestDefinitions.UnitTests = tests.Select(t => t.Result).ToList();
+            var testDetailsResult = tests.Select(t => t.Result);
+            testRun.TestDefinitions.UnitTests = testDetailsResult.Select(tdr => tdr.UnitTestDefinition).ToList();
             testRun.Times.Finish = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             
             stopwatch.Stop();
