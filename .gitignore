@@ -12,3 +12,5 @@ results.bin
 RoadToOrleans.sln.DotSettings.user
 *.env
 */UnitTests/SampleTestRun.xml
+.fake
+.ionide
