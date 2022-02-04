@@ -4,6 +4,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Grains;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans;
@@ -15,7 +16,7 @@ namespace SiloHost
 {
     class Program
     {
-        public static Task Main()
+        public static async Task Main()
         {
             var advertisedIp = Environment.GetEnvironmentVariable("ADVERTISEDIP");
             var advertisedIpAddress = advertisedIp == null ? GetLocalIpAddress() : IPAddress.Parse(advertisedIp);
@@ -23,7 +24,13 @@ namespace SiloHost
 
             var siloEndpointConfiguration = GetSiloEndpointConfiguration(advertisedIpAddress, gatewayPort);
 
-            return new HostBuilder()
+            await Host.CreateDefaultBuilder()
+                .ConfigureWebHostDefaults(webHostBuilder =>
+                {
+                    webHostBuilder
+                        .UseStartup<Startup>()
+                        .UseUrls("http://localhost:5000");
+                })
                 .UseOrleans(siloBuilder =>
                 {
                     siloBuilder.UseLinuxEnvironmentStatistics();
@@ -39,7 +46,8 @@ namespace SiloHost
                         endpointOptions.SiloPort = siloEndpointConfiguration.SiloPort;
                         endpointOptions.GatewayPort = siloEndpointConfiguration.GatewayPort;
                         endpointOptions.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, 2000);
-                        endpointOptions.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, siloEndpointConfiguration.GatewayPort);
+                        endpointOptions.GatewayListeningEndpoint =
+                            new IPEndPoint(IPAddress.Any, siloEndpointConfiguration.GatewayPort);
                     });
                     siloBuilder.ConfigureApplicationParts(applicationPartManager =>
                         applicationPartManager.AddApplicationPart(typeof(HelloWorld).Assembly).WithReferences());
