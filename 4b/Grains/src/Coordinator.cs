@@ -60,7 +60,11 @@ namespace Grains
             testRun.TestDefinitions.UnitTests = tests.Select(ts => ts.Result.UnitTestDefinition).ToList();
             testRun.TestEntries = tests.Select(ts => ts.Result.TestEntry).ToList();
 
+            var testOutcomeList = tests.Select(ts => ts.Result.TestOutcome).ToList();
+
             testRun.Times.Finish = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
+
+            testRun.ResultSummary = Helpers.ResultSummaryCreator(testOutcomeList, "Completed");
 
             var trxDocument = Helpers.TrxDocumentCreator(testRun);
 

@@ -7,5 +7,6 @@ namespace Interfaces.src.TRX
         public UnitTestDefinition UnitTestDefinition { get; set; }
         
         public TestEntry TestEntry { get; set; }
+        public bool TestOutcome { get; set; }
     }
 }

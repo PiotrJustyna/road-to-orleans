@@ -23,7 +23,16 @@ namespace Grains
             executionTimeDetails.EndTime = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             executionTimeDetails.Duration = stopwatch.Elapsed.ToString();
             
-            var unitTest = Helpers.UnitTestCreator(this.GetType(), Helpers.CallerName(), testlistId, executionTimeDetails);
+            var unitTest = Helpers.UnitTestCreator(new TestCreatorParameters()
+            {
+                ClassType = GetType(),
+                CallerName = Helpers.CallerName(),
+                TestListId = testlistId,
+                TestExecutionTime = executionTimeDetails,
+                MachineName = Environment.MachineName
+            });
+            
+            unitTest.TestOutcome = true;
             
             return unitTest;
         }
