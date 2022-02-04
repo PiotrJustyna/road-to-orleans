@@ -1,2 +1,2 @@
 ARG VARIANT="6.0"
-FROM mcr.microsoft.com/vscode/devcontainers/dotnetcore:0-${VARIANT}
+FROM mcr.microsoft.com/vscode/devcontainers/dotnet:0-${VARIANT}
