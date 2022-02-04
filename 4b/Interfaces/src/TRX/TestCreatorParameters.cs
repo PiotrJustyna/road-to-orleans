@@ -9,5 +9,6 @@ namespace Interfaces.src.TRX
         public string TestListId { get; set; }
         public UnitTestExecutionTime TestExecutionTime { get; set; }
         public string MachineName { get; set; }
+        public bool TestOutcome { get; set; }
     }
 }

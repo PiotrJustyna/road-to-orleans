@@ -37,7 +37,7 @@ namespace Interfaces
                 TestType = "TestTypePlaceholder",
                 TestListId = parameters.TestListId,
                 RelativeResultsDirectory = executionId,
-                Outcome = "Passed"
+                Outcome = parameters.TestOutcome? "Passed" : "Failed"
             };
             
             var unitTestDefinition = new UnitTestDefinition()
@@ -69,7 +69,8 @@ namespace Interfaces
             {
                 UnitTestDefinition = unitTestDefinition,
                 UnitTestResult = unitTestResult,
-                TestEntry = testEntry
+                TestEntry = testEntry,
+                TestOutcome = parameters.TestOutcome
             };
         }
 

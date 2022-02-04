@@ -29,11 +29,10 @@ namespace Grains
                 CallerName = Helpers.CallerName(),
                 TestListId = testlistId,
                 TestExecutionTime = executionTimeDetails,
-                MachineName = Environment.MachineName
+                MachineName = Environment.MachineName,
+                TestOutcome = true
             });
-            
-            unitTest.TestOutcome = true;
-            
+
             return unitTest;
         }
     }
