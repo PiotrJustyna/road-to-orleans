@@ -15,17 +15,17 @@ namespace Interfaces
         {
             var testId = Guid.NewGuid().ToString();
             var executionId = Guid.NewGuid().ToString();
-            
-            var methodName = callerName;
+
             var classFullName = classType.FullName;
+            var testName = $"{classFullName}.{callerName}";
             var assemblyName = $"{classType.Assembly.GetName().Name}.dll";
             
             var unitTestResult = new UnitTestResult()
             {
                 ExecutionId = executionId,
                 TestId = testId,
-                TestName = "Placeholder",
-                ComputerName = "Placeholder",
+                TestName = testName,
+                ComputerName = Environment.MachineName,
                 Duration = "Placeholder",
                 StartTime = "Placeholder",
                 EndTime = "Placeholder",
@@ -42,13 +42,13 @@ namespace Interfaces
                 {
                     Id = executionId
                 },
-                Name = $"{classFullName}.{methodName}",
+                Name = testName,
                 Storage = assemblyName,
                 TestMethod = new TestMethod()
                 {
                     AdapterTypeName = "orleans",
                     ClassName = classFullName,
-                    Name = methodName,
+                    Name = callerName,
                     CodeBase = assemblyName
                 }
             };
