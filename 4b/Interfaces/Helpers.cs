@@ -1,5 +1,9 @@
 using System;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 using Interfaces.src.TRX;
 
 namespace Interfaces
@@ -11,40 +15,80 @@ namespace Interfaces
             return name;
         }
 
-        public static TestDetails UnitTestCreator(Type classType, string callerName )
+        public static TestDetails UnitTestCreator(Type classType, string callerName, string testListId, UnitTestExecutionTime testExecutionTime)
         {
-            var methodName = callerName;
+            var testId = Guid.NewGuid().ToString();
+            var executionId = Guid.NewGuid().ToString();
+
             var classFullName = classType.FullName;
+            var testName = $"{classFullName}.{callerName}";
             var assemblyName = $"{classType.Assembly.GetName().Name}.dll";
             
-            var unitTest = new UnitTestDefinition()
+            var unitTestResult = new UnitTestResult()
             {
-                Id = Guid.NewGuid().ToString(),
+                ExecutionId = executionId,
+                TestId = testId,
+                TestName = testName,
+                ComputerName = Environment.MachineName,
+                Duration = testExecutionTime.Duration,
+                StartTime =testExecutionTime.StartTime,
+                EndTime = testExecutionTime.EndTime,
+                TestType = "TestTypePlaceholder",
+                TestListId = testListId,
+                RelativeResultsDirectory = executionId,
+                Outcome = "Passed"
+            };
+            
+            var unitTestDefinition = new UnitTestDefinition()
+            {
+                Id = testId,
                 Execution = new Execution()
                 {
-                    Id = Guid.NewGuid().ToString()
+                    Id = executionId
                 },
-                Name = $"{classFullName}.{methodName}",
+                Name = testName,
                 Storage = assemblyName,
                 TestMethod = new TestMethod()
                 {
                     AdapterTypeName = "orleans",
                     ClassName = classFullName,
-                    Name = methodName,
+                    Name = callerName,
                     CodeBase = assemblyName
                 }
             };
 
-            var unitTestResult = new UnitTestResult()
+            var testEntry = new TestEntry()
             {
-
+                TestId = testId,
+                ExecutionId = executionId,
+                TestListId = testListId
             };
 
             return new TestDetails()
             {
-                UnitTestDefinition = unitTest,
-                UnitTestResult = unitTestResult
+                UnitTestDefinition = unitTestDefinition,
+                UnitTestResult = unitTestResult,
+                TestEntry = testEntry
             };
+        }
+
+        public static XDocument TrxDocumentCreator(TestRun testRun)
+        {
+            var serializer = new XmlSerializer(typeof(TestRun));
+            var serializerNamespaces = new XmlSerializerNamespaces();
+            serializerNamespaces.Add(
+                prefix: "",
+                ns: "");
+            
+            var writer = new StringWriter();
+            serializer.Serialize(
+                writer,
+                testRun,
+                serializerNamespaces);
+
+            var document = XDocument.Parse(writer.ToString());
+            document.Descendants().Attributes().Where(a => a.IsNamespaceDeclaration).Remove();
+            return document;
         }
     }
 }
