@@ -24,7 +24,6 @@ namespace Grains
             executionTimeDetails.Duration = stopwatch.Elapsed.ToString();
             
             var unitTest = Helpers.UnitTestCreator(this.GetType(), Helpers.CallerName(), testlistId, executionTimeDetails);
-            unitTest.UnitTestResult.Outcome = "Passed";
             
             return unitTest;
         }

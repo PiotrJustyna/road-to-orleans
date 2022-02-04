@@ -31,7 +31,8 @@ namespace Interfaces
                 EndTime = testExecutionTime.EndTime,
                 TestType = "TestTypePlaceholder",
                 TestListId = testListId,
-                RelativeResultsDirectory = executionId
+                RelativeResultsDirectory = executionId,
+                Outcome = "Passed"
             };
             
             var unitTestDefinition = new UnitTestDefinition()
