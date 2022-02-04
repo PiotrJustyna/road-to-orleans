@@ -21,7 +21,7 @@ namespace Grains
                 Name = $"{GetType().Name}/{MethodBase.GetCurrentMethod().Name}",
                 Times = new Times()
                 {
-                    Creation = DateTime.Now.ToString(CultureInfo.CurrentCulture)
+                    Creation = DateTime.Now.ToString(CultureInfo.InvariantCulture)
                 },
                 TestSettings = new TestSettings()
                 {
