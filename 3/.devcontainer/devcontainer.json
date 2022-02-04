@@ -1,23 +1,28 @@
 {
-	"name": "C# (.NET)",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"args": { }
-	},
+  "name": "C# (.NET)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {}
+  },
 
-	"settings": {
-		"terminal.integrated.shell.linux": "/bin/bash",
-		"editor.insertSpaces": true,
-		"editor.tabSize": 2,
-		"editor.detectIndentation": false
-	},
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "terminal.integrated.profiles.linux": {
+      "zsh": {
+        "path": "/usr/bin/zsh"
+      }
+    },
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.detectIndentation": false
+  },
 
-	"extensions": [
-		"ms-vscode.csharp",
-		"ms-dotnettools.csharp",
-		"yzhang.markdown-all-in-one",
-		"bierner.markdown-emoji"
-	],
+  "extensions": [
+    "ms-vscode.csharp",
+    "ms-dotnettools.csharp",
+    "yzhang.markdown-all-in-one",
+    "bierner.markdown-emoji"
+  ],
 
-	"remoteUser": "vscode"
+  "remoteUser": "vscode"
 }
