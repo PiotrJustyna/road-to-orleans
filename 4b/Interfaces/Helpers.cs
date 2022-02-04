@@ -16,7 +16,7 @@ namespace Interfaces
             return name;
         }
 
-        public static TestDetails UnitTestCreator(TestCreatorParameters parameters)
+        public static TestDetails TestDetailsCreator(TestCreatorParameters parameters)
         {
             var testId = Guid.NewGuid().ToString();
             var executionId = Guid.NewGuid().ToString();
@@ -31,9 +31,9 @@ namespace Interfaces
                 TestId = testId,
                 TestName = testName,
                 ComputerName = parameters.MachineName,
-                Duration = parameters.TestExecutionTime.Duration,
-                StartTime = parameters.TestExecutionTime.StartTime,
-                EndTime = parameters.TestExecutionTime.EndTime,
+                Duration = parameters.Duration,
+                StartTime = parameters.StartTime,
+                EndTime = parameters.EndTime,
                 TestType = "TestTypePlaceholder",
                 TestListId = parameters.TestListId,
                 RelativeResultsDirectory = executionId,
