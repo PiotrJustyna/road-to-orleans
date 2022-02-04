@@ -17,9 +17,6 @@ namespace Grains
     {
         public async Task<string> RunTests()
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            
             var testListId = Guid.NewGuid().ToString();
             
             var testRun = new TestRun()
@@ -69,9 +66,7 @@ namespace Grains
             testRun.TestEntries = tests.Select(ts => ts.Result.TestEntry).ToList();
 
             testRun.Times.Finish = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
-            
-            stopwatch.Stop();
-            
+
             var serializer = new XmlSerializer(typeof(TestRun));
             var serializerNamespaces = new XmlSerializerNamespaces();
             serializerNamespaces.Add(
