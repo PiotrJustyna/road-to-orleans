@@ -1,5 +1,9 @@
 using System;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 using Interfaces.src.TRX;
 
 namespace Interfaces
@@ -66,6 +70,25 @@ namespace Interfaces
                 UnitTestResult = unitTestResult,
                 TestEntry = testEntry
             };
+        }
+
+        public static XDocument TrxDocumentCreator(TestRun testRun)
+        {
+            var serializer = new XmlSerializer(typeof(TestRun));
+            var serializerNamespaces = new XmlSerializerNamespaces();
+            serializerNamespaces.Add(
+                prefix: "",
+                ns: "");
+            
+            var writer = new StringWriter();
+            serializer.Serialize(
+                writer,
+                testRun,
+                serializerNamespaces);
+
+            var document = XDocument.Parse(writer.ToString());
+            document.Descendants().Attributes().Where(a => a.IsNamespaceDeclaration).Remove();
+            return document;
         }
     }
 }

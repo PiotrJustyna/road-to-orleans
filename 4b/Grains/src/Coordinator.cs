@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Reflection;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 using Interfaces;
 using Interfaces.src.TRX;
 
@@ -22,7 +18,7 @@ namespace Grains
             var testRun = new TestRun()
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = $"{this.GetType().Name}/{MethodBase.GetCurrentMethod().Name}",
+                Name = $"{GetType().Name}/{MethodBase.GetCurrentMethod().Name}",
                 Times = new Times()
                 {
                     Creation = DateTime.Now.ToString(CultureInfo.CurrentCulture)
@@ -43,8 +39,7 @@ namespace Grains
                 },
                 TestDefinitions = new TestDefinitions() { UnitTests = new List<UnitTestDefinition>() }
             };
-            
-            // TODO: may need to move this to include the initialization time of the testRun object
+
             testRun.Times.Start = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             testRun.Times.Queuing = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
 
@@ -67,22 +62,9 @@ namespace Grains
 
             testRun.Times.Finish = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
 
-            var serializer = new XmlSerializer(typeof(TestRun));
-            var serializerNamespaces = new XmlSerializerNamespaces();
-            serializerNamespaces.Add(
-                prefix: "",
-                ns: "");
-            
-            var writer = new StringWriter();
-            serializer.Serialize(
-                writer,
-                testRun,
-                serializerNamespaces);
+            var trxDocument = Helpers.TrxDocumentCreator(testRun);
 
-            var document = XDocument.Parse(writer.ToString());
-            document.Descendants().Attributes().Where(a => a.IsNamespaceDeclaration).Remove();
-
-            return await Task.FromResult(document.ToString());
+            return await Task.FromResult(trxDocument.ToString());
         }
     }
 }
