@@ -1,6 +1,4 @@
 using System;
-using System.Diagnostics;
-using System.Globalization;
 using System.Threading.Tasks;
 using Interfaces;
 using Interfaces.src.TRX;
@@ -11,20 +9,23 @@ namespace Grains
     {
         public async Task<TestDetails> HelloWorldTest(string testlistId)
         {
-            var executionTimeDetails = new UnitTestExecutionTime();
-            var stopwatch = new Stopwatch();
-
-            executionTimeDetails.StartTime = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
-            stopwatch.Start();
-            
+            var startTime = DateTime.UtcNow;
             await Task.Delay(200);
+            var endTime = DateTime.UtcNow;
+            var duration = endTime - startTime;
+            
+            var unitTest = Helpers.TestDetailsCreator(new TestCreatorParameters()
+            {
+                ClassType = GetType(),
+                CallerName = Helpers.CallerName(),
+                TestListId = testlistId,
+                StartTime = startTime.ToString("yyyy-MM-ddThh:mm:ss.fff"),
+                EndTime = endTime.ToString("yyyy-MM-ddThh:mm:ss.fff"),
+                Duration = duration.ToString(),
+                MachineName = Environment.MachineName,
+                TestOutcome = true
+            });
 
-            stopwatch.Stop();
-            executionTimeDetails.EndTime = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
-            executionTimeDetails.Duration = stopwatch.Elapsed.ToString();
-            
-            var unitTest = Helpers.UnitTestCreator(this.GetType(), Helpers.CallerName(), testlistId, executionTimeDetails);
-            
             return unitTest;
         }
     }

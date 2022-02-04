@@ -2,7 +2,8 @@ using System.Xml.Serialization;
 
 namespace Interfaces.src.TRX
 {
-        public class ResultSummary
+    [XmlRoot(ElementName = "ResultSummary")]
+    public class ResultSummary
     {
         [XmlElement(ElementName = "Counters")]
         public Counters Counters { get; set; }
@@ -12,9 +13,6 @@ namespace Interfaces.src.TRX
 
         [XmlAttribute(AttributeName = "outcome")]
         public string Outcome { get; set; }
-
-        [XmlText]
-        public string Text { get; set; }
     }
 
     [XmlRoot(ElementName = "Counters")]
@@ -73,7 +71,6 @@ namespace Interfaces.src.TRX
     [XmlRoot(ElementName = "Output")]
     public class Output
     {
-
         [XmlElement(ElementName = "StdOut")]
         public string StdOut { get; set; }
     }

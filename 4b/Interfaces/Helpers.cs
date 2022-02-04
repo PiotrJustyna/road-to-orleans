@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -15,28 +16,28 @@ namespace Interfaces
             return name;
         }
 
-        public static TestDetails UnitTestCreator(Type classType, string callerName, string testListId, UnitTestExecutionTime testExecutionTime)
+        public static TestDetails TestDetailsCreator(TestCreatorParameters parameters)
         {
             var testId = Guid.NewGuid().ToString();
             var executionId = Guid.NewGuid().ToString();
 
-            var classFullName = classType.FullName;
-            var testName = $"{classFullName}.{callerName}";
-            var assemblyName = $"{classType.Assembly.GetName().Name}.dll";
+            var classFullName = parameters.ClassType.FullName;
+            var testName = $"{classFullName}.{parameters.CallerName}";
+            var assemblyName = $"{parameters.ClassType.Assembly.GetName().Name}.dll";
             
             var unitTestResult = new UnitTestResult()
             {
                 ExecutionId = executionId,
                 TestId = testId,
                 TestName = testName,
-                ComputerName = Environment.MachineName,
-                Duration = testExecutionTime.Duration,
-                StartTime =testExecutionTime.StartTime,
-                EndTime = testExecutionTime.EndTime,
+                ComputerName = parameters.MachineName,
+                Duration = parameters.Duration,
+                StartTime = parameters.StartTime,
+                EndTime = parameters.EndTime,
                 TestType = "TestTypePlaceholder",
-                TestListId = testListId,
+                TestListId = parameters.TestListId,
                 RelativeResultsDirectory = executionId,
-                Outcome = "Passed"
+                Outcome = parameters.TestOutcome? "Passed" : "Failed"
             };
             
             var unitTestDefinition = new UnitTestDefinition()
@@ -52,7 +53,7 @@ namespace Interfaces
                 {
                     AdapterTypeName = "orleans",
                     ClassName = classFullName,
-                    Name = callerName,
+                    Name = parameters.CallerName,
                     CodeBase = assemblyName
                 }
             };
@@ -61,14 +62,15 @@ namespace Interfaces
             {
                 TestId = testId,
                 ExecutionId = executionId,
-                TestListId = testListId
+                TestListId = parameters.TestListId
             };
 
             return new TestDetails()
             {
                 UnitTestDefinition = unitTestDefinition,
                 UnitTestResult = unitTestResult,
-                TestEntry = testEntry
+                TestEntry = testEntry,
+                TestOutcome = parameters.TestOutcome
             };
         }
 
@@ -89,6 +91,32 @@ namespace Interfaces
             var document = XDocument.Parse(writer.ToString());
             document.Descendants().Attributes().Where(a => a.IsNamespaceDeclaration).Remove();
             return document;
+        }
+
+        public static ResultSummary ResultSummaryCreator(List<bool> testResultsOutcome, string outcome)
+        {
+            var resultSummary = new ResultSummary()
+            {
+                Outcome = outcome,
+                Output = new Output()
+                {
+                    StdOut = "Orleans output"
+                },
+                Counters = new Counters()
+                {
+                    Aborted = "0",
+                    Completed = testResultsOutcome.Count(tro => tro).ToString(),
+                    Executed = testResultsOutcome.Count().ToString(),
+                    Disconnected = "0",
+                    Error = testResultsOutcome.Count(tro => !tro).ToString(),
+                    Failed = testResultsOutcome.Count(tro => !tro).ToString(),
+                    Inconclusive = "0",
+                    InProgress = "0",
+                    NotRunnable = "0",
+                    NotExecuted = "0"
+                }
+            };
+            return resultSummary;
         }
     }
 }
