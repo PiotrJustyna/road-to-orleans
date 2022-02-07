@@ -22,10 +22,10 @@ let main args =
 
             let! results = tasks |> Async.Parallel
 
-            let siloPort = results[ 0 ]
-            let gatewayPort = results[ 1 ]
-            let primarySiloPort = results[ 2 ]
-            let dashboardPort = results[ 3 ]
+            let siloPort = results.[0]
+            let gatewayPort = results.[1]
+            let primarySiloPort = results.[2]
+            let dashboardPort = results.[3]
 
             return siloPort, gatewayPort, primarySiloPort, dashboardPort
         }
