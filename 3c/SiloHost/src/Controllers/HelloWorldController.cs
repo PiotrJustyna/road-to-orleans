@@ -22,10 +22,12 @@ namespace SiloHost.Controllers
         }
 
         [HttpGet]
-        public async Task<long> Get(string name, CancellationToken cancellationToken)
+        public async Task<long> Get(
+            int n,
+            CancellationToken cancellationToken)
         {
             var grain = _clusterClient.GetGrain<IHelloWorld>(1);
-            return await grain.Factorial(3);
+            return await grain.Factorial(n);
         }
     }
 }

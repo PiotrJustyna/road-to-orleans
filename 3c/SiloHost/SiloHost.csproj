@@ -24,4 +24,10 @@
         <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="HelloWorld.lua">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

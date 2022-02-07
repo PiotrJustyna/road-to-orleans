@@ -19,7 +19,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 
 WORKDIR /SiloHost
 COPY --from=build /SiloHost ./
-EXPOSE 3000 8080
+EXPOSE 3000 8080 5000
 
 CMD ["dotnet", "SiloHost.dll"]
 ENTRYPOINT ["./entrypoint.sh"]
