@@ -29,7 +29,7 @@ namespace SiloHost
                 {
                     webHostBuilder
                         .UseStartup<Startup>()
-                        .UseUrls("http://localhost:5000");
+                        .UseUrls("http://*:5000");
                 })
                 .UseOrleans(siloBuilder =>
                 {
