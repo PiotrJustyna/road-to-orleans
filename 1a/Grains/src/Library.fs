@@ -8,9 +8,8 @@ type IDummyTests =
     abstract member DummyTest1 : input: string -> cancellationToken: GrainCancellationToken -> Task<bool>
     abstract member DummyTest2 : input: string -> cancellationToken: GrainCancellationToken -> Task<bool>
 
-type HelloWorld() =
+type DummyTests() =
     inherit Grain()
-
     interface IDummyTests with
         member this.DummyTest1 (input: string) (_: GrainCancellationToken) : Task<bool> = task { return true }
         member this.DummyTest2 (input: string) (_: GrainCancellationToken) : Task<bool> = task { return false }

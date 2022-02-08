@@ -1,6 +1,9 @@
 open System.Net
 open System.Reflection
 open Grains
+open Microsoft.AspNetCore.Builder
+open Microsoft.AspNetCore.Hosting
+open Microsoft.Extensions.DependencyInjection;
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open Orleans.Configuration
@@ -78,6 +81,16 @@ let main args =
             |> ignore
 
     builder
+        .ConfigureWebHostDefaults(fun (webHostBuilder) ->
+            webHostBuilder
+                .Configure(fun applicationBuilder ->
+                    applicationBuilder
+                        .UseRouting()
+                        .UseEndpoints(fun endpoints -> endpoints.MapControllers() |> ignore)
+                    |> ignore)
+                .ConfigureServices(fun services -> services.AddControllers() |> ignore)
+                .UseUrls("http://*:5000")
+            |> ignore)
         .UseOrleans(siloConfiguration)
         .RunConsoleAsync()
     |> Async.AwaitTask
