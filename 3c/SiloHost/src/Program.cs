@@ -2,7 +2,9 @@
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using Grains;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans;
@@ -17,16 +19,12 @@ var gatewayPort = int.Parse(Environment.GetEnvironmentVariable("GATEWAYPORT") ??
 var siloEndpointConfiguration = GetSiloEndpointConfiguration(advertisedIpAddress, gatewayPort);
 
 // Configure web host
-var builder = Host.CreateDefaultBuilder()
-    .ConfigureWebHostDefaults(webHostBuilder =>
-    {
-        webHostBuilder
-            .UseStartup<Startup>()
-            .UseUrls("http://*:5000");
-    });
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
+builder.WebHost.UseUrls("http://*:5000");
 
 // Configure orleans
-builder.UseOrleans(siloBuilder =>
+builder.Host.UseOrleans(siloBuilder =>
 {
     siloBuilder.UseLinuxEnvironmentStatistics();
     siloBuilder.UseDashboard(dashboardOptions =>
@@ -49,10 +47,19 @@ builder.UseOrleans(siloBuilder =>
 });
 
 // Configure logging
-builder.ConfigureLogging(logging => logging.AddConsole());
+builder.WebHost.ConfigureLogging(logging => logging.AddConsole());
+
+// Confire application
+var app = builder.Build();
+app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 // Run host
-await builder.RunConsoleAsync();
+app.Run();
 
 static SiloEndpointConfiguration GetSiloEndpointConfiguration(
     IPAddress advertisedAddress,
