@@ -18,7 +18,7 @@ namespace SiloHost
         {
             services.AddControllers();
         }
-        
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRouting();
