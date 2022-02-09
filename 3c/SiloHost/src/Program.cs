@@ -49,7 +49,7 @@ builder.Host.UseOrleans(siloBuilder =>
 // Configure logging
 builder.WebHost.ConfigureLogging(logging => logging.AddConsole());
 
-// Confire application
+// Configure application
 var app = builder.Build();
 app.UseRouting();
 
