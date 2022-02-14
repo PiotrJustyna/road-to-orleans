@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: ./ops/Client/Dockerfile
     environment:
-      - ADVERTISEDIP=172.28.190.64
+      - ADVERTISEDIP=172.17.0.1
       - GATEWAYPORT=3001
     depends_on: 
       - orleans-silo
@@ -17,7 +17,7 @@ services:
       context: .
       dockerfile: ./ops/SiloHost/Dockerfile
     environment:
-      - ADVERTISEDIP=172.28.190.64
+      - ADVERTISEDIP=172.17.0.1
       - GATEWAYPORT=3001
       - SILOPORT=2001
       - PRIMARYPORT=2001
