@@ -8,7 +8,7 @@
 
 [![Gitter](https://badges.gitter.im/road-to-orleans/community.svg)](https://gitter.im/road-to-orleans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-This repository illustrates the road to orleans with practical, real-life examples as .NET solutions. From most basic, to more advanced techniques. The code is written using .NET 5 and was tested on MacOS (Catalina 10.15.7) and, wherever docker is supported, Linux (Alpine 3.12).
+This repository illustrates the road to orleans with practical, real-life examples such as .NET solutions. From most basic to more advanced techniques. The code is written using .NET 6 and was tested on macOS (Catalina 10.15.7) and, wherever docker is supported, Linux (Alpine 3.12).
 
 ## build & run
 
@@ -25,15 +25,15 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 flowchart TD
 Solution1(Solution1: One basic silo, no grains.)
 Solution2(Solution2: One basic silo, one grain, one console client.)
-Solution3(Solution3: One basic silo, one grain, <br/>Solution3: one console client, <br/>Solution3: everything containerized.)
+Solution3(Solution3: One basic silo, one grain, one console client, <br/>everything containerized.)
 Solution3a(Solution3a: Solution3 + grain persistence.)
 Solution3b(Solution3b: Solution3 + datadog APM.)
-Solution4(Solution4: First in-memory clustering example. <br/>Solution4: Many silos, many clients.)
-Solution5(Solution5: Solution4 where the grain interfaces F# library code. <br/>Solution5 :Additionally, F# unit tests covering the F# library code.)
+Solution4(Solution4: First in-memory clustering example. <br/>Many silos, many clients.)
+Solution5(Solution5: Solution4 where the grain interfaces F# library code. <br/>Additionally, F# unit tests covering the F# library code.)
 Solution5a(Solution5a: Solution5 where the host and client are written in F#.)
 Solution6(Solution6: Solution5 where the cluster is being called from a Web API.)
-Solution7(Solution7: Solution6 + FeatureManagement, <br/>Solution7: dependency injection in grains, <br/>Solution7: unit tests for grains using OrleansTestKit.)
-Solution8(Solution8: Solution7 + Persistent Membership Table in DynamoEB,<br/>Solution8: ECS hosting, CloudFormation Template.)
+Solution7(Solution7: Solution6 + FeatureManagement, dependency injection in grains, <br/>unit tests for grains using OrleansTestKit.)
+Solution8(Solution8: Solution7 + Persistent Membership Table in DynamoEB,<br/>ECS hosting, CloudFormation Template.)
 
 Solution1 --> Solution2
 Solution2 --> Solution3
@@ -70,13 +70,14 @@ Solution7 --> Solution8
 
 ## further reading
 
-- https://gitter.im/road-to-orleans/community - road to orleans gitter
-- https://github.com/dotnet/orleans - orleans repository
-- https://dotnet.github.io/orleans/ - orleans documentation
-- https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/Orleans20Best20Practices.pdf - orleans best practices
-- https://gitter.im/dotnet/orleans/ - orleans gitter
+- https://gitter.im/road-to-orleans/community - road to Orleans gitter
+- https://github.com/dotnet/orleans - Orleans repository
+- https://dotnet.github.io/orleans/ - Orleans documentation
+- https://docs.microsoft.com/en-us/dotnet/orleans/ - New Orleans documentation
+- https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/Orleans20Best20Practices.pdf - Orleans best practices
+- https://gitter.im/dotnet/orleans/ - Orleans gitter
 - https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/Orleans-MSR-TR-2014-41.pdf - virtual actors paper
-- https://github.com/OrleansContrib - orbiting repositories (e.g. orleans dashboard)
+- https://github.com/OrleansContrib - orbiting repositories (e.g. Orleans dashboard)
 - https://github.com/PiotrJustyna/FeatureManagementSandbox - more involved use cases for [FeatureManagement](https://www.nuget.org/packages/Microsoft.FeatureManagement/)
 
 ## to watch
