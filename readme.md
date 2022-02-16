@@ -25,15 +25,15 @@ Silo dashboards are available by default on `localhost:8080` unless configured o
 flowchart TD
 Solution1(Solution1: One basic silo, no grains.)
 Solution2(Solution2: One basic silo, one grain, one console client.)
-Solution3(Solution3: One basic silo, one grain, <br/>Solution3: one console client, <br/>Solution3: everything containerized.)
+Solution3(Solution3: One basic silo, one grain, one console client, <br/>everything containerized.)
 Solution3a(Solution3a: Solution3 + grain persistence.)
 Solution3b(Solution3b: Solution3 + datadog APM.)
-Solution4(Solution4: First in-memory clustering example. <br/>Solution4: Many silos, many clients.)
-Solution5(Solution5: Solution4 where the grain interfaces F# library code. <br/>Solution5 :Additionally, F# unit tests covering the F# library code.)
+Solution4(Solution4: First in-memory clustering example. <br/>Many silos, many clients.)
+Solution5(Solution5: Solution4 where the grain interfaces F# library code. <br/>Additionally, F# unit tests covering the F# library code.)
 Solution5a(Solution5a: Solution5 where the host and client are written in F#.)
 Solution6(Solution6: Solution5 where the cluster is being called from a Web API.)
-Solution7(Solution7: Solution6 + FeatureManagement, <br/>Solution7: dependency injection in grains, <br/>Solution7: unit tests for grains using OrleansTestKit.)
-Solution8(Solution8: Solution7 + Persistent Membership Table in DynamoEB,<br/>Solution8: ECS hosting, CloudFormation Template.)
+Solution7(Solution7: Solution6 + FeatureManagement, dependency injection in grains, <br/>unit tests for grains using OrleansTestKit.)
+Solution8(Solution8: Solution7 + Persistent Membership Table in DynamoEB,<br/>ECS hosting, CloudFormation Template.)
 
 Solution1 --> Solution2
 Solution2 --> Solution3
