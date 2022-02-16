@@ -4,11 +4,11 @@
   - [code](#code)
   - [further reading](#further-reading)
 
-# road to Orleans
+# road to orleans
 
 [![Gitter](https://badges.gitter.im/road-to-orleans/community.svg)](https://gitter.im/road-to-orleans/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-This repository illustrates the road to Orleans with practical, real-life examples such as .NET solutions. From most basic to more advanced techniques. The code is written using .NET 6 and was tested on macOS (Catalina 10.15.7) and, wherever docker is supported, Linux (Alpine 3.12).
+This repository illustrates the road to orleans with practical, real-life examples such as .NET solutions. From most basic to more advanced techniques. The code is written using .NET 6 and was tested on macOS (Catalina 10.15.7) and, wherever docker is supported, Linux (Alpine 3.12).
 
 ## build & run
 
