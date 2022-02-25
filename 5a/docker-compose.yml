@@ -1,8 +1,18 @@
+version: '2.1'
 services:
   orleans-client:
     image: orleans-client
-    depends_on: 
-      orleans-silo:
-        condition: service_healthy
+    depends_on:
+      - orleans-silo
+  orleans-silotwo:
+    image: orleans-silo
+    depends_on:
+      - orleans-silo
+#        condition: service_healthy
   orleans-silo:
     image: orleans-silo
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://Administrator:password@localhost:8091/pools/default/buckets/default"]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
