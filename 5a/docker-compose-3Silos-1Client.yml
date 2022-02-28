@@ -1,0 +1,52 @@
+version: '3.1'
+
+services:
+  orleans-client:
+    image: orleans-client
+    build:
+      context: .
+      dockerfile: ./ops/Client/Dockerfile
+    environment:
+      - ADVERTISEDIP=172.17.0.1
+      - GATEWAYPORT=3001
+    depends_on:
+      - orleans-silo
+      - orleans-silotwo
+      - orleans-silothree
+  orleans-silothree:
+    image: orleans-silo
+    build:
+      context: .
+      dockerfile: ./ops/SiloHost/Dockerfile
+    environment:
+      - ADVERTISEDIP=172.17.0.1
+      - SILOPORT=2004
+      - GATEWAYPORT=3004
+      - PRIMARYPORT=2001
+      - DASHBOARDPORT=8084
+  orleans-silotwo:
+    image: orleans-silo
+    build:
+      context: .
+      dockerfile: ./ops/SiloHost/Dockerfile
+    environment:
+      - ADVERTISEDIP=172.17.0.1
+      - SILOPORT=2003
+      - GATEWAYPORT=3003
+      - PRIMARYPORT=2001
+      - DASHBOARDPORT=8083
+  orleans-silo:
+    image: orleans-silo
+    build:
+      context: .
+      dockerfile: ./ops/SiloHost/Dockerfile
+    environment:
+      - ADVERTISEDIP=172.17.0.1
+      - SILOPORT=2001
+      - GATEWAYPORT=3001
+      - PRIMARYPORT=2001
+      - DASHBOARDPORT=8081
+    ports:
+      - "8081:8081"
+      - "3001:3001"
+      - "2001:2001"

@@ -1,3 +1,5 @@
+version: '3.1'
+
 services:
   orleans-client:
     image: orleans-client
@@ -9,6 +11,18 @@ services:
       - GATEWAYPORT=3001
     depends_on: 
       - orleans-silo
+      - orleans-silotwo
+  orleans-silotwo:
+    image: orleans-silo
+    build:
+      context: .
+      dockerfile: ./ops/SiloHost/Dockerfile
+    environment:
+      - ADVERTISEDIP=172.17.0.1
+      - SILOPORT=2003
+      - GATEWAYPORT=3003
+      - PRIMARYPORT=2001
+      - DASHBOARDPORT=8083
   orleans-silo:
     image: orleans-silo
     build:
