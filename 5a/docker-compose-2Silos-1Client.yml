@@ -23,6 +23,10 @@ services:
       - GATEWAYPORT=3003
       - PRIMARYPORT=2001
       - DASHBOARDPORT=8083
+    ports:
+      - "8083:8083"
+      - "3003:3003"
+      - "2003:2003"
   orleans-silo:
     image: orleans-silo
     build:
