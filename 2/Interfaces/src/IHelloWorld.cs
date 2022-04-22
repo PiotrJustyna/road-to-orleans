@@ -4,6 +4,6 @@ namespace Interfaces
 {
     public interface IHelloWorld : Orleans.IGrainWithIntegerKey
     {
-        Task<string> SayHello(string name);
+        ValueTask<string> SayHello(string name);
     }
 }
