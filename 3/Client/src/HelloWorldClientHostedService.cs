@@ -30,7 +30,7 @@ namespace Client
             {
                 var start = DateTime.UtcNow;
 
-                var cts = new CancellationTokenSource(400);
+                var cts = new CancellationTokenSource(5);
 
                 try
                 {
@@ -38,10 +38,6 @@ namespace Client
                         .SayHelloFireAndForget("Piotr")
                         .WaitAsync(cts.Token)
                         .ConfigureAwait(false);
-                    
-                    // await helloWorldGrain.SayHelloFireAndForget(
-                    //     "Piotr",
-                    //     cts.Token);
                 }
                 catch (Exception e)
                 {

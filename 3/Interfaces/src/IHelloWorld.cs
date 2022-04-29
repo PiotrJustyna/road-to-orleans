@@ -8,7 +8,6 @@ namespace Interfaces
     {
         Task<string> SayHello(string name);
 
-        Task SayHelloFireAndForget(
-            string name);
+        Task SayHelloFireAndForget(string name);
     }
 }

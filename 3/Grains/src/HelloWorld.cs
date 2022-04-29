@@ -16,6 +16,9 @@ namespace Grains
         public async Task SayHelloFireAndForget(
             string name)
         {
+            // to trip the client safety net:
+            // Thread.Sleep(500);
+            
             _ = ManagedKickOff();
             
             // wait for as long as the caller needs
@@ -24,7 +27,7 @@ namespace Grains
 
         public async Task ManagedKickOff()
         {
-            var cts = new CancellationTokenSource(20000);
+            var cts = new CancellationTokenSource(4000);
             
             var start = DateTime.UtcNow;
             
