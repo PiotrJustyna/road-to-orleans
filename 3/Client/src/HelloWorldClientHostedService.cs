@@ -33,24 +33,25 @@ namespace Client
                 var cts = new CancellationTokenSource(1000);
                 cts.Token.Register(() =>
                 {
-                    Console.WriteLine($"{DateTime.UtcNow} - cancellation token source cancelling...");
+                    Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - cancellation token source cancelling...");
                     gcts.Cancel();
-                    Console.WriteLine($"{DateTime.UtcNow} - cancellation token source cancelled");
+                    Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - cancellation token source cancelled");
                 });
 
-                Console.WriteLine($"{DateTime.UtcNow} - starting the call");
+                Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - starting the call");
 
                 try
                 {
-                    await helloWorldGrain.SayHelloFireAndForget("Piotr", gcts.Token);
-                    // await Task.Delay(5000, cts.Token);
+                    await helloWorldGrain.SayHelloFireAndForget(
+                        "Piotr",
+                        gcts.Token);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"{DateTime.UtcNow} - exception in the call: {e.Message}");
+                    Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - exception in the call: {e.Message}");
                 }
 
-                Console.WriteLine($"{DateTime.UtcNow} - call finished");
+                Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - call finished");
             }
         }
 

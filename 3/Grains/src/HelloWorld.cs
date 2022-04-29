@@ -14,11 +14,20 @@ namespace Grains
 
         public async Task SayHelloFireAndForget(
             string name,
-            GrainCancellationToken cancellationToken)
+            GrainCancellationToken gct)
         {
-            Console.WriteLine($"{DateTime.UtcNow} - call started");
-            await Task.Delay(5000);
-            Console.WriteLine($"{DateTime.UtcNow} - call finished");
+            Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - call started");
+
+            try
+            {
+                await Task.Delay(5000, gct.CancellationToken);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - exception in the call: {e.Message}");
+            }
+
+            Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - call finished");
         }
     }
 }
