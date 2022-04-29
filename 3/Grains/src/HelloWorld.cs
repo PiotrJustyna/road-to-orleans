@@ -20,21 +20,25 @@ namespace Grains
             // Thread.Sleep(500);
             
             _ = ManagedKickOff();
-            
-            // wait for as long as the caller needs
-            // return
+        }
+
+        public async Task<string> SayHelloHybrid(string name)
+        {
+            await ManagedKickOff();
+
+            return $"Hello, {name}!";
         }
 
         public async Task ManagedKickOff()
         {
-            var cts = new CancellationTokenSource(4000);
+            var cts = new CancellationTokenSource(5000);
             
             var start = DateTime.UtcNow;
             
             try
             {
                 await Task.Delay(
-                    5000,
+                    1000,
                     cts.Token);
             }
             catch (Exception e)

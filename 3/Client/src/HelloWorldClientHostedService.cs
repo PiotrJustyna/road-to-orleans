@@ -30,14 +30,16 @@ namespace Client
             {
                 var start = DateTime.UtcNow;
 
-                var cts = new CancellationTokenSource(5);
+                var cts = new CancellationTokenSource(300);
 
                 try
                 {
-                    await helloWorldGrain
-                        .SayHelloFireAndForget("Piotr")
+                    var result = await helloWorldGrain
+                        .SayHelloHybrid("Piotr")
                         .WaitAsync(cts.Token)
                         .ConfigureAwait(false);
+                    
+                    Console.WriteLine(result);
                 }
                 catch (Exception e)
                 {
