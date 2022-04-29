@@ -28,33 +28,37 @@ namespace Client
             }
             else
             {
-                var gcts = new GrainCancellationTokenSource();
+                var start = DateTime.UtcNow;
 
-                var cts = new CancellationTokenSource(1000);
-                cts.Token.Register(() =>
-                {
-                    Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - cancellation token source cancelling...");
-                    gcts.Cancel();
-                    Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - cancellation token source cancelled");
-                });
-
-                Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - starting the call");
+                var cts = new CancellationTokenSource(400);
 
                 try
                 {
-                    await helloWorldGrain.SayHelloFireAndForget(
-                        "Piotr",
-                        gcts.Token);
+                    await helloWorldGrain
+                        .SayHelloFireAndForget("Piotr")
+                        .WaitAsync(cts.Token)
+                        .ConfigureAwait(false);
+                    
+                    // await helloWorldGrain.SayHelloFireAndForget(
+                    //     "Piotr",
+                    //     cts.Token);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - exception in the call: {e.Message}");
+                    Console.WriteLine($"{Delta(start, DateTime.UtcNow)} - exception in the call: {e.Message}");
                 }
 
-                Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss.fff} - call finished");
+                Console.WriteLine($"{Delta(start, DateTime.UtcNow)} - call finished");
             }
         }
 
+        public string Delta(
+            DateTime start,
+            DateTime finish)
+        {
+            return $"{(finish - start):s\\.fff}s";
+        }
+        
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     }
 }
