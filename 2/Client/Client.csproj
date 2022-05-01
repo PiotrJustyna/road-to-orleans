@@ -10,7 +10,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Orleans.Core" Version="3.6.0" />
+    <PackageReference Include="Microsoft.Orleans.Core" Version="3.6.2" />
   </ItemGroup>
 
   <ItemGroup>
