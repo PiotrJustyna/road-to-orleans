@@ -14,7 +14,7 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="3.6.0" />
-        <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.Linux" Version="3.6.0" />
+        <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.Linux" Version="3.6.2" />
         <PackageReference Include="OrleansDashboard" Version="3.6.1" />
     </ItemGroup>
 
