@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AWSSDK.Core" Version="3.7.6.2" />
+        <PackageReference Include="AWSSDK.Core" Version="3.7.12.4" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
         <PackageReference Include="Microsoft.FeatureManagement" Version="2.4.0" />
         <PackageReference Include="Microsoft.Orleans.Clustering.DynamoDB" Version="3.6.0" />
