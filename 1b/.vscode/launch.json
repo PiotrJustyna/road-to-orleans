@@ -6,7 +6,7 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/SiloHost/bin/Debug/net5.0/SiloHost.dll",
+      "program": "${workspaceFolder}/SiloHost/bin/Debug/net7.0/SiloHost.dll",
       "args": [],
       "cwd": "${workspaceFolder}/SiloHost",
       "console": "internalConsole",
