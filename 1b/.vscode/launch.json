@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "run silo host",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/SiloHost/bin/Debug/net7.0/SiloHost.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/SiloHost",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    }
+  ]
+}
