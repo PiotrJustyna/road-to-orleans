@@ -20,7 +20,6 @@ namespace SiloHost
             return new HostBuilder()
                 .UseOrleans(siloBuilder =>
                 {
-                    siloBuilder.UseLinuxEnvironmentStatistics();
                     siloBuilder.UseDashboard(dashboardOptions =>
                     {
                         dashboardOptions.Username = "piotr";
